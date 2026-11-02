@@ -1,0 +1,302 @@
+@import "tailwindcss";
+
+/* ========================================
+   SINDEE INFOTECH — DESIGN SYSTEM
+   ======================================== */
+
+@theme {
+  /* Brand Colors */
+  --color-midnight: #101827;
+  --color-midnight-light: #1a2332;
+  --color-midnight-lighter: #243044;
+  --color-warm-ivory: #F3F1EB;
+  --color-warm-ivory-dark: #E8E5DD;
+  --color-lime: #C7F36B;
+  --color-lime-dark: #B0D85A;
+  --color-lime-light: #D4F78E;
+  --color-white: #FFFFFF;
+  --color-muted: #9299A5;
+  --color-muted-light: #B0B5BF;
+  --color-muted-dark: #6B7280;
+  --color-border: #E2E0D9;
+  --color-border-dark: #2A3444;
+
+  /* Typography */
+  --font-sans: 'Manrope', system-ui, -apple-system, sans-serif;
+
+  /* Spacing Scale */
+  --spacing-18: 4.5rem;
+  --spacing-22: 5.5rem;
+  --spacing-30: 7.5rem;
+  --spacing-34: 8.5rem;
+  --spacing-38: 9.5rem;
+
+  /* Container */
+  --container-7xl: 84rem;
+
+  /* Animations */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-fade-up: fade-up 0.8s var(--ease-out-expo) forwards;
+  --animate-fade-in: fade-in 0.6s ease-out forwards;
+  --animate-slide-in: slide-in 0.7s var(--ease-out-expo) forwards;
+  --animate-scale-in: scale-in 0.5s var(--ease-out-expo) forwards;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ========================================
+   BASE STYLES
+   ======================================== */
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+::selection {
+  background-color: #C7F36B;
+  color: #101827;
+}
+
+/* ========================================
+   TYPOGRAPHY UTILITIES
+   ======================================== */
+
+@utility text-display {
+  font-size: clamp(2.5rem, 5vw + 1rem, 5rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+}
+
+@utility text-heading-1 {
+  font-size: clamp(2rem, 4vw + 0.5rem, 3.75rem);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+}
+
+@utility text-heading-2 {
+  font-size: clamp(1.5rem, 3vw + 0.25rem, 2.5rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+}
+
+@utility text-heading-3 {
+  font-size: clamp(1.25rem, 2vw + 0.25rem, 1.75rem);
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  font-weight: 600;
+}
+
+@utility text-body-large {
+  font-size: clamp(1.0625rem, 1.2vw, 1.25rem);
+  line-height: 1.65;
+}
+
+@utility text-body {
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+@utility text-label {
+  font-size: 0.75rem;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+@utility text-caption {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--color-muted);
+}
+
+/* ========================================
+   LAYOUT UTILITIES
+   ======================================== */
+
+@utility container-main {
+  width: 100%;
+  max-width: var(--container-7xl);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+
+  @media (min-width: 768px) {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+
+  @media (min-width: 1280px) {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+}
+
+@utility section-padding {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+
+  @media (min-width: 768px) {
+    padding-top: 7rem;
+    padding-bottom: 7rem;
+  }
+
+  @media (min-width: 1280px) {
+    padding-top: 9rem;
+    padding-bottom: 9rem;
+  }
+}
+
+/* ========================================
+   COMPONENT UTILITIES
+   ======================================== */
+
+@utility btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 2rem;
+  background-color: var(--color-lime);
+  color: var(--color-midnight);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  border-radius: 9999px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+
+  &:hover {
+    background-color: var(--color-lime-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(199, 243, 107, 0.3);
+  }
+}
+
+@utility btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 2rem;
+  background-color: transparent;
+  color: var(--color-midnight);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  border-radius: 9999px;
+  border: 1.5px solid var(--color-border);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  text-decoration: none;
+
+  &:hover {
+    border-color: var(--color-midnight);
+    background-color: var(--color-midnight);
+    color: var(--color-white);
+    transform: translateY(-1px);
+  }
+}
+
+@utility btn-dark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 2rem;
+  background-color: var(--color-midnight);
+  color: var(--color-white);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  border-radius: 9999px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+
+  &:hover {
+    background-color: var(--color-midnight-light);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(16, 24, 39, 0.2);
+  }
+}
+
+/* ========================================
+   SCROLLBAR
+   ======================================== */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-warm-ivory);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-muted-light);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-muted);
+}
