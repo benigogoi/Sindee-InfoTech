@@ -1,28 +1,30 @@
 import { useState, type FormEvent } from 'react'
-import { motion } from 'framer-motion'
-import { MessageCircle, Mail, Phone, MapPin, Send, CheckCircle, AlertCircle, Loader2 } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import {
+  Mail,
+  MapPin,
+  Send,
+  CheckCircle,
+  AlertCircle,
+  Loader2,
+  ChevronDown,
+  ExternalLink,
+} from 'lucide-react'
 import { PageMeta } from '@/components/ui/PageMeta'
 import { Button } from '@/components/ui/Button'
 import {
   fadeUpVariants,
   fadeInVariants,
-  slideInLeftVariants,
-  slideInRightVariants,
   staggerContainerVariants,
-  staggerFastContainerVariants,
 } from '@/lib/animations'
-import { CONTACT_CONFIG, API_CONFIG, WHATSAPP_URL, EMAIL_URL, SITE_CONFIG } from '@/lib/config'
-
-/* ——————————————————————————————————————————
-   Form Data & Options
-   —————————————————————————————————————————— */
+import { CONTACT_CONFIG, API_CONFIG, EMAIL_URL } from '@/lib/config'
 
 interface FormData {
   fullName: string
   businessName: string
   email: string
   phone: string
-  websiteType: string
+  projectType: string
   budget: string
   description: string
 }
@@ -32,74 +34,69 @@ const initialFormData: FormData = {
   businessName: '',
   email: '',
   phone: '',
-  websiteType: '',
+  projectType: '',
   budget: '',
   description: '',
 }
 
-const websiteTypes = [
-  'Business website',
-  'E-commerce',
-  'Website redesign',
-  'Custom solution',
-  'Not sure yet',
+const projectTypeOptions = [
+  'New Business Website',
+  'E-commerce Website',
+  'Website Redesign',
+  'Custom Web Solution',
+  'Maintenance & Support',
+  'Other / Unsure',
 ]
 
-const budgetRanges = [
-  'Below ₹10,000',
-  '₹10,000–₹20,000',
-  '₹20,000–₹40,000',
-  '₹40,000+',
+const budgetOptions = [
+  'Starter (₹9,999 — Up to 5 pages)',
+  'Professional (₹17,999 — Up to 8 pages)',
+  'Advanced (₹29,999+ — Custom / E-commerce)',
+  'Custom Scope / Not Sure Yet',
 ]
 
-type FormStatus = 'idle' | 'loading' | 'success' | 'error' | 'dev-mode'
+type FormStatus = 'idle' | 'loading' | 'success' | 'error' | 'endpoint-unconfigured'
 
-/* ——————————————————————————————————————————
-   Reusable Input Components
-   —————————————————————————————————————————— */
-
-const inputBaseClasses =
-  'w-full bg-white border border-border rounded-xl px-4 py-3.5 text-midnight text-[0.9375rem] placeholder:text-muted-light outline-none transition-all duration-300 focus:border-lime focus:ring-2 focus:ring-lime/20'
-
-const selectClasses =
-  'w-full bg-white border border-border rounded-xl px-4 py-3.5 text-midnight text-[0.9375rem] outline-none transition-all duration-300 focus:border-lime focus:ring-2 focus:ring-lime/20 appearance-none cursor-pointer'
-
-function FormField({
-  label,
-  required,
-  children,
-}: {
-  label: string
-  required?: boolean
-  children: React.ReactNode
-}) {
-  return (
-    <div className="space-y-2">
-      <label className="block text-[0.8125rem] font-semibold text-midnight">
-        {label}
-        {required && <span className="text-red-500 ml-0.5">*</span>}
-      </label>
-      {children}
-    </div>
-  )
-}
-
-/* ——————————————————————————————————————————
-   Contact Page
-   —————————————————————————————————————————— */
+const contactFaqs = [
+  {
+    question: 'What information should I provide when reaching out?',
+    answer:
+      'A short overview of what your business does, what you want the website to achieve, any competitor or reference websites you admire, and your estimated timeframe is more than enough to start.',
+  },
+  {
+    question: 'Do you work with businesses outside your immediate area?',
+    answer:
+      'Yes. We collaborate with business clients across India. All project coordination, design previews, and feedback reviews happen smoothly over video calls, email, and messaging.',
+  },
+  {
+    question: 'Can I request a website redesign for an outdated existing site?',
+    answer:
+      'Yes, website redesign is one of our core services. We evaluate your current site, retain your existing domain and brand strengths, and build a modern, high-speed experience from the ground up.',
+  },
+  {
+    question: 'How are projects priced?',
+    answer:
+      'We provide fixed-scope proposals based on the number of pages, custom functional workflows (such as bookings or e-commerce), and content requirements. We explain all inclusions upfront before work begins.',
+  },
+  {
+    question: 'Do you provide ongoing technical maintenance after launch?',
+    answer:
+      'Yes. In addition to a dedicated handover period after deployment, we offer ongoing monthly maintenance arrangements covering security patches, backups, uptime monitoring, and content additions.',
+  },
+]
 
 export function ContactPage() {
   const [formData, setFormData] = useState<FormData>(initialFormData)
   const [status, setStatus] = useState<FormStatus>('idle')
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({})
   const [statusMessage, setStatusMessage] = useState('')
+  const [activeFaq, setActiveFaq] = useState<number | null>(null)
 
   function handleChange(
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>,
   ) {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
-    // Clear field error on change
     if (errors[name as keyof FormData]) {
       setErrors((prev) => ({ ...prev, [name]: undefined }))
     }
@@ -109,13 +106,17 @@ export function ContactPage() {
     const newErrors: Partial<Record<keyof FormData, string>> = {}
 
     if (!formData.fullName.trim()) {
-      newErrors.fullName = 'Full name is required.'
+      newErrors.fullName = 'Please enter your full name.'
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = 'Email address is required.'
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address.'
+      newErrors.email = 'Please enter your email address.'
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
+      newErrors.email = 'Please provide a valid email format (e.g., name@domain.com).'
+    }
+
+    if (formData.phone.trim() && !/^[0-9+\-\s()]{7,20}$/.test(formData.phone.trim())) {
+      newErrors.phone = 'Please provide a valid phone or WhatsApp number format.'
     }
 
     setErrors(newErrors)
@@ -126,9 +127,9 @@ export function ContactPage() {
     e.preventDefault()
     if (!validate()) return
 
-    // Dev-mode: endpoint not configured
+    // Verify if endpoint is configured in config
     if (!API_CONFIG.contactFormEndpoint) {
-      setStatus('dev-mode')
+      setStatus('endpoint-unconfigured')
       return
     }
 
@@ -141,275 +142,321 @@ export function ContactPage() {
         body: JSON.stringify(formData),
       })
 
-      if (!res.ok) throw new Error('Submission failed')
+      if (!res.ok) throw new Error('Submission endpoint returned an error')
 
       setStatus('success')
-      setStatusMessage("Your enquiry has been sent successfully. We'll get back to you soon!")
+      setStatusMessage('Thank you. Your project enquiry has been received. We will review your requirements and reach out to you shortly.')
       setFormData(initialFormData)
     } catch {
       setStatus('error')
-      setStatusMessage('Something went wrong. Please try again or contact us directly.')
+      setStatusMessage('An issue occurred while submitting your enquiry. Please reach out to us directly at hello@sindeeinfotech.com.')
     }
   }
 
+  // Generate mailto link with prefilled form details so no enquiry data is ever lost
+  const prefilledMailto = `${EMAIL_URL}?subject=${encodeURIComponent(
+    `Project Enquiry: ${formData.projectType || 'Website Development'} — ${formData.fullName}`,
+  )}&body=${encodeURIComponent(
+    `Full Name: ${formData.fullName}
+Business Name: ${formData.businessName || 'N/A'}
+Email: ${formData.email}
+Phone: ${formData.phone || 'N/A'}
+Project Type: ${formData.projectType || 'Not specified'}
+Estimated Budget: ${formData.budget || 'Not specified'}
+
+Project Description:
+${formData.description || 'N/A'}`,
+  )}`
+
   return (
     <PageMeta
-      title={`Contact — ${SITE_CONFIG.name}`}
-      description="Get in touch with Sindee Infotech. Tell us about your project and let's build something great together."
+      title="Contact — Start a Website Project | Sindee Infotech"
+      description="Tell us about your website design, e-commerce, or redesign project. We build professional web experiences for ambitious businesses across India."
     >
-      {/* ———— Hero ———— */}
-      <section className="pt-34 pb-16 md:pt-38 md:pb-22 bg-warm-ivory">
+      {/* SECTION 1: Hero */}
+      <section className="pt-32 pb-16 md:pt-40 md:pb-24 bg-warm-ivory border-b border-border">
         <div className="container-main">
           <motion.div
             variants={staggerContainerVariants}
             initial="hidden"
             animate="visible"
-            className="max-w-3xl"
+            className="max-w-4xl"
           >
-            <motion.p variants={fadeUpVariants} className="text-label text-muted mb-5">
-              Get in Touch
-            </motion.p>
-            <motion.h1 variants={fadeUpVariants} className="text-display text-midnight">
-              Have a project in mind?
-              <br />
-              <span className="text-muted-dark">Let's talk.</span>
+            <motion.div
+              variants={fadeUpVariants}
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-midnight/5 border border-midnight/10 text-midnight text-xs font-semibold tracking-wider uppercase mb-6"
+            >
+              <Mail className="w-3.5 h-3.5 text-midnight" />
+              <span>Direct Inquiries</span>
+            </motion.div>
+
+            <motion.h1
+              variants={fadeUpVariants}
+              className="text-display text-midnight tracking-tight"
+            >
+              Tell us what you're building.
             </motion.h1>
-            <motion.p variants={fadeUpVariants} className="text-body-large text-muted-dark mt-6 max-w-xl">
-              Share some details about what you're looking for and we'll get back to you within 24 hours.
+
+            <motion.p
+              variants={fadeUpVariants}
+              className="text-body-large text-muted-dark mt-6 max-w-2xl leading-relaxed"
+            >
+              Whether you need a new business website, a complete redesign or a custom digital solution, tell us about your requirements and we'll take it from there.
             </motion.p>
           </motion.div>
         </div>
       </section>
 
-      {/* ———— Form + Side Panel ———— */}
+      {/* SECTION 2 & 3: Contact Form + Alternative Contact */}
       <section className="section-padding bg-warm-ivory">
         <div className="container-main">
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16">
-
-            {/* ———— Form Column ———— */}
-            <motion.div
-              variants={slideInLeftVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: '-60px' }}
-              className="lg:col-span-3"
-            >
-              <div className="bg-white rounded-2xl border border-border p-8 md:p-10">
-                {/* Success State */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
+            {/* Form Column */}
+            <div className="lg:col-span-7">
+              <div className="bg-white rounded-3xl border border-border p-8 md:p-12 shadow-sm">
+                {/* SUCCESS STATE */}
                 {status === 'success' && (
                   <motion.div
                     variants={fadeInVariants}
                     initial="hidden"
                     animate="visible"
-                    className="text-center py-16"
+                    className="text-center py-12"
                   >
                     <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-lime/20 mb-6">
                       <CheckCircle className="w-8 h-8 text-lime-dark" />
                     </div>
-                    <h3 className="text-heading-3 text-midnight mb-3">Thank you!</h3>
-                    <p className="text-body text-muted-dark max-w-md mx-auto">{statusMessage}</p>
+                    <h3 className="text-heading-2 text-midnight mb-3">Enquiry Received</h3>
+                    <p className="text-body text-muted-dark max-w-md mx-auto leading-relaxed">
+                      {statusMessage}
+                    </p>
                     <div className="mt-8">
-                      <Button variant="secondary" onClick={() => setStatus('idle')} icon={false}>
-                        Send another enquiry
+                      <Button
+                        variant="dark"
+                        onClick={() => setStatus('idle')}
+                        icon={false}
+                      >
+                        Submit Another Enquiry
                       </Button>
                     </div>
                   </motion.div>
                 )}
 
-                {/* Dev-mode State */}
-                {status === 'dev-mode' && (
+                {/* ENDPOINT UNCONFIGURED NOTICE (Clean, honest backend transparency) */}
+                {status === 'endpoint-unconfigured' && (
                   <motion.div
                     variants={fadeInVariants}
                     initial="hidden"
                     animate="visible"
-                    className="text-center py-16"
+                    className="text-left py-6"
                   >
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-amber-100 mb-6">
-                      <AlertCircle className="w-8 h-8 text-amber-600" />
+                    <div className="flex items-center gap-3 p-4 rounded-2xl bg-amber-50 border border-amber-200 mb-6">
+                      <AlertCircle className="w-6 h-6 text-amber-600 shrink-0" />
+                      <div>
+                        <h4 className="text-sm font-bold text-amber-900">
+                          Form Backend Under Setup
+                        </h4>
+                        <p className="text-xs text-amber-800 mt-0.5">
+                          Direct automated API submission is currently in configuration mode.
+                        </p>
+                      </div>
                     </div>
-                    <h3 className="text-heading-3 text-midnight mb-3">Development Mode</h3>
-                    <p className="text-body text-muted-dark max-w-md mx-auto mb-6">
-                      Form submission is not configured yet. Please contact us directly via email or
-                      WhatsApp.
+
+                    <p className="text-body text-muted-dark mb-6 leading-relaxed">
+                      To ensure your enquiry is received immediately with zero data loss, you can send your completed details directly to our verified mailbox in one click:
                     </p>
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                      <Button href={EMAIL_URL} variant="primary">
-                        Send Email
-                      </Button>
-                      <Button href={WHATSAPP_URL} variant="secondary">
-                        WhatsApp Us
-                      </Button>
+
+                    <div className="p-6 rounded-2xl bg-warm-ivory border border-border mb-8 space-y-2 text-xs font-mono text-midnight">
+                      <p><strong>Name:</strong> {formData.fullName}</p>
+                      <p><strong>Email:</strong> {formData.email}</p>
+                      <p><strong>Type:</strong> {formData.projectType || 'Not specified'}</p>
+                      <p><strong>Budget:</strong> {formData.budget || 'Not specified'}</p>
                     </div>
-                    <button
-                      onClick={() => setStatus('idle')}
-                      className="mt-6 text-caption underline underline-offset-2 hover:text-midnight transition-colors cursor-pointer"
-                    >
-                      Back to form
-                    </button>
+
+                    <div className="flex flex-col sm:flex-row items-center gap-4">
+                      <a
+                        href={prefilledMailto}
+                        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-midnight text-white text-sm font-semibold hover:bg-midnight-light transition-colors"
+                      >
+                        <Mail className="w-4 h-4 text-lime" />
+                        <span>Send via Email Client</span>
+                        <ExternalLink className="w-3.5 h-3.5 ml-1" />
+                      </a>
+                      <button
+                        type="button"
+                        onClick={() => setStatus('idle')}
+                        className="text-xs font-semibold text-muted-dark hover:text-midnight underline py-2 cursor-pointer"
+                      >
+                        Back to edit form
+                      </button>
+                    </div>
                   </motion.div>
                 )}
 
-                {/* Form */}
+                {/* MAIN FORM */}
                 {(status === 'idle' || status === 'loading' || status === 'error') && (
                   <form onSubmit={handleSubmit} noValidate>
-                    <motion.div
-                      variants={staggerFastContainerVariants}
-                      initial="hidden"
-                      whileInView="visible"
-                      viewport={{ once: true }}
-                      className="space-y-6"
-                    >
-                      {/* Error banner */}
+                    <div className="space-y-6">
+                      <div className="pb-4 border-b border-border">
+                        <h2 className="text-heading-3 text-midnight">
+                          Project Enquiry Form
+                        </h2>
+                        <p className="text-xs text-muted-dark mt-1">
+                          Fields marked with an asterisk (<span className="text-red-500">*</span>) are required.
+                        </p>
+                      </div>
+
                       {status === 'error' && (
-                        <motion.div
-                          variants={fadeUpVariants}
-                          className="flex items-start gap-3 bg-red-50 border border-red-200 rounded-xl px-4 py-3.5"
-                        >
-                          <AlertCircle className="w-5 h-5 text-red-500 mt-0.5 shrink-0" />
-                          <p className="text-[0.875rem] text-red-700">{statusMessage}</p>
-                        </motion.div>
+                        <div className="p-4 rounded-xl bg-red-50 border border-red-200 flex items-start gap-3">
+                          <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
+                          <p className="text-xs text-red-700 leading-relaxed">
+                            {statusMessage}
+                          </p>
+                        </div>
                       )}
 
-                      {/* Row: Full Name + Business Name */}
-                      <motion.div
-                        variants={fadeUpVariants}
-                        className="grid grid-cols-1 sm:grid-cols-2 gap-5"
-                      >
-                        <FormField label="Full Name" required>
+                      {/* Row 1: Full Name & Business Name */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        <div className="space-y-1.5">
+                          <label className="block text-xs font-semibold text-midnight">
+                            Full Name <span className="text-red-500">*</span>
+                          </label>
                           <input
                             type="text"
                             name="fullName"
                             value={formData.fullName}
                             onChange={handleChange}
-                            placeholder="Your name"
-                            className={`${inputBaseClasses} ${errors.fullName ? 'border-red-400 focus:border-red-400 focus:ring-red-100' : ''}`}
+                            placeholder="e.g. Rahul Sharma"
+                            className={`w-full bg-warm-ivory/50 border rounded-xl px-4 py-3 text-sm text-midnight placeholder:text-muted outline-none transition-colors focus:bg-white focus:border-midnight ${
+                              errors.fullName ? 'border-red-400' : 'border-border'
+                            }`}
                             required
-                            autoComplete="name"
                           />
                           {errors.fullName && (
-                            <p className="text-[0.8125rem] text-red-500 mt-1">{errors.fullName}</p>
+                            <p className="text-xs text-red-500">{errors.fullName}</p>
                           )}
-                        </FormField>
+                        </div>
 
-                        <FormField label="Business Name">
+                        <div className="space-y-1.5">
+                          <label className="block text-xs font-semibold text-midnight">
+                            Business / Company Name
+                          </label>
                           <input
                             type="text"
                             name="businessName"
                             value={formData.businessName}
                             onChange={handleChange}
-                            placeholder="Your company (optional)"
-                            className={inputBaseClasses}
-                            autoComplete="organization"
+                            placeholder="e.g. Hillview Resort"
+                            className="w-full bg-warm-ivory/50 border border-border rounded-xl px-4 py-3 text-sm text-midnight placeholder:text-muted outline-none transition-colors focus:bg-white focus:border-midnight"
                           />
-                        </FormField>
-                      </motion.div>
+                        </div>
+                      </div>
 
-                      {/* Row: Email + Phone */}
-                      <motion.div
-                        variants={fadeUpVariants}
-                        className="grid grid-cols-1 sm:grid-cols-2 gap-5"
-                      >
-                        <FormField label="Email Address" required>
+                      {/* Row 2: Email Address & Phone Number */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        <div className="space-y-1.5">
+                          <label className="block text-xs font-semibold text-midnight">
+                            Email Address <span className="text-red-500">*</span>
+                          </label>
                           <input
                             type="email"
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
-                            placeholder="you@example.com"
-                            className={`${inputBaseClasses} ${errors.email ? 'border-red-400 focus:border-red-400 focus:ring-red-100' : ''}`}
+                            placeholder="e.g. rahul@example.com"
+                            className={`w-full bg-warm-ivory/50 border rounded-xl px-4 py-3 text-sm text-midnight placeholder:text-muted outline-none transition-colors focus:bg-white focus:border-midnight ${
+                              errors.email ? 'border-red-400' : 'border-border'
+                            }`}
                             required
-                            autoComplete="email"
                           />
                           {errors.email && (
-                            <p className="text-[0.8125rem] text-red-500 mt-1">{errors.email}</p>
+                            <p className="text-xs text-red-500">{errors.email}</p>
                           )}
-                        </FormField>
+                        </div>
 
-                        <FormField label="Phone Number">
+                        <div className="space-y-1.5">
+                          <label className="block text-xs font-semibold text-midnight">
+                            Phone / WhatsApp Number
+                          </label>
                           <input
                             type="tel"
                             name="phone"
                             value={formData.phone}
                             onChange={handleChange}
-                            placeholder="+91 XXXXX XXXXX"
-                            className={inputBaseClasses}
-                            autoComplete="tel"
+                            placeholder="e.g. +91 98765 43210"
+                            className={`w-full bg-warm-ivory/50 border rounded-xl px-4 py-3 text-sm text-midnight placeholder:text-muted outline-none transition-colors focus:bg-white focus:border-midnight ${
+                              errors.phone ? 'border-red-400' : 'border-border'
+                            }`}
                           />
-                        </FormField>
-                      </motion.div>
+                          {errors.phone && (
+                            <p className="text-xs text-red-500">{errors.phone}</p>
+                          )}
+                        </div>
+                      </div>
 
-                      {/* Row: Website Type + Budget */}
-                      <motion.div
-                        variants={fadeUpVariants}
-                        className="grid grid-cols-1 sm:grid-cols-2 gap-5"
-                      >
-                        <FormField label="Type of Website">
+                      {/* Row 3: Project Type & Estimated Budget */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        <div className="space-y-1.5">
+                          <label className="block text-xs font-semibold text-midnight">
+                            Type of Project
+                          </label>
                           <div className="relative">
                             <select
-                              name="websiteType"
-                              value={formData.websiteType}
+                              name="projectType"
+                              value={formData.projectType}
                               onChange={handleChange}
-                              className={`${selectClasses} ${!formData.websiteType ? 'text-muted-light' : ''}`}
+                              className="w-full bg-warm-ivory/50 border border-border rounded-xl px-4 py-3 text-sm text-midnight outline-none transition-colors focus:bg-white focus:border-midnight appearance-none cursor-pointer"
                             >
-                              <option value="" disabled>
-                                Select an option
-                              </option>
-                              {websiteTypes.map((type) => (
-                                <option key={type} value={type}>
-                                  {type}
+                              <option value="">Select project type</option>
+                              {projectTypeOptions.map((opt) => (
+                                <option key={opt} value={opt}>
+                                  {opt}
                                 </option>
                               ))}
                             </select>
-                            <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2">
-                              <svg className="w-4 h-4 text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                              </svg>
-                            </div>
+                            <ChevronDown className="w-4 h-4 text-muted absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                           </div>
-                        </FormField>
+                        </div>
 
-                        <FormField label="Approximate Budget">
+                        <div className="space-y-1.5">
+                          <label className="block text-xs font-semibold text-midnight">
+                            Estimated Budget
+                          </label>
                           <div className="relative">
                             <select
                               name="budget"
                               value={formData.budget}
                               onChange={handleChange}
-                              className={`${selectClasses} ${!formData.budget ? 'text-muted-light' : ''}`}
+                              className="w-full bg-warm-ivory/50 border border-border rounded-xl px-4 py-3 text-sm text-midnight outline-none transition-colors focus:bg-white focus:border-midnight appearance-none cursor-pointer"
                             >
-                              <option value="" disabled>
-                                Select a range
-                              </option>
-                              {budgetRanges.map((range) => (
-                                <option key={range} value={range}>
-                                  {range}
+                              <option value="">Select budget range</option>
+                              {budgetOptions.map((b) => (
+                                <option key={b} value={b}>
+                                  {b}
                                 </option>
                               ))}
                             </select>
-                            <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2">
-                              <svg className="w-4 h-4 text-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                              </svg>
-                            </div>
+                            <ChevronDown className="w-4 h-4 text-muted absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                           </div>
-                        </FormField>
-                      </motion.div>
+                        </div>
+                      </div>
 
-                      {/* Textarea */}
-                      <motion.div variants={fadeUpVariants}>
-                        <FormField label="Project Description">
-                          <textarea
-                            name="description"
-                            value={formData.description}
-                            onChange={handleChange}
-                            placeholder="Tell us about your project — goals, timeline, any specific requirements…"
-                            rows={5}
-                            className={`${inputBaseClasses} resize-none`}
-                          />
-                        </FormField>
-                      </motion.div>
+                      {/* Row 4: Project Description */}
+                      <div className="space-y-1.5">
+                        <label className="block text-xs font-semibold text-midnight">
+                          Project Description
+                        </label>
+                        <textarea
+                          name="description"
+                          rows={5}
+                          value={formData.description}
+                          onChange={handleChange}
+                          placeholder="Tell us about your business, current website (if any), desired features, and timeline…"
+                          className="w-full bg-warm-ivory/50 border border-border rounded-xl px-4 py-3 text-sm text-midnight placeholder:text-muted outline-none transition-colors focus:bg-white focus:border-midnight resize-none"
+                        />
+                      </div>
 
-                      {/* Submit */}
-                      <motion.div variants={fadeUpVariants} className="pt-2">
+                      {/* Submit Button */}
+                      <div className="pt-2">
                         <Button
                           type="submit"
                           variant="primary"
@@ -420,112 +467,215 @@ export function ContactPage() {
                           {status === 'loading' ? (
                             <>
                               <Loader2 className="w-4 h-4 animate-spin" />
-                              Sending…
+                              <span>Submitting Enquiry…</span>
                             </>
                           ) : (
                             <>
-                              <Send className="w-4 h-4" />
-                              Send Enquiry
+                              <span>Submit Project Enquiry</span>
+                              <Send className="w-4 h-4 ml-1" />
                             </>
                           )}
                         </Button>
-                      </motion.div>
-                    </motion.div>
+                      </div>
+                    </div>
                   </form>
                 )}
               </div>
-            </motion.div>
+            </div>
 
-            {/* ———— Side Panel ———— */}
-            <motion.aside
-              variants={slideInRightVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: '-60px' }}
-              className="lg:col-span-2 space-y-6"
+            {/* Sidebar Column: Verified Contact Information */}
+            <div className="lg:col-span-5 space-y-6">
+              {/* Direct Email Card */}
+              <div className="bg-white rounded-3xl border border-border p-8 shadow-sm space-y-4">
+                <div className="w-10 h-10 rounded-2xl bg-midnight text-lime flex items-center justify-center">
+                  <Mail className="w-5 h-5" />
+                </div>
+                <div>
+                  <span className="text-xs font-mono uppercase tracking-widest text-muted block">
+                    Direct Email
+                  </span>
+                  <a
+                    href={EMAIL_URL}
+                    className="text-lg font-bold text-midnight hover:text-muted-dark transition-colors inline-block mt-1"
+                  >
+                    {CONTACT_CONFIG.email}
+                  </a>
+                </div>
+                <p className="text-xs text-muted-dark leading-relaxed">
+                  For RFPs, detailed briefs, or general questions, send us an email directly anytime.
+                </p>
+              </div>
+
+              {/* Verified Location Card */}
+              <div className="bg-white rounded-3xl border border-border p-8 shadow-sm space-y-4">
+                <div className="w-10 h-10 rounded-2xl bg-midnight text-white flex items-center justify-center">
+                  <MapPin className="w-5 h-5" />
+                </div>
+                <div>
+                  <span className="text-xs font-mono uppercase tracking-widest text-muted block">
+                    Operating Studio
+                  </span>
+                  <p className="text-lg font-bold text-midnight mt-1">
+                    {CONTACT_CONFIG.address}
+                  </p>
+                </div>
+                <p className="text-xs text-muted-dark leading-relaxed">
+                  We work with ambitious hospitality, healthcare, automotive, and commercial businesses across India.
+                </p>
+              </div>
+
+              {/* Consultation Note */}
+              <div className="bg-midnight text-white rounded-3xl p-8 space-y-3">
+                <span className="text-xs font-mono uppercase tracking-widest text-lime">
+                  Our Consultation Standard
+                </span>
+                <h4 className="text-base font-bold text-white">
+                  No Sales Aggression. Honest Technical Advice.
+                </h4>
+                <p className="text-xs text-muted-light leading-relaxed">
+                  When you speak with us, you speak with the specialists who design and build the sites. If a simple website solves your problem, we will not try to sell you an enterprise application.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 4: What Happens Next */}
+      <section className="section-padding bg-white border-t border-border">
+        <div className="container-main">
+          <div className="max-w-3xl mb-14">
+            <span className="text-xs font-mono uppercase tracking-widest text-muted">
+              Next Steps
+            </span>
+            <h2 className="text-heading-1 text-midnight mt-3">
+              What Happens Next
+            </h2>
+            <p className="text-body-large text-muted-dark mt-4">
+              Here is what you can expect once you submit your project enquiry.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            {[
+              {
+                step: '01',
+                title: 'You send requirements',
+                desc: 'Submit the form above or email us your project details, goals, and any reference sites.',
+              },
+              {
+                step: '02',
+                title: 'We review your project',
+                desc: 'We examine your business niche, evaluate the technical scope, and identify key conversion opportunities.',
+              },
+              {
+                step: '03',
+                title: 'Discuss scope & objectives',
+                desc: 'We connect via email or brief call to clarify requirements, answer questions, and align on timeline.',
+              },
+              {
+                step: '04',
+                title: 'Proposal & kickoff',
+                desc: 'We provide an itemized fixed-price proposal. Upon sign-off, discovery and design commence immediately.',
+              },
+            ].map((st) => (
+              <div
+                key={st.step}
+                className="bg-warm-ivory rounded-2xl p-6 border border-border flex flex-col justify-between"
+              >
+                <div>
+                  <span className="text-xs font-mono font-bold text-midnight bg-lime px-2.5 py-1 rounded-md inline-block mb-4">
+                    STEP {st.step}
+                  </span>
+                  <h3 className="text-base font-bold text-midnight mb-2">
+                    {st.title}
+                  </h3>
+                  <p className="text-xs text-muted-dark leading-relaxed">
+                    {st.desc}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 5: Contact FAQ */}
+      <section className="section-padding bg-warm-ivory border-t border-border">
+        <div className="container-main max-w-4xl">
+          <div className="mb-12">
+            <span className="text-xs font-mono uppercase tracking-widest text-muted">
+              Questions & Answers
+            </span>
+            <h2 className="text-heading-1 text-midnight mt-3">
+              Frequently Asked Questions
+            </h2>
+          </div>
+
+          <div className="divide-y divide-border border-y border-border">
+            {contactFaqs.map((faq, index) => {
+              const isOpen = activeFaq === index
+              return (
+                <div key={index} className="py-6">
+                  <button
+                    type="button"
+                    onClick={() => setActiveFaq(isOpen ? null : index)}
+                    className="w-full flex items-center justify-between text-left gap-4 group cursor-pointer"
+                    aria-expanded={isOpen}
+                  >
+                    <span className="text-lg font-bold text-midnight group-hover:text-muted-dark transition-colors">
+                      {faq.question}
+                    </span>
+                    <span
+                      className={`p-2 rounded-full bg-white text-midnight transition-transform duration-200 shrink-0 border border-border ${
+                        isOpen ? 'rotate-180 bg-midnight text-lime' : ''
+                      }`}
+                    >
+                      <ChevronDown className="w-4 h-4" />
+                    </span>
+                  </button>
+                  <AnimatePresence>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.25 }}
+                        className="overflow-hidden"
+                      >
+                        <p className="text-body text-muted-dark mt-4 leading-relaxed max-w-3xl">
+                          {faq.answer}
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 6: Closing CTA */}
+      <section className="py-20 bg-midnight text-white text-center">
+        <div className="container-main max-w-2xl mx-auto">
+          <span className="text-xs font-mono uppercase tracking-widest text-lime mb-3 block">
+            Partner With Sindee Infotech
+          </span>
+          <h2 className="text-heading-1 text-white">
+            Ready to stand out online?
+          </h2>
+          <p className="text-body-large text-muted-light mt-4">
+            We are here to help your business build credibility, attract loyal customers, and grow.
+          </p>
+          <div className="mt-8 flex justify-center gap-4">
+            <a
+              href={EMAIL_URL}
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-lime text-midnight text-sm font-semibold hover:bg-lime-light transition-colors"
             >
-              {/* WhatsApp CTA */}
-              <a
-                href={WHATSAPP_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group block bg-midnight rounded-2xl p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
-              >
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-lime/15">
-                    <MessageCircle className="w-6 h-6 text-lime" />
-                  </div>
-                  <div>
-                    <p className="text-label text-lime mb-1">Prefer WhatsApp?</p>
-                    <p className="text-white font-semibold text-[0.9375rem]">Chat with us</p>
-                  </div>
-                </div>
-                <p className="text-muted-light text-[0.875rem] leading-relaxed">
-                  Get a quick response on WhatsApp. We typically reply within a few hours.
-                </p>
-                <p className="text-lime text-[0.875rem] font-semibold mt-3 group-hover:underline">
-                  {CONTACT_CONFIG.whatsapp} →
-                </p>
-              </a>
-
-              {/* Email CTA */}
-              <a
-                href={EMAIL_URL}
-                className="group block bg-white rounded-2xl border border-border p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
-              >
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-midnight/5">
-                    <Mail className="w-6 h-6 text-midnight" />
-                  </div>
-                  <div>
-                    <p className="text-label text-muted mb-1">Email Us</p>
-                    <p className="text-midnight font-semibold text-[0.9375rem]">Drop us a line</p>
-                  </div>
-                </div>
-                <p className="text-muted-dark text-[0.875rem] leading-relaxed">
-                  For detailed enquiries, proposals, or partnership opportunities.
-                </p>
-                <p className="text-midnight text-[0.875rem] font-semibold mt-3 group-hover:underline">
-                  {CONTACT_CONFIG.email} →
-                </p>
-              </a>
-
-              {/* Phone */}
-              <div className="bg-white rounded-2xl border border-border p-7">
-                <div className="flex items-center gap-4 mb-3">
-                  <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-midnight/5">
-                    <Phone className="w-6 h-6 text-midnight" />
-                  </div>
-                  <div>
-                    <p className="text-label text-muted mb-1">Call Us</p>
-                    <p className="text-midnight font-semibold text-[0.9375rem]">
-                      {CONTACT_CONFIG.phone}
-                    </p>
-                  </div>
-                </div>
-                <p className="text-muted-dark text-[0.875rem] leading-relaxed">
-                  Available Monday – Saturday, 10 AM – 7 PM IST.
-                </p>
-              </div>
-
-              {/* Address */}
-              <div className="bg-white rounded-2xl border border-border p-7">
-                <div className="flex items-center gap-4 mb-3">
-                  <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-midnight/5">
-                    <MapPin className="w-6 h-6 text-midnight" />
-                  </div>
-                  <div>
-                    <p className="text-label text-muted mb-1">Location</p>
-                    <p className="text-midnight font-semibold text-[0.9375rem]">
-                      {CONTACT_CONFIG.address}
-                    </p>
-                  </div>
-                </div>
-                <p className="text-muted-dark text-[0.875rem] leading-relaxed">
-                  Serving clients across India and worldwide.
-                </p>
-              </div>
-            </motion.aside>
+              <Mail className="w-4 h-4" />
+              <span>Email hello@sindeeinfotech.com</span>
+            </a>
           </div>
         </div>
       </section>

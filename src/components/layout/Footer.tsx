@@ -1,26 +1,21 @@
 import { Link } from 'react-router-dom'
-import { ArrowUpRight } from 'lucide-react'
-import { SITE_CONFIG, CONTACT_CONFIG, SOCIAL_CONFIG, EMAIL_URL } from '@/lib/config'
+import { ArrowUpRight, Mail, MapPin } from 'lucide-react'
+import { CONTACT_CONFIG, EMAIL_URL } from '@/lib/config'
 
 const footerLinks = {
   navigation: [
     { label: 'Home', path: '/' },
     { label: 'Services', path: '/services' },
-    { label: 'Our Work', path: '/work' },
+    { label: 'Our Work', path: '/portfolio' },
     { label: 'About', path: '/about' },
     { label: 'Contact', path: '/contact' },
   ],
   services: [
     { label: 'Business Websites', path: '/services#business-websites' },
-    { label: 'E-commerce', path: '/services#ecommerce' },
+    { label: 'E-commerce Websites', path: '/services#ecommerce' },
     { label: 'Website Redesign', path: '/services#website-redesign' },
     { label: 'Custom Solutions', path: '/services#custom-solutions' },
-    { label: 'Maintenance', path: '/services#website-maintenance' },
-  ],
-  social: [
-    { label: 'Instagram', url: SOCIAL_CONFIG.instagram },
-    { label: 'LinkedIn', url: SOCIAL_CONFIG.linkedin },
-    { label: 'Twitter', url: SOCIAL_CONFIG.twitter },
+    { label: 'Website Maintenance', path: '/services#website-maintenance' },
   ],
 }
 
@@ -31,31 +26,39 @@ export function Footer() {
       <div className="container-main pt-20 pb-12 md:pt-24 md:pb-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8">
           {/* Brand Column */}
-          <div className="lg:col-span-5">
-            <Link to="/" className="text-white font-bold text-lg tracking-tight">
+          <div className="lg:col-span-5 space-y-4">
+            <Link
+              to="/"
+              className="text-white font-bold text-lg md:text-xl tracking-tight inline-block hover:opacity-85 transition-opacity"
+            >
               SINDEE INFOTECH
             </Link>
-            <p className="mt-5 text-muted-light text-body max-w-sm leading-relaxed">
-              {SITE_CONFIG.tagline}
+            <p className="text-muted-light text-body max-w-sm leading-relaxed">
+              Specialist Web Design & Development Agency. We build professional, high-performance websites for businesses that want to build trust, attract customers and grow online.
             </p>
-            <a
-              href={EMAIL_URL}
-              className="inline-flex items-center gap-2 mt-6 text-lime hover:text-lime-light transition-colors text-[0.9375rem] font-medium"
-            >
-              {CONTACT_CONFIG.email}
-              <ArrowUpRight className="w-4 h-4" />
-            </a>
+            <div className="pt-2">
+              <a
+                href={EMAIL_URL}
+                className="inline-flex items-center gap-2 text-lime hover:text-lime-light transition-colors text-[0.9375rem] font-medium"
+              >
+                <Mail className="w-4 h-4" />
+                <span>{CONTACT_CONFIG.email}</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
+              </a>
+            </div>
           </div>
 
-          {/* Navigation */}
-          <div className="lg:col-span-2">
-            <h4 className="text-label text-muted mb-5">Pages</h4>
+          {/* Navigation Links */}
+          <div className="lg:col-span-3">
+            <p className="text-white text-xs font-mono uppercase tracking-widest mb-5">
+              Explore
+            </p>
             <ul className="space-y-3">
               {footerLinks.navigation.map((link) => (
                 <li key={link.path}>
                   <Link
                     to={link.path}
-                    className="text-muted-light hover:text-white transition-colors text-[0.9375rem]"
+                    className="text-muted-light hover:text-white transition-colors text-[0.9375rem] inline-block"
                   >
                     {link.label}
                   </Link>
@@ -64,59 +67,48 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Services */}
-          <div className="lg:col-span-3">
-            <h4 className="text-label text-muted mb-5">Services</h4>
+          {/* Services Links */}
+          <div className="lg:col-span-4">
+            <p className="text-white text-xs font-mono uppercase tracking-widest mb-5">
+              Services
+            </p>
             <ul className="space-y-3">
               {footerLinks.services.map((link) => (
-                <li key={link.path}>
+                <li key={link.label}>
                   <Link
                     to={link.path}
-                    className="text-muted-light hover:text-white transition-colors text-[0.9375rem]"
+                    className="text-muted-light hover:text-white transition-colors text-[0.9375rem] inline-block"
                   >
                     {link.label}
                   </Link>
                 </li>
               ))}
             </ul>
-          </div>
 
-          {/* Social & Contact */}
-          <div className="lg:col-span-2">
-            <h4 className="text-label text-muted mb-5">Connect</h4>
-            <ul className="space-y-3">
-              {footerLinks.social.map((link) => (
-                <li key={link.label}>
-                  <a
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-muted-light hover:text-white transition-colors text-[0.9375rem]"
-                  >
-                    {link.label}
-                    <ArrowUpRight className="w-3.5 h-3.5" />
-                  </a>
-                </li>
-              ))}
-            </ul>
-            <div className="mt-6">
-              <p className="text-muted text-sm">{CONTACT_CONFIG.phone}</p>
-              <p className="text-muted text-sm mt-1">{CONTACT_CONFIG.address}</p>
+            <div className="mt-8 pt-6 border-t border-white/10 flex items-start gap-2.5 text-muted-light text-sm">
+              <MapPin className="w-4 h-4 text-lime shrink-0 mt-0.5" />
+              <span>{CONTACT_CONFIG.address} — Serving businesses across India</span>
             </div>
           </div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-16 pt-8 border-t border-border-dark flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <p className="text-muted text-sm">
-            © {new Date().getFullYear()} Sindee Infotech. All rights reserved.
-          </p>
-          <Link
-            to="/privacy"
-            className="text-muted hover:text-white transition-colors text-sm"
-          >
-            Privacy Policy
-          </Link>
+        <div className="mt-16 pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-sm text-muted">
+          <p>© {new Date().getFullYear()} Sindee Infotech. All rights reserved.</p>
+          <div className="flex items-center gap-6">
+            <Link
+              to="/privacy"
+              className="text-muted hover:text-white transition-colors"
+            >
+              Privacy Policy
+            </Link>
+            <Link
+              to="/contact"
+              className="text-muted hover:text-white transition-colors"
+            >
+              Contact
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

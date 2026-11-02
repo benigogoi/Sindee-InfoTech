@@ -14,13 +14,13 @@ export const SITE_CONFIG = {
 } as const
 
 export const CONTACT_CONFIG = {
-  /** Replace with your actual business email */
+  /** Verified business email */
   email: 'hello@sindeeinfotech.com',
-  /** Replace with your actual phone number */
-  phone: '+91-XXXXX-XXXXX',
-  /** Replace with your actual WhatsApp number (with country code, no spaces) */
-  whatsapp: '91XXXXXXXXXX',
-  /** Replace with your actual business address */
+  /** Phone number - omitted until verified */
+  phone: '',
+  /** WhatsApp contact (optional) */
+  whatsapp: '',
+  /** Verified business location */
   address: 'Assam, India',
 } as const
 
@@ -41,5 +41,7 @@ export const API_CONFIG = {
   contactFormEndpoint: '',
 } as const
 
-export const WHATSAPP_URL = `https://wa.me/${CONTACT_CONFIG.whatsapp}`
+export const WHATSAPP_URL = CONTACT_CONFIG.whatsapp
+  ? `https://wa.me/${CONTACT_CONFIG.whatsapp}`
+  : ''
 export const EMAIL_URL = `mailto:${CONTACT_CONFIG.email}`

@@ -429,7 +429,7 @@ function WorkSection() {
                 <div className="lg:col-span-5 p-8 sm:p-10 md:p-12 flex flex-col justify-between">
                   <div>
                     <div className="flex items-center justify-between text-xs font-mono text-muted-light uppercase tracking-wider mb-4">
-                      <span>{grandRetreat.number}</span>
+                      <span>01</span>
                       <span>{grandRetreat.industry}</span>
                     </div>
 
@@ -453,10 +453,10 @@ function WorkSection() {
 
                   <div className="pt-8 mt-8 border-t border-white/10">
                     <Link
-                      to={`/work/${grandRetreat.slug}`}
+                      to={`/portfolio/${grandRetreat.slug}`}
                       className="inline-flex items-center gap-2 text-sm font-bold text-lime hover:underline"
                     >
-                      <span>Explore Case Study</span>
+                      <span>View Concept</span>
                       <ArrowUpRight className="w-4 h-4" />
                     </Link>
                   </div>
@@ -492,7 +492,7 @@ function WorkSection() {
 
                   <div className="p-8">
                     <div className="flex items-center justify-between text-xs font-mono text-muted-light uppercase tracking-wider mb-3">
-                      <span>{theTable.number}</span>
+                      <span>02</span>
                       <span>{theTable.industry}</span>
                     </div>
 
@@ -512,10 +512,10 @@ function WorkSection() {
                   <div className="pt-6 border-t border-white/10 flex items-center justify-between">
                     <span className="text-xs text-white/60">Digital Menu & Table Enquiries</span>
                     <Link
-                      to={`/work/${theTable.slug}`}
+                      to={`/portfolio/${theTable.slug}`}
                       className="inline-flex items-center gap-1.5 text-sm font-bold text-lime hover:underline"
                     >
-                      <span>Case Study</span>
+                      <span>View Concept</span>
                       <ArrowUpRight className="w-4 h-4" />
                     </Link>
                   </div>
@@ -548,7 +548,7 @@ function WorkSection() {
 
                   <div className="p-8">
                     <div className="flex items-center justify-between text-xs font-mono text-muted-light uppercase tracking-wider mb-3">
-                      <span>{azSelfDrive.number}</span>
+                      <span>03</span>
                       <span>{azSelfDrive.industry}</span>
                     </div>
 
@@ -568,10 +568,10 @@ function WorkSection() {
                   <div className="pt-6 border-t border-white/10 flex items-center justify-between">
                     <span className="text-xs text-white/60">Fleet Showcase & Booking</span>
                     <Link
-                      to={`/work/${azSelfDrive.slug}`}
+                      to={`/portfolio/${azSelfDrive.slug}`}
                       className="inline-flex items-center gap-1.5 text-sm font-bold text-lime hover:underline"
                     >
-                      <span>Case Study</span>
+                      <span>View Concept</span>
                       <ArrowUpRight className="w-4 h-4" />
                     </Link>
                   </div>
@@ -587,7 +587,7 @@ function WorkSection() {
                 <div className="lg:col-span-6 p-8 sm:p-10 md:p-12 flex flex-col justify-between">
                   <div>
                     <div className="flex items-center justify-between text-xs font-mono text-muted-light uppercase tracking-wider mb-4">
-                      <span>{carePoint.number}</span>
+                      <span>04</span>
                       <span>{carePoint.industry}</span>
                     </div>
 
@@ -611,10 +611,10 @@ function WorkSection() {
 
                   <div className="pt-8 mt-8 border-t border-white/10">
                     <Link
-                      to={`/work/${carePoint.slug}`}
+                      to={`/portfolio/${carePoint.slug}`}
                       className="inline-flex items-center gap-2 text-sm font-bold text-lime hover:underline"
                     >
-                      <span>Explore Case Study</span>
+                      <span>View Concept</span>
                       <ArrowUpRight className="w-4 h-4" />
                     </Link>
                   </div>
@@ -653,7 +653,7 @@ function WorkSection() {
 
         {/* View All Work Action */}
         <div className="mt-10 text-center">
-          <Button to="/work" variant="primary">
+          <Button to="/portfolio" variant="primary">
             Explore All Concept Projects
           </Button>
         </div>
