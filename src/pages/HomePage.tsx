@@ -1,70 +1,69 @@
 import { useState } from 'react'
-import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { Check, ArrowRight, ArrowUpRight, Utensils, Car, Stethoscope } from 'lucide-react'
+import { Check, ArrowRight, ArrowUpRight, Utensils, Car, Stethoscope, Compass } from 'lucide-react'
 import { PageMeta } from '@/components/ui/PageMeta'
 import { Button } from '@/components/ui/Button'
 import { services } from '@/data/services'
 import { projects } from '@/data/projects'
-import {
-  fadeUpVariants,
-  staggerContainerVariants,
-} from '@/lib/animations'
 
 /* ==========================================================================
-   HERO INTERACTIVE VIEWPORT
+   HERO INTERACTIVE VIEWPORT (Manual concept switcher, zero fake functionality)
    ========================================================================== */
 
-interface ViewportTab {
+interface HeroPreviewTab {
   id: string
   label: string
   industry: string
   title: string
   url: string
   image: string
-  spec: string
+  conceptBadge: string
+  conceptDetail: string
 }
 
-const viewportTabs: ViewportTab[] = [
+const heroPreviewTabs: HeroPreviewTab[] = [
   {
     id: 'dining',
     label: 'Dining',
     industry: 'Hospitality',
-    title: 'The Table — Modern Bistronomy',
+    title: 'The Table — Contemporary Bistronomy',
     url: 'thetable.in',
     image: '/images/hero/hero-food.jpg',
-    spec: 'Seasonal Tasting Menu • Table Reservations',
+    conceptBadge: 'Concept Interface',
+    conceptDetail: 'Seasonal tasting menu layout & table reservation flow',
   },
   {
     id: 'resort',
     label: 'Resort',
-    industry: 'Luxury Travel',
+    industry: 'Boutique Travel',
     title: 'The Grand Retreat — Forest Sanctuary',
     url: 'grandretreat.com',
     image: '/images/hero/hero-resort.jpg',
-    spec: 'Private Villas • Wellness Retreat',
+    conceptBadge: 'Concept Interface',
+    conceptDetail: 'Private villa showcase & experiential reservation layout',
   },
   {
     id: 'fleet',
     label: 'Automotive',
     industry: 'Car Rental',
-    title: 'A-Z Self Drive — Premium Fleet',
+    title: 'A-Z Self Drive — Premium Fleet Portal',
     url: 'azselfdrive.com',
     image: '/images/hero/hero-car.jpg',
-    spec: '4x4 Self-Drive Fleet • Instant Booking',
+    conceptBadge: 'Concept Interface',
+    conceptDetail: 'Automotive fleet catalog & vehicle booking architecture',
   },
 ]
 
 function HeroViewport() {
   const [activeTab, setActiveTab] = useState<string>('dining')
-  const current = viewportTabs.find((t) => t.id === activeTab) || viewportTabs[0]
+  const current = heroPreviewTabs.find((t) => t.id === activeTab) || heroPreviewTabs[0]
 
   return (
     <div className="relative w-full rounded-2xl overflow-hidden shadow-2xl border border-midnight/15 bg-midnight text-white">
-      {/* Browser Chrome Bar */}
+      {/* Browser Chrome Header */}
       <div className="flex items-center justify-between px-4 py-3 bg-midnight-light border-b border-white/10">
         <div className="flex items-center gap-2">
-          <div className="flex gap-1.5">
+          <div className="flex gap-1.5" aria-hidden="true">
             <span className="w-2.5 h-2.5 rounded-full bg-[#FF5F57]/80" />
             <span className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]/80" />
             <span className="w-2.5 h-2.5 rounded-full bg-[#28CA42]/80" />
@@ -78,46 +77,49 @@ function HeroViewport() {
         </span>
       </div>
 
-      {/* Viewport Screen Canvas */}
-      <div className="relative aspect-[16/10] sm:aspect-[16/10] w-full overflow-hidden bg-midnight">
+      {/* Screen Canvas */}
+      <div className="relative aspect-[16/10] w-full overflow-hidden bg-midnight">
         <img
           key={current.id}
           src={current.image}
-          alt={current.title}
-          className="w-full h-full object-cover transition-opacity duration-500"
+          alt={`${current.title} - ${current.conceptDetail}`}
+          className="w-full h-full object-cover transition-opacity duration-300"
           loading="eager"
         />
-        {/* Subtle Dark Gradient Overlay */}
+        {/* Subtle Dark Vignette for text legibility */}
         <div className="absolute inset-0 bg-gradient-to-t from-midnight via-midnight/40 to-transparent pointer-events-none" />
 
-        {/* Viewport Info Overlay */}
-        <div className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-3 pointer-events-none">
-          <div className="bg-midnight/85 backdrop-blur-md px-4 py-3 rounded-xl border border-white/15 max-w-sm">
+        {/* Viewport Concept Meta Overlay */}
+        <div className="absolute bottom-4 left-4 right-4 sm:bottom-5 sm:left-5 sm:right-5 pointer-events-none">
+          <div className="bg-midnight/90 backdrop-blur-md px-4 py-3 rounded-xl border border-white/15 max-w-sm">
             <span className="text-[10px] font-mono uppercase tracking-widest text-lime block mb-1">
-              {current.industry}
+              {current.industry} • {current.conceptBadge}
             </span>
-            <h4 className="text-sm sm:text-base font-bold text-white leading-snug">
+            <p className="text-sm font-bold text-white leading-snug">
               {current.title}
-            </h4>
+            </p>
             <p className="text-[11px] text-white/70 mt-1">
-              {current.spec}
+              {current.conceptDetail}
             </p>
           </div>
         </div>
       </div>
 
-      {/* Manual Tab Switcher Controls */}
-      <div className="px-4 py-3 bg-midnight-light border-t border-white/10 flex items-center justify-between">
-        <span className="text-[11px] font-mono text-muted-light hidden sm:inline-block">
-          Select Concept Preview:
+      {/* Concept Switcher Controls (Manual, Accessible) */}
+      <div className="px-4 py-3 bg-midnight-light border-t border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+        <span className="text-[11px] font-mono text-muted-light">
+          Switch Design Concept:
         </span>
-        <div className="flex items-center gap-1.5 w-full sm:w-auto justify-between sm:justify-end">
-          {viewportTabs.map((tab) => (
+        <div className="flex items-center gap-1.5 w-full sm:w-auto" role="tablist" aria-label="Hero Concept Previews">
+          {heroPreviewTabs.map((tab) => (
             <button
               key={tab.id}
               type="button"
+              role="tab"
+              aria-selected={activeTab === tab.id}
+              aria-label={`Show ${tab.label} website concept`}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-200 cursor-pointer ${
+              className={`flex-1 sm:flex-none px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-200 cursor-pointer ${
                 activeTab === tab.id
                   ? 'bg-lime text-midnight font-semibold shadow-sm'
                   : 'bg-white/5 text-white/70 hover:bg-white/10 hover:text-white'
@@ -133,45 +135,35 @@ function HeroViewport() {
 }
 
 /* ==========================================================================
-   SECTION A: HERO
+   SECTION 1: HERO
    ========================================================================== */
 
 function HeroSection() {
   return (
     <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 bg-warm-ivory border-b border-border/70 overflow-hidden">
       <div className="container-main">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
-          {/* Left Column: Architectural Manifesto */}
-          <motion.div
-            variants={staggerContainerVariants}
-            initial="hidden"
-            animate="visible"
-            className="lg:col-span-6 space-y-6 md:space-y-7"
-          >
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-12 items-center">
+          {/* Left Column: Headline and Positioning */}
+          <div className="lg:col-span-6 space-y-6 md:space-y-7">
             {/* Agency Status Kicker */}
-            <motion.div variants={fadeUpVariants} className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-midnight/5 border border-midnight/10 text-midnight text-xs font-semibold tracking-wider uppercase">
-              <span className="w-2 h-2 rounded-full bg-lime animate-pulse" />
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-midnight/5 border border-midnight/10 text-midnight text-xs font-semibold tracking-wider uppercase">
+              <span className="w-2 h-2 rounded-full bg-lime animate-pulse" aria-hidden="true" />
               Specialist Web Design & Development Agency
-            </motion.div>
+            </div>
 
             {/* Approved Headline */}
-            <motion.h1
-              variants={fadeUpVariants}
-              className="text-display text-midnight tracking-tight"
-            >
-              We make businesses impossible to <span className="underline decoration-lime decoration-4 underline-offset-8">overlook</span>.
-            </motion.h1>
+            <h1 className="text-display text-midnight tracking-tight max-w-2xl">
+              We make businesses impossible to{' '}
+              <span className="underline decoration-lime decoration-4 underline-offset-8">overlook</span>.
+            </h1>
 
             {/* Approved Supporting Copy */}
-            <motion.p
-              variants={fadeUpVariants}
-              className="text-body-large text-muted-dark max-w-xl leading-relaxed"
-            >
+            <p className="text-body-large text-muted-dark max-w-xl leading-relaxed">
               We design and develop high-quality websites that help businesses build trust, attract customers and grow online.
-            </motion.p>
+            </p>
 
-            {/* Action Buttons */}
-            <motion.div variants={fadeUpVariants} className="flex flex-wrap items-center gap-4 pt-2">
+            {/* Call to Actions */}
+            <div className="flex flex-wrap items-center gap-4 pt-2">
               <Button to="/contact" variant="primary">
                 Start a Project
               </Button>
@@ -182,34 +174,29 @@ function HeroSection() {
                 <span>Explore Our Work</span>
                 <ArrowRight className="w-4 h-4" />
               </a>
-            </motion.div>
+            </div>
 
-            {/* Substantive Pillars */}
-            <motion.div variants={fadeUpVariants} className="pt-4 border-t border-border/80 flex flex-wrap items-center gap-y-2 gap-x-6 text-xs text-muted-dark font-medium">
+            {/* Hallmarks */}
+            <div className="pt-4 border-t border-border/80 flex flex-wrap items-center gap-y-2 gap-x-6 text-xs text-muted-dark font-medium">
               <div className="flex items-center gap-1.5">
-                <Check className="w-3.5 h-3.5 text-midnight" />
+                <Check className="w-3.5 h-3.5 text-midnight shrink-0" />
                 <span>Bespoke Design</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <Check className="w-3.5 h-3.5 text-midnight" />
+                <Check className="w-3.5 h-3.5 text-midnight shrink-0" />
                 <span>Mobile-First Engineering</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <Check className="w-3.5 h-3.5 text-midnight" />
+                <Check className="w-3.5 h-3.5 text-midnight shrink-0" />
                 <span>Transparent Scope</span>
               </div>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
 
-          {/* Right Column: Interactive Browser Viewport */}
-          <motion.div
-            variants={fadeUpVariants}
-            initial="hidden"
-            animate="visible"
-            className="lg:col-span-6"
-          >
+          {/* Right Column: Hero Concept Viewport */}
+          <div className="lg:col-span-6">
             <HeroViewport />
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>
@@ -217,13 +204,13 @@ function HeroSection() {
 }
 
 /* ==========================================================================
-   SECTION B: POSITIONING & MANIFESTO STRIP
+   SECTION 2: POSITIONING STRIP (Single Manifesto + Seamless Marquee)
    ========================================================================== */
 
 function PositioningStrip() {
   return (
     <section className="bg-white border-b border-border overflow-hidden">
-      {/* Upper Tier: Core Statement */}
+      {/* Manifesto Statement */}
       <div className="container-main py-6">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <p className="text-sm md:text-base font-semibold text-midnight tracking-tight">
@@ -231,37 +218,45 @@ function PositioningStrip() {
           </p>
           <div className="flex flex-wrap items-center gap-3 sm:gap-6 text-label text-muted">
             <span className="font-semibold text-midnight">Strategy</span>
-            <span className="w-1 h-1 rounded-full bg-border" />
+            <span className="w-1 h-1 rounded-full bg-border" aria-hidden="true" />
             <span className="font-semibold text-midnight">Design</span>
-            <span className="w-1 h-1 rounded-full bg-border" />
+            <span className="w-1 h-1 rounded-full bg-border" aria-hidden="true" />
             <span className="font-semibold text-midnight">Development</span>
-            <span className="w-1 h-1 rounded-full bg-border" />
+            <span className="w-1 h-1 rounded-full bg-border" aria-hidden="true" />
             <span className="font-semibold text-midnight">Optimisation</span>
           </div>
         </div>
       </div>
 
-      {/* Lower Tier: Restrained Typography Marquee */}
-      <div className="bg-midnight text-white py-3 border-t border-border/20 overflow-hidden whitespace-nowrap select-none">
-        <div className="inline-flex gap-8 text-xs font-mono tracking-widest uppercase text-muted-light animate-[marquee_35s_linear_infinite]">
-          <span>SINDEE INFOTECH</span>
-          <span className="text-lime">✦</span>
-          <span>SPECIALIST WEB DESIGN & DEVELOPMENT</span>
-          <span className="text-lime">✦</span>
-          <span>CRAFTED WITH PURPOSE</span>
-          <span className="text-lime">✦</span>
-          <span>BUILT FOR REAL BUSINESSES</span>
-          <span className="text-lime">✦</span>
-          <span>MODERN CODING STANDARDS</span>
-          <span className="text-lime">✦</span>
-          <span>SINDEE INFOTECH</span>
-          <span className="text-lime">✦</span>
-          <span>SPECIALIST WEB DESIGN & DEVELOPMENT</span>
-          <span className="text-lime">✦</span>
-          <span>CRAFTED WITH PURPOSE</span>
-          <span className="text-lime">✦</span>
-          <span>BUILT FOR REAL BUSINESSES</span>
-          <span className="text-lime">✦</span>
+      {/* Seamless Marquee Ribbon */}
+      <div className="bg-midnight text-white py-3 border-t border-border/20 overflow-hidden select-none">
+        <div className="flex w-max animate-marquee">
+          {/* First Marquee Stream */}
+          <div className="flex items-center gap-8 text-xs font-mono tracking-widest uppercase text-muted-light pr-8 shrink-0">
+            <span>SINDEE INFOTECH</span>
+            <span className="text-lime" aria-hidden="true">✦</span>
+            <span>SPECIALIST WEB DESIGN & DEVELOPMENT</span>
+            <span className="text-lime" aria-hidden="true">✦</span>
+            <span>CRAFTED WITH PURPOSE</span>
+            <span className="text-lime" aria-hidden="true">✦</span>
+            <span>BUILT FOR REAL BUSINESSES</span>
+            <span className="text-lime" aria-hidden="true">✦</span>
+            <span>MODERN CODING STANDARDS</span>
+            <span className="text-lime" aria-hidden="true">✦</span>
+          </div>
+          {/* Second Duplicate Stream for Seamless Infinite Loop */}
+          <div className="flex items-center gap-8 text-xs font-mono tracking-widest uppercase text-muted-light pr-8 shrink-0" aria-hidden="true">
+            <span>SINDEE INFOTECH</span>
+            <span className="text-lime">✦</span>
+            <span>SPECIALIST WEB DESIGN & DEVELOPMENT</span>
+            <span className="text-lime">✦</span>
+            <span>CRAFTED WITH PURPOSE</span>
+            <span className="text-lime">✦</span>
+            <span>BUILT FOR REAL BUSINESSES</span>
+            <span className="text-lime">✦</span>
+            <span>MODERN CODING STANDARDS</span>
+            <span className="text-lime">✦</span>
+          </div>
         </div>
       </div>
     </section>
@@ -269,24 +264,24 @@ function PositioningStrip() {
 }
 
 /* ==========================================================================
-   SECTION C: WHAT WE DO (Services Overview)
+   SECTION 3: SERVICES (Editorial Catalogue Layout)
    ========================================================================== */
 
 function ServicesSection() {
   const topServices = services.slice(0, 4)
 
-  const serviceIndustryFits = [
-    ['Restaurants & Cafes', 'Clinics', 'Local Services', 'Professional Firms'],
-    ['Retail Stores', 'Artisan Brands', 'Apparel', 'Product Makers'],
-    ['Outdated Sites', 'Low Conversion Sites', 'Rebranding Companies'],
-    ['Booking Workflows', 'Client Portals', 'Custom Integrations'],
-  ]
+  const serviceIndustryFits: Record<string, string[]> = {
+    'business-websites': ['Restaurants & Cafes', 'Healthcare & Clinics', 'Boutique Hotels', 'Local Services'],
+    ecommerce: ['Retail Businesses', 'Artisan Brands', 'Apparel & Goods', 'Specialty Products'],
+    'website-redesign': ['Outdated Web Presences', 'Low-Conversion Sites', 'Rebranding Companies'],
+    'custom-solutions': ['Booking Workflows', 'Client Portals', 'API Integrations', 'Custom Dashboards'],
+  }
 
   return (
     <section className="bg-warm-ivory section-padding border-b border-border">
       <div className="container-main">
         {/* Section Header */}
-        <div className="max-w-3xl mb-14 md:mb-20">
+        <div className="max-w-3xl mb-14 md:mb-18">
           <p className="text-label text-muted mb-3">Our Core Services</p>
           <h2 className="text-heading-1 text-midnight">
             Good design gets attention. Good websites create opportunities.
@@ -296,26 +291,22 @@ function ServicesSection() {
           </p>
         </div>
 
-        {/* Scannable Editorial Catalog */}
-        <div className="space-y-6">
-          {topServices.map((service, index) => (
-            <motion.div
+        {/* Editorial Service Catalogue Rows */}
+        <div className="divide-y divide-border border-y border-border">
+          {topServices.map((service) => (
+            <div
               key={service.id}
-              variants={fadeUpVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: '-40px' }}
-              className="bg-white rounded-2xl p-6 sm:p-8 md:p-10 border border-border hover:border-midnight/40 transition-all duration-300 group"
+              className="py-10 md:py-14 transition-colors duration-200 hover:bg-white/60 -mx-4 px-4 sm:-mx-6 sm:px-6 rounded-2xl group"
             >
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-                {/* Number & Service Info */}
-                <div className="lg:col-span-7 space-y-3">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                {/* Service Information */}
+                <div className="lg:col-span-7 space-y-4">
                   <div className="flex items-center gap-3">
-                    <span className="font-mono text-xs font-bold text-lime-dark bg-warm-ivory px-2.5 py-1 rounded">
+                    <span className="font-mono text-xs font-bold text-lime-dark bg-midnight px-2.5 py-1 rounded">
                       {service.number}
                     </span>
                     <span className="text-xs uppercase tracking-wider font-semibold text-muted">
-                      Core Service
+                      Specialist Service
                     </span>
                   </div>
 
@@ -323,53 +314,56 @@ function ServicesSection() {
                     {service.title}
                   </h3>
 
-                  <p className="text-body text-muted-dark leading-relaxed">
-                    {service.shortDescription}
+                  <p className="text-body text-muted-dark leading-relaxed max-w-2xl">
+                    {service.description}
                   </p>
 
-                  {/* Industry Fit Tags */}
+                  {/* Suitable Profile Tags */}
                   <div className="pt-2 flex flex-wrap gap-2">
-                    {serviceIndustryFits[index]?.map((tag) => (
+                    {serviceIndustryFits[service.id]?.map((tag) => (
                       <span
                         key={tag}
-                        className="px-2.5 py-1 rounded-md bg-warm-ivory text-midnight/80 text-xs font-medium border border-border/60"
+                        className="px-2.5 py-1 rounded-md bg-warm-ivory text-midnight/80 text-xs font-medium border border-border/80"
                       >
                         {tag}
                       </span>
                     ))}
                   </div>
+
+                  {/* Direct Link */}
+                  <div className="pt-2">
+                    <Link
+                      to={`/services#${service.slug}`}
+                      className="inline-flex items-center gap-2 text-sm font-semibold text-midnight group-hover:text-lime-dark transition-colors"
+                    >
+                      <span>Explore Deliverables & Scope</span>
+                      <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                    </Link>
+                  </div>
                 </div>
 
-                {/* Thumbnail Preview & Action Link */}
-                <div className="lg:col-span-5 flex flex-col sm:flex-row lg:flex-col items-start lg:items-end justify-between gap-4">
-                  <div className="relative w-full sm:w-64 h-36 rounded-xl overflow-hidden border border-border bg-midnight shrink-0">
+                {/* Service Preview Image */}
+                <div className="lg:col-span-5 flex justify-start lg:justify-end">
+                  <div className="relative w-full max-w-md h-48 sm:h-56 rounded-2xl overflow-hidden border border-border bg-midnight shadow-md">
                     <img
                       src={service.image}
-                      alt={service.title}
+                      alt={`${service.title} preview showcase`}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
                       loading="lazy"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-midnight/80 via-transparent to-transparent flex items-end p-3">
-                      <span className="text-[11px] font-mono text-white/90">
-                        {service.slug}
+                    <div className="absolute inset-0 bg-gradient-to-t from-midnight/80 via-transparent to-transparent flex items-end p-4">
+                      <span className="text-xs font-mono text-white/90">
+                        Capability // {service.title}
                       </span>
                     </div>
                   </div>
-
-                  <Link
-                    to={`/services#${service.slug}`}
-                    className="inline-flex items-center gap-2 text-sm font-semibold text-midnight group-hover:text-lime-dark transition-colors pt-2"
-                  >
-                    <span>View Service Details & Deliverables</span>
-                    <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                  </Link>
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
 
-        {/* View All Services Action */}
+        {/* View All Services Button */}
         <div className="mt-12 text-center">
           <Button to="/services" variant="secondary">
             View All Services & Deliverables
@@ -381,16 +375,20 @@ function ServicesSection() {
 }
 
 /* ==========================================================================
-   SECTION D: SELECTED WORK (Visual Centrepiece)
+   SECTION 4: SELECTED WORK (Visual Centrepiece — Explicit Slug-Based Lookups)
    ========================================================================== */
 
 function WorkSection() {
-  const [grandRetreat, theTable, azSelfDrive, carePoint] = projects
+  // Explicit slug-based lookups to guarantee correct mapping
+  const grandRetreat = projects.find((p) => p.slug === 'the-grand-retreat')
+  const theTable = projects.find((p) => p.slug === 'the-table')
+  const azSelfDrive = projects.find((p) => p.slug === 'az-self-drive')
+  const carePoint = projects.find((p) => p.slug === 'carepoint-clinic')
 
   return (
     <section id="selected-work" className="bg-midnight text-white section-padding">
       <div className="container-main">
-        {/* Header */}
+        {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
           <div className="max-w-2xl">
             <p className="text-label text-lime mb-3">Portfolio Highlights</p>
@@ -401,34 +399,28 @@ function WorkSection() {
           </div>
           <div className="self-start md:self-end">
             <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/20 text-xs font-mono uppercase tracking-wider text-muted-light">
-              <span className="w-1.5 h-1.5 rounded-full bg-lime" />
+              <span className="w-1.5 h-1.5 rounded-full bg-lime" aria-hidden="true" />
               All Projects Labelled Concept Project
             </span>
           </div>
         </div>
 
-        {/* Editorial Portfolio Showcase */}
-        <div className="space-y-10">
-          {/* Project 01: The Grand Retreat (Commanding Hero Showcase) */}
+        {/* Distinct Editorial Showcases */}
+        <div className="space-y-12">
+          {/* Project 01: The Grand Retreat (Quiet Luxury, Hospitality) */}
           {grandRetreat && (
-            <motion.article
-              variants={fadeUpVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: '-60px' }}
-              className="group bg-midnight-light rounded-3xl overflow-hidden border border-white/10 hover:border-lime/40 transition-all duration-500"
-            >
+            <article className="group bg-midnight-light rounded-3xl overflow-hidden border border-white/10 hover:border-lime/40 transition-all duration-500">
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch">
-                <div className="lg:col-span-7 relative min-h-[300px] sm:min-h-[420px] overflow-hidden bg-black">
+                <div className="lg:col-span-7 relative min-h-[300px] sm:min-h-[440px] overflow-hidden bg-black">
                   <img
                     src={grandRetreat.image}
-                    alt={grandRetreat.title}
+                    alt={`${grandRetreat.title} luxury resort concept showcase`}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80"
                     loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-midnight-light via-transparent to-black/30" />
                   <div className="absolute top-5 left-5 z-10">
-                    <span className="px-3 py-1 bg-lime text-midnight text-xs font-bold rounded-full uppercase tracking-wider shadow">
+                    <span className="px-3.5 py-1.5 bg-lime text-midnight text-xs font-bold rounded-full uppercase tracking-wider shadow">
                       Concept Project
                     </span>
                   </div>
@@ -444,7 +436,7 @@ function WorkSection() {
                     <h3 className="text-heading-1 text-white group-hover:text-lime transition-colors">
                       {grandRetreat.title}
                     </h3>
-                    <p className="text-sm font-medium text-lime/80 mt-1">
+                    <p className="text-sm font-medium text-lime/90 mt-1">
                       {grandRetreat.category}
                     </p>
 
@@ -454,8 +446,8 @@ function WorkSection() {
 
                     <div className="pt-6 mt-6 border-t border-white/10 flex flex-wrap gap-2 text-xs text-white/80">
                       <span className="px-2.5 py-1 rounded bg-white/5 border border-white/10">Resort Villa Showcase</span>
+                      <span className="px-2.5 py-1 rounded bg-white/5 border border-white/10">Serene Information Architecture</span>
                       <span className="px-2.5 py-1 rounded bg-white/5 border border-white/10">Reservation Enquiries</span>
-                      <span className="px-2.5 py-1 rounded bg-white/5 border border-white/10">Wellness Experience</span>
                     </div>
                   </div>
 
@@ -470,41 +462,35 @@ function WorkSection() {
                   </div>
                 </div>
               </div>
-            </motion.article>
+            </article>
           )}
 
-          {/* Asymmetric Offset Pair: The Table (Left) & A-Z Self Drive (Right) */}
+          {/* Asymmetric Pair: The Table (Food-Led) & A-Z Self Drive (Automotive) */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
             {/* Project 02: The Table */}
             {theTable && (
-              <motion.article
-                variants={fadeUpVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: '-60px' }}
-                className="lg:col-span-6 group bg-midnight-light rounded-3xl overflow-hidden border border-white/10 hover:border-lime/40 transition-all duration-500 flex flex-col"
-              >
-                <div className="relative h-64 sm:h-72 overflow-hidden bg-black">
-                  <img
-                    src={theTable.image}
-                    alt={theTable.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-midnight-light via-transparent to-black/30" />
-                  <div className="absolute top-4 left-4 z-10">
-                    <span className="px-3 py-1 bg-lime text-midnight text-xs font-bold rounded-full uppercase tracking-wider shadow">
-                      Concept Project
-                    </span>
+              <article className="lg:col-span-6 group bg-midnight-light rounded-3xl overflow-hidden border border-white/10 hover:border-lime/40 transition-all duration-500 flex flex-col justify-between">
+                <div>
+                  <div className="relative h-64 sm:h-72 overflow-hidden bg-black">
+                    <img
+                      src={theTable.image}
+                      alt={`${theTable.title} restaurant dining concept`}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-midnight-light via-transparent to-black/30" />
+                    <div className="absolute top-4 left-4 z-10">
+                      <span className="px-3.5 py-1.5 bg-lime text-midnight text-xs font-bold rounded-full uppercase tracking-wider shadow">
+                        Concept Project
+                      </span>
+                    </div>
+                    <div className="absolute bottom-4 left-4 z-10 flex items-center gap-2 bg-midnight/80 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 text-xs">
+                      <Utensils className="w-3.5 h-3.5 text-[#e27d60]" />
+                      <span className="font-serif italic text-white/90">Contemporary Dining UI</span>
+                    </div>
                   </div>
-                  <div className="absolute bottom-4 left-4 z-10 flex items-center gap-2 bg-midnight/80 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 text-xs">
-                    <Utensils className="w-3.5 h-3.5 text-[#e27d60]" />
-                    <span className="font-serif italic text-white/90">Contemporary Dining UI</span>
-                  </div>
-                </div>
 
-                <div className="p-8 flex-1 flex flex-col justify-between">
-                  <div>
+                  <div className="p-8">
                     <div className="flex items-center justify-between text-xs font-mono text-muted-light uppercase tracking-wider mb-3">
                       <span>{theTable.number}</span>
                       <span>{theTable.industry}</span>
@@ -513,13 +499,18 @@ function WorkSection() {
                     <h3 className="text-heading-2 text-white group-hover:text-lime transition-colors">
                       {theTable.title}
                     </h3>
+                    <p className="text-xs font-medium text-amber-400/90 mt-1">
+                      {theTable.category}
+                    </p>
                     <p className="text-body text-muted-light mt-3 leading-relaxed">
                       {theTable.description}
                     </p>
                   </div>
+                </div>
 
-                  <div className="pt-6 mt-6 border-t border-white/10 flex items-center justify-between">
-                    <span className="text-xs text-white/60">{theTable.category}</span>
+                <div className="p-8 pt-0">
+                  <div className="pt-6 border-t border-white/10 flex items-center justify-between">
+                    <span className="text-xs text-white/60">Digital Menu & Table Enquiries</span>
                     <Link
                       to={`/work/${theTable.slug}`}
                       className="inline-flex items-center gap-1.5 text-sm font-bold text-lime hover:underline"
@@ -529,39 +520,33 @@ function WorkSection() {
                     </Link>
                   </div>
                 </div>
-              </motion.article>
+              </article>
             )}
 
             {/* Project 03: A-Z Self Drive */}
             {azSelfDrive && (
-              <motion.article
-                variants={fadeUpVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: '-60px' }}
-                className="lg:col-span-6 group bg-midnight-light rounded-3xl overflow-hidden border border-white/10 hover:border-lime/40 transition-all duration-500 flex flex-col"
-              >
-                <div className="relative h-64 sm:h-72 overflow-hidden bg-black">
-                  <img
-                    src={azSelfDrive.image}
-                    alt={azSelfDrive.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-midnight-light via-transparent to-black/30" />
-                  <div className="absolute top-4 left-4 z-10">
-                    <span className="px-3 py-1 bg-lime text-midnight text-xs font-bold rounded-full uppercase tracking-wider shadow">
-                      Concept Project
-                    </span>
+              <article className="lg:col-span-6 group bg-midnight-light rounded-3xl overflow-hidden border border-white/10 hover:border-lime/40 transition-all duration-500 flex flex-col justify-between">
+                <div>
+                  <div className="relative h-64 sm:h-72 overflow-hidden bg-black">
+                    <img
+                      src={azSelfDrive.image}
+                      alt={`${azSelfDrive.title} car rental vehicle fleet`}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-midnight-light via-transparent to-black/30" />
+                    <div className="absolute top-4 left-4 z-10">
+                      <span className="px-3.5 py-1.5 bg-lime text-midnight text-xs font-bold rounded-full uppercase tracking-wider shadow">
+                        Concept Project
+                      </span>
+                    </div>
+                    <div className="absolute bottom-4 left-4 z-10 flex items-center gap-2 bg-midnight/80 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 text-xs">
+                      <Car className="w-3.5 h-3.5 text-lime" />
+                      <span className="font-mono text-white/90">Automotive Fleet UI</span>
+                    </div>
                   </div>
-                  <div className="absolute bottom-4 left-4 z-10 flex items-center gap-2 bg-midnight/80 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 text-xs">
-                    <Car className="w-3.5 h-3.5 text-lime" />
-                    <span className="font-mono text-white/90">Fleet Reservation Portal</span>
-                  </div>
-                </div>
 
-                <div className="p-8 flex-1 flex flex-col justify-between">
-                  <div>
+                  <div className="p-8">
                     <div className="flex items-center justify-between text-xs font-mono text-muted-light uppercase tracking-wider mb-3">
                       <span>{azSelfDrive.number}</span>
                       <span>{azSelfDrive.industry}</span>
@@ -570,13 +555,18 @@ function WorkSection() {
                     <h3 className="text-heading-2 text-white group-hover:text-lime transition-colors">
                       {azSelfDrive.title}
                     </h3>
+                    <p className="text-xs font-medium text-indigo-400/90 mt-1">
+                      {azSelfDrive.category}
+                    </p>
                     <p className="text-body text-muted-light mt-3 leading-relaxed">
                       {azSelfDrive.description}
                     </p>
                   </div>
+                </div>
 
-                  <div className="pt-6 mt-6 border-t border-white/10 flex items-center justify-between">
-                    <span className="text-xs text-white/60">{azSelfDrive.category}</span>
+                <div className="p-8 pt-0">
+                  <div className="pt-6 border-t border-white/10 flex items-center justify-between">
+                    <span className="text-xs text-white/60">Fleet Showcase & Booking</span>
                     <Link
                       to={`/work/${azSelfDrive.slug}`}
                       className="inline-flex items-center gap-1.5 text-sm font-bold text-lime hover:underline"
@@ -586,19 +576,13 @@ function WorkSection() {
                     </Link>
                   </div>
                 </div>
-              </motion.article>
+              </article>
             )}
           </div>
 
-          {/* Project 04: CarePoint Clinic (Clinical Showcase) */}
+          {/* Project 04: CarePoint Clinic (Reassuring Healthcare) */}
           {carePoint && (
-            <motion.article
-              variants={fadeUpVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: '-60px' }}
-              className="group bg-midnight-light rounded-3xl overflow-hidden border border-white/10 hover:border-lime/40 transition-all duration-500"
-            >
+            <article className="group bg-midnight-light rounded-3xl overflow-hidden border border-white/10 hover:border-lime/40 transition-all duration-500">
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 items-center">
                 <div className="lg:col-span-6 p-8 sm:p-10 md:p-12 flex flex-col justify-between">
                   <div>
@@ -621,7 +605,7 @@ function WorkSection() {
                     <div className="pt-6 mt-6 border-t border-white/10 flex flex-wrap gap-2 text-xs text-white/80">
                       <span className="px-2.5 py-1 rounded bg-white/5 border border-white/10">Doctor Profiles</span>
                       <span className="px-2.5 py-1 rounded bg-white/5 border border-white/10">Appointment Enquiries</span>
-                      <span className="px-2.5 py-1 rounded bg-white/5 border border-white/10">Clear Services Directory</span>
+                      <span className="px-2.5 py-1 rounded bg-white/5 border border-white/10">Clinical Information Architecture</span>
                     </div>
                   </div>
 
@@ -639,13 +623,13 @@ function WorkSection() {
                 <div className="lg:col-span-6 relative min-h-[260px] sm:min-h-[360px] overflow-hidden bg-black">
                   <img
                     src={carePoint.image}
-                    alt={carePoint.title}
+                    alt={`${carePoint.title} clinic healthcare concept`}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80"
                     loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-r from-midnight-light via-transparent to-transparent hidden lg:block" />
                   <div className="absolute top-5 right-5 z-10">
-                    <span className="px-3 py-1 bg-lime text-midnight text-xs font-bold rounded-full uppercase tracking-wider shadow">
+                    <span className="px-3.5 py-1.5 bg-lime text-midnight text-xs font-bold rounded-full uppercase tracking-wider shadow">
                       Concept Project
                     </span>
                   </div>
@@ -655,19 +639,19 @@ function WorkSection() {
                   </div>
                 </div>
               </div>
-            </motion.article>
+            </article>
           )}
         </div>
 
-        {/* Transparency Standard Callout */}
+        {/* Transparency Standard Notice */}
         <div className="mt-14 p-6 sm:p-8 rounded-2xl bg-white/5 border border-white/10 text-center max-w-2xl mx-auto">
           <p className="text-xs font-mono uppercase tracking-widest text-lime mb-2">Transparency Standard</p>
           <p className="text-sm text-muted-light leading-relaxed">
-            All projects shown above are original design concepts created to demonstrate our technical approach, visual standards, and industry architectures. We do not publish fictional reviews or fabricated client metrics.
+            All projects shown above are original design concepts created to demonstrate our technical approach, visual standards, and industry architectures. We do not publish fictional reviews, client claims, or fabricated commercial statistics.
           </p>
         </div>
 
-        {/* View All Work Button */}
+        {/* View All Work Action */}
         <div className="mt-10 text-center">
           <Button to="/work" variant="primary">
             Explore All Concept Projects
@@ -679,7 +663,7 @@ function WorkSection() {
 }
 
 /* ==========================================================================
-   SECTION E: WHY SINDEE INFOTECH (Architectural Grid)
+   SECTION 5: WHY SINDEE INFOTECH (Architectural 4-Cell Matrix)
    ========================================================================== */
 
 function WhyUsSection() {
@@ -723,13 +707,9 @@ function WhyUsSection() {
         {/* Architectural 4-Cell Blueprint Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
           {differentiators.map((diff) => (
-            <motion.div
+            <div
               key={diff.num}
-              variants={fadeUpVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: '-40px' }}
-              className="bg-white rounded-2xl p-8 md:p-10 border border-border hover:border-midnight/30 transition-all duration-300 flex flex-col justify-between"
+              className="bg-white rounded-2xl p-8 md:p-10 border border-border hover:border-midnight/30 transition-all duration-200 flex flex-col justify-between"
             >
               <div>
                 <span className="font-mono text-xs font-bold text-lime-dark bg-warm-ivory px-3 py-1.5 rounded-md inline-block mb-6">
@@ -742,7 +722,7 @@ function WhyUsSection() {
                   {diff.desc}
                 </p>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>
@@ -751,7 +731,8 @@ function WhyUsSection() {
 }
 
 /* ==========================================================================
-   SECTION F: OUR PROCESS (Vertical Milestone Blueprint)
+   SECTION 6: OUR PROCESS (Guaranteed Visible Milestone Timeline)
+   Content renders immediately without depending on viewport animation triggers.
    ========================================================================== */
 
 function ProcessSection() {
@@ -766,7 +747,7 @@ function ProcessSection() {
       phase: '02',
       title: 'Plan',
       desc: 'We map out the sitemap, information architecture, wireframes and visual design direction. A clear plan ensures no unexpected delays.',
-      deliverable: 'Approved content architecture',
+      deliverable: 'Approved content architecture & wireframes',
     },
     {
       phase: '03',
@@ -778,7 +759,7 @@ function ProcessSection() {
       phase: '04',
       title: 'Refine',
       desc: 'We review iterations together, test cross-browser responsiveness across phones, tablets and desktops, and apply agreed refinements.',
-      deliverable: 'Approved production build',
+      deliverable: 'Approved production candidate',
     },
     {
       phase: '05',
@@ -792,7 +773,7 @@ function ProcessSection() {
     <section className="bg-white section-padding border-b border-border">
       <div className="container-main">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          {/* Left Column: Sticky Context */}
+          {/* Left Column: Context */}
           <div className="lg:col-span-5 lg:sticky lg:top-28 space-y-5">
             <p className="text-label text-muted">Execution Flow</p>
             <h2 className="text-heading-1 text-midnight">
@@ -808,16 +789,13 @@ function ProcessSection() {
             </div>
           </div>
 
-          {/* Right Column: Milestone Sequence */}
+          {/* Right Column: Connected Vertical Milestone Timeline */}
+          {/* Plain semantic HTML with zero reliance on hidden animation states */}
           <div className="lg:col-span-7 space-y-6">
             {steps.map((step, index) => (
-              <motion.div
+              <div
                 key={step.phase}
-                variants={fadeUpVariants}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: '-40px' }}
-                className="bg-warm-ivory rounded-2xl p-6 sm:p-8 border border-border"
+                className="bg-warm-ivory rounded-2xl p-6 sm:p-8 border border-border transition-all duration-200"
               >
                 <div className="flex items-start justify-between gap-4 mb-3">
                   <span className="text-xs font-mono font-bold text-lime-dark bg-midnight px-2.5 py-1 rounded">
@@ -837,11 +815,11 @@ function ProcessSection() {
                 </p>
 
                 <div className="mt-4 pt-3 border-t border-border/70 flex items-center gap-2 text-xs font-medium text-midnight/80">
-                  <span className="w-1.5 h-1.5 rounded-full bg-lime-dark" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-lime-dark shrink-0" aria-hidden="true" />
                   <span className="text-muted">Key Milestone:</span>
                   <span>{step.deliverable}</span>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
@@ -851,7 +829,7 @@ function ProcessSection() {
 }
 
 /* ==========================================================================
-   SECTION G: PRICING (Transparent Investment Framework)
+   SECTION 7: PRICING (Editorial Investment Comparison & Commercial Disclaimers)
    ========================================================================== */
 
 function PricingSection() {
@@ -859,24 +837,23 @@ function PricingSection() {
     {
       name: 'STARTER',
       price: '₹9,999',
-      tagline: 'Ideal for small businesses establishing their first professional digital presence.',
-      featured: false,
-      features: [
+      intendedFor: 'Local businesses & independent brands establishing a verified online footprint.',
+      includedScope: [
         'Up to 5 custom-designed pages',
-        'Mobile-first responsive layout',
+        'Mobile-first responsive design',
         'Direct contact enquiry form',
         'WhatsApp click-to-chat integration',
         'Interactive Google Maps setup',
         'Baseline on-page SEO setup',
         'Hosting & deployment assistance',
       ],
+      deliverables: 'Complete 5-page responsive website, search meta tags, deployment assistance',
     },
     {
       name: 'PROFESSIONAL',
       price: '₹17,999',
-      tagline: 'Comprehensive digital presence for growing commercial businesses.',
-      featured: true,
-      features: [
+      intendedFor: 'Growing commercial businesses requiring a richer portfolio or catalogue showcase.',
+      includedScope: [
         'Up to 8 custom-designed pages',
         'Everything in Starter included',
         'Photo gallery or portfolio showcase',
@@ -886,13 +863,13 @@ function PricingSection() {
         'Speed optimisation & analytics setup',
         'Post-launch handover support',
       ],
+      deliverables: 'Comprehensive multi-page website, catalogue layouts, speed audit, handover session',
     },
     {
       name: 'ADVANCED',
       price: '₹29,999',
-      tagline: 'Purpose-built web solutions for businesses requiring custom workflows.',
-      featured: false,
-      features: [
+      intendedFor: 'Established businesses requiring purpose-built workflows or integrations.',
+      includedScope: [
         'Custom multi-page architecture',
         'Online booking or order enquiry features',
         'Payment gateway integration assistance',
@@ -900,6 +877,7 @@ function PricingSection() {
         'Advanced functionality and forms',
         'Dedicated technical support',
       ],
+      deliverables: 'Bespoke web solution, custom workflows, integration testing, technical documentation',
     },
   ]
 
@@ -907,78 +885,77 @@ function PricingSection() {
     <section className="bg-warm-ivory section-padding border-b border-border">
       <div className="container-main">
         {/* Header */}
-        <div className="max-w-3xl mx-auto text-center mb-14 md:mb-20">
+        <div className="max-w-3xl mx-auto text-center mb-14 md:mb-18">
           <p className="text-label text-muted mb-3">Investment Framework</p>
           <h2 className="text-heading-1 text-midnight">
             An investment in your business's digital future.
           </h2>
           <p className="text-body-large text-muted-dark mt-4">
-            Transparent starting points for businesses in India. Every project is scoped individually to match your requirements.
+            Transparent baseline tiers for businesses in India. Every project is scoped individually to match your specific requirements.
           </p>
         </div>
 
-        {/* Pricing Cards */}
+        {/* Structured Editorial Comparison Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto items-stretch">
           {tiers.map((tier) => (
             <div
               key={tier.name}
-              className={`rounded-3xl p-8 sm:p-10 flex flex-col justify-between transition-all duration-300 ${
-                tier.featured
-                  ? 'bg-midnight text-white shadow-2xl ring-2 ring-lime lg:-translate-y-2'
-                  : 'bg-white text-midnight border border-border'
-              }`}
+              className="bg-white rounded-3xl p-8 sm:p-10 border border-border flex flex-col justify-between transition-shadow duration-200 hover:shadow-lg"
             >
               <div>
                 <div className="flex items-center justify-between mb-4">
-                  <span
-                    className={`font-mono text-xs font-bold tracking-widest ${
-                      tier.featured ? 'text-lime' : 'text-muted-dark'
-                    }`}
-                  >
+                  <span className="font-mono text-xs font-bold tracking-widest text-midnight">
                     {tier.name}
                   </span>
-                  {tier.featured && (
-                    <span className="px-3 py-1 rounded-full bg-lime text-midnight text-[10px] font-bold uppercase tracking-wider">
-                      Most Selected
-                    </span>
-                  )}
+                  <span className="text-xs font-mono text-muted uppercase">
+                    Baseline Package
+                  </span>
                 </div>
 
                 <div className="flex items-baseline gap-1 mt-2">
-                  <span className="text-xs uppercase tracking-wider opacity-70">starting at</span>
-                  <span className="text-4xl font-extrabold tracking-tight">{tier.price}</span>
+                  <span className="text-xs uppercase tracking-wider text-muted-dark">starting at</span>
+                  <span className="text-4xl font-extrabold tracking-tight text-midnight">{tier.price}</span>
                 </div>
 
-                <p
-                  className={`text-sm mt-3 leading-relaxed ${
-                    tier.featured ? 'text-muted-light' : 'text-muted-dark'
-                  }`}
-                >
-                  {tier.tagline}
-                </p>
+                <div className="mt-4 p-3 bg-warm-ivory rounded-xl border border-border/60">
+                  <span className="text-[10px] font-mono uppercase tracking-wider text-muted-dark block mb-1">
+                    Intended For:
+                  </span>
+                  <p className="text-xs text-midnight/90 leading-relaxed font-medium">
+                    {tier.intendedFor}
+                  </p>
+                </div>
 
-                <div className={`my-8 border-t ${tier.featured ? 'border-white/10' : 'border-border'}`} />
+                <div className="my-6 border-t border-border" />
 
-                <ul className="space-y-3.5 text-sm">
-                  {tier.features.map((feature) => (
-                    <li key={feature} className="flex items-start gap-3">
-                      <Check
-                        className={`w-4 h-4 shrink-0 mt-0.5 ${
-                          tier.featured ? 'text-lime' : 'text-midnight'
-                        }`}
-                      />
-                      <span className={tier.featured ? 'text-white/90' : 'text-muted-dark'}>
-                        {feature}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
+                <div>
+                  <span className="text-xs font-mono uppercase tracking-wider text-muted-dark block mb-3">
+                    Included Scope:
+                  </span>
+                  <ul className="space-y-3 text-sm">
+                    {tier.includedScope.map((item) => (
+                      <li key={item} className="flex items-start gap-3">
+                        <Check className="w-4 h-4 shrink-0 mt-0.5 text-lime-dark" />
+                        <span className="text-muted-dark text-sm">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="mt-6 pt-4 border-t border-border/60">
+                  <span className="text-[11px] font-mono uppercase tracking-wider text-muted block mb-1">
+                    Key Deliverable:
+                  </span>
+                  <p className="text-xs text-midnight/80 font-medium">
+                    {tier.deliverables}
+                  </p>
+                </div>
               </div>
 
-              <div className="mt-10 pt-4">
+              <div className="mt-8 pt-4 border-t border-border">
                 <Button
                   to="/contact"
-                  variant={tier.featured ? 'primary' : 'dark'}
+                  variant="dark"
                   className="w-full justify-center"
                 >
                   Request a Quote
@@ -988,11 +965,22 @@ function PricingSection() {
           ))}
         </div>
 
-        {/* Exclusions & Scope Disclaimers */}
-        <div className="mt-12 text-center max-w-2xl mx-auto">
-          <p className="text-xs text-muted-dark leading-relaxed">
-            * Note: Every project is different. Final pricing depends on functionality, content volume and project requirements. Third-party domain registration, web hosting, and premium third-party service subscriptions are billed directly by their respective providers.
-          </p>
+        {/* Unambiguous Commercial Scope & Exclusions Notice */}
+        <div className="mt-14 p-6 sm:p-8 rounded-2xl bg-white border border-border max-w-4xl mx-auto space-y-3 text-left">
+          <div className="flex items-center gap-2">
+            <Compass className="w-4 h-4 text-midnight" />
+            <h4 className="text-xs font-mono uppercase tracking-widest text-midnight font-bold">
+              Commercial Scope & Exclusions Policy
+            </h4>
+          </div>
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-xs text-muted-dark leading-relaxed list-disc list-inside">
+            <li>Payment gateway assistance covers configuration guidance; gateway merchant verification and transaction fees are separate.</li>
+            <li>Third-party domain registration and web hosting fees are paid directly to providers unless specified in a written agreement.</li>
+            <li>Custom third-party integrations and complex booking logic require individual scoping and specification.</li>
+            <li>Extensive copywriting, brand photography, and large volume data entry may require additional scoping.</li>
+            <li>Final pricing depends on the agreed project brief and deliverable milestones.</li>
+            <li>No hidden agency markups on software licenses or recurring host bills.</li>
+          </ul>
         </div>
       </div>
     </section>
@@ -1000,7 +988,7 @@ function PricingSection() {
 }
 
 /* ==========================================================================
-   SECTION H: FINAL CTA
+   SECTION 8: FINAL CTA (Linked to Verified Contact Page)
    ========================================================================== */
 
 function FinalCTA() {
@@ -1037,7 +1025,7 @@ function FinalCTA() {
 }
 
 /* ==========================================================================
-   MAIN HOMEPAGE EXPORT
+   HOMEPAGE MAIN EXPORT
    ========================================================================== */
 
 export function HomePage() {
