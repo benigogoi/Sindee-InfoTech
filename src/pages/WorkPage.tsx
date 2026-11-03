@@ -49,20 +49,20 @@ function ProjectPreviewCard({ project }: { project: Project }) {
         <div className="my-auto py-4 z-10 max-w-sm">
           <div className="bg-midnight/90 backdrop-blur-md border border-white/15 rounded-2xl p-4 shadow-xl space-y-2">
             <div className="flex justify-between items-baseline">
-              <span className="text-sm font-semibold text-white">Mahindra Thar 4x4 Hardtop</span>
-              <span className="text-lime text-xs font-bold font-mono">₹3,499 / day</span>
+              <span className="text-sm font-semibold text-white">Mahindra Thar 4x4 (Sample Model)</span>
+              <span className="text-lime text-xs font-bold font-mono">₹3,499 / day (Sample)</span>
             </div>
             <div className="flex gap-2 text-[10px] text-white/70">
               <span className="px-2 py-0.5 rounded bg-white/10">Manual</span>
               <span className="px-2 py-0.5 rounded bg-white/10">Diesel 4x4</span>
-              <span className="px-2 py-0.5 rounded bg-lime/20 text-lime font-medium">Instant Reserve</span>
+              <span className="px-2 py-0.5 rounded bg-lime/20 text-lime font-medium">Demonstration Booking</span>
             </div>
           </div>
         </div>
 
         <div className="flex items-center justify-between text-[11px] text-white/80 pt-2 border-t border-white/15 z-10 bg-midnight/60 backdrop-blur-sm -mx-6 md:-mx-8 -mb-6 md:-mb-8 px-6 md:px-8 py-3">
-          <span>Fleet Hub: Guwahati • Shillong</span>
-          <span className="text-lime font-medium">Design Prototype</span>
+          <span>Fleet Hub: Demonstration Hub</span>
+          <span className="text-lime font-medium">Concept Prototype</span>
         </div>
       </div>
     )
@@ -106,8 +106,8 @@ function ProjectPreviewCard({ project }: { project: Project }) {
         </div>
 
         <div className="flex items-center justify-between text-[11px] text-white/80 pt-2 border-t border-white/15 z-10 bg-midnight/60 backdrop-blur-sm -mx-6 md:-mx-8 -mb-6 md:-mb-8 px-6 md:px-8 py-3">
-          <span>Service: Dinner 7:00 PM – 11:30 PM</span>
-          <span className="text-lime font-medium">Design Prototype</span>
+          <span>Service: Sample Dining Hours</span>
+          <span className="text-lime font-medium">Concept Prototype</span>
         </div>
       </div>
     )
@@ -147,14 +147,14 @@ function ProjectPreviewCard({ project }: { project: Project }) {
             <div className="flex gap-2 text-[10px] text-white/70 pt-1">
               <span className="px-2 py-0.5 rounded bg-white/10">Forest View</span>
               <span className="px-2 py-0.5 rounded bg-white/10">All-Inclusive</span>
-              <span className="px-2 py-0.5 rounded bg-lime/20 text-lime font-medium">Direct Booking</span>
+              <span className="px-2 py-0.5 rounded bg-lime/20 text-lime font-medium">Demonstration Booking</span>
             </div>
           </div>
         </div>
 
         <div className="flex items-center justify-between text-[11px] text-white/80 pt-2 border-t border-white/15 z-10 bg-midnight/60 backdrop-blur-sm -mx-6 md:-mx-8 -mb-6 md:-mb-8 px-6 md:px-8 py-3">
-          <span>Location: Hillview Estate</span>
-          <span className="text-lime font-medium">Design Prototype</span>
+          <span>Location: Prototype Retreat</span>
+          <span className="text-lime font-medium">Concept Prototype</span>
         </div>
       </div>
     )
@@ -194,14 +194,14 @@ function ProjectPreviewCard({ project }: { project: Project }) {
           <div className="flex gap-2 text-[10px] text-white/70 pt-1">
             <span className="px-2 py-0.5 rounded bg-white/10">Verified Doctors</span>
             <span className="px-2 py-0.5 rounded bg-white/10">OPD Timings</span>
-            <span className="px-2 py-0.5 rounded bg-lime/20 text-lime font-medium">Online Enquiry</span>
+            <span className="px-2 py-0.5 rounded bg-lime/20 text-lime font-medium">Demonstration Enquiry</span>
           </div>
         </div>
       </div>
 
       <div className="flex items-center justify-between text-[11px] text-white/80 pt-2 border-t border-white/15 z-10 bg-midnight/60 backdrop-blur-sm -mx-6 md:-mx-8 -mb-6 md:-mb-8 px-6 md:px-8 py-3">
-        <span>OPD Hours: 9 AM - 6 PM</span>
-        <span className="text-lime font-medium">Design Prototype</span>
+        <span>OPD Hours: Sample Schedule</span>
+        <span className="text-lime font-medium">Concept Prototype</span>
       </div>
     </div>
   )
@@ -405,7 +405,7 @@ export function WorkPage() {
             Authentic Concepts, Never Fabricated Results
           </h3>
           <p className="text-body text-muted-dark mt-3 leading-relaxed">
-            The projects presented above are original design and architecture concepts crafted to illustrate our visual standards, user-flow planning, and technical execution. We do not invent client results, commercial metrics, or fictitious client logos.
+            The projects presented above are original design and architecture concepts crafted to illustrate our visual standards, user-flow planning, and technical execution. All company names, sample tariffs, service hours, and product details shown in these previews are fictional prototype elements for demonstration purposes only. We do not invent client results, commercial metrics, or fictitious client logos.
           </p>
         </div>
       </section>

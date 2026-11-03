@@ -237,7 +237,7 @@ export function ServicesPage() {
               Core Offerings
             </span>
             <h2 className="text-heading-1 text-midnight mt-3">
-              Four Primary Services. Zero Generic Templates.
+              Specialist Services. Zero Generic Templates.
             </h2>
             <p className="text-body-large text-muted-dark mt-4">
               Every business has distinct operational requirements. We match the right architectural approach to your commercial goals.
@@ -245,7 +245,7 @@ export function ServicesPage() {
           </div>
 
           <div className="space-y-16 lg:space-y-24">
-            {services.slice(0, 4).map((service, index) => {
+            {services.map((service, index) => {
               const isEven = index % 2 === 0
               return (
                 <article

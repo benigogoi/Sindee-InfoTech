@@ -19,6 +19,8 @@ const footerLinks = {
   ],
 }
 
+const CURRENT_YEAR = new Date().getFullYear()
+
 export function Footer() {
   return (
     <footer className="bg-midnight text-white">
@@ -94,7 +96,7 @@ export function Footer() {
 
         {/* Bottom Bar */}
         <div className="mt-16 pt-8 border-t border-white/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 text-sm text-muted">
-          <p>© {new Date().getFullYear()} Sindee Infotech. All rights reserved.</p>
+          <p>© {CURRENT_YEAR} Sindee Infotech. All rights reserved.</p>
           <div className="flex items-center gap-6">
             <Link
               to="/privacy"

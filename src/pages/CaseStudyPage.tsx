@@ -40,9 +40,9 @@ const designProfiles: Record<string, ProjectDesignProfile> = {
     photographyDirection:
       'Cinematic automotive photography showcasing rugged SUVs and vehicles in natural Northeast Indian terrain.',
     uxFocus:
-      'Reduced multi-step rental friction into a clean single-viewport discovery card with upfront daily rates and WhatsApp dispatch.',
+      'Engineered a single-viewport discovery card architecture demonstrating upfront prototype daily rates, vehicle specifications, and a direct inquiry pathway.',
     designRationale:
-      'Car rental customers often encounter confusing deposit rules and ambiguous vehicle specs. This concept eliminates clutter by highlighting transparent pricing, vehicle transmission details, and an instant direct enquiry button.',
+      'Car rental users often encounter confusing deposit rules and ambiguous vehicle specs. This concept was designed to explore clean information hierarchy, highlighting sample daily tariffs, vehicle transmission details, and a clear enquiry pathway.',
   },
   'the-table': {
     colorPalette: [
@@ -56,9 +56,9 @@ const designProfiles: Record<string, ProjectDesignProfile> = {
     photographyDirection:
       'Editorial, natural-light food photography highlighting Assamese botanicals, fresh river catch, and intimate dining spaces.',
     uxFocus:
-      'Mobile-first digital menu organized by courses with dietary cues, coupled with a fast table reservation enquiry form.',
+      'Mobile-first digital menu architecture organized by courses with dietary indicators, paired with a demonstration table reservation enquiry flow.',
     designRationale:
-      'Restaurant guests make dining decisions on mobile devices within minutes. By replacing clunky PDF menus with responsive, categorized courses and a direct WhatsApp table booking pathway, the concept maximizes reservation conversions.',
+      'Restaurant guests make dining decisions on mobile devices within minutes. By replacing static PDF menus with responsive, categorized courses and a direct reservation enquiry pathway, this design demonstrates how to present offerings and table requests with minimal friction.',
   },
   'the-grand-retreat': {
     colorPalette: [
@@ -72,9 +72,9 @@ const designProfiles: Record<string, ProjectDesignProfile> = {
     photographyDirection:
       'Sweeping landscape photography, villa architecture, private pools, and tea-garden vistas that evoke tranquility.',
     uxFocus:
-      'Generous whitespace, room category comparison tables, transparent tariff inclusions, and date-inquiry intake.',
+      'Generous whitespace, room category showcase cards, sample tariff inclusions, and demonstration date-inquiry intake.',
     designRationale:
-      'Boutique resorts often struggle with heavy commission fees on travel portals. This concept crafts a memorable direct brand experience that reassures affluent guests with transparent amenities and private concierge assistance.',
+      'Boutique resorts often seek to strengthen their direct brand presence. This concept demonstrates a tranquil visual aesthetic with generous spatial breathing room, curated amenity showcases, and direct reservation enquiry pathways.',
   },
   'carepoint-clinic': {
     colorPalette: [
@@ -88,9 +88,9 @@ const designProfiles: Record<string, ProjectDesignProfile> = {
     photographyDirection:
       'Authentic medical consult environments, verified clinician portraits, and clear departmental signage.',
     uxFocus:
-      'Immediate access to doctor credentials, specialization directories, OPD consulting schedules, and direct appointment requests.',
+      'Clear access to practitioner credentials, specialization directories, simulated OPD consulting schedules, and demonstration appointment intake.',
     designRationale:
-      'Patients seeking healthcare guidance are often anxious. The design prioritizes clarity over visual embellishment, organizing doctor credentials and clinic timings so visitors find answers in seconds.',
+      'Patients seeking healthcare information need rapid clarity. The prototype layout prioritizes legibility and clinical structure, organizing practitioner profiles, clinic timings, and appointment request forms for immediate comprehension.',
   },
 }
 
@@ -252,8 +252,13 @@ export function CaseStudyPage() {
                 <p className="text-body text-muted-dark leading-relaxed">
                   {project.challenge}
                 </p>
-                <div className="mt-6 p-4 rounded-xl bg-warm-ivory/60 border border-border text-xs text-muted-dark leading-relaxed">
-                  <strong>Note:</strong> This challenge represents a common industry scenario addressed during design research, rather than a paid client case study.
+                <div className="mt-6 p-5 rounded-2xl bg-warm-ivory/80 border border-border text-xs text-muted-dark leading-relaxed space-y-1.5">
+                  <p className="font-bold text-midnight font-mono uppercase tracking-wider text-[11px]">
+                    Concept Project Prototype Notice
+                  </p>
+                  <p>
+                    This project is an original design concept developed to demonstrate UX architecture, visual art direction, and technical execution. All company names, sample tariffs, vehicle models, menu items, consulting schedules, and booking flows shown in this study are fictional prototype design elements. They do not represent operational pricing, actual availability, commercial results, or client endorsements.
+                  </p>
                 </div>
               </div>
 
@@ -402,7 +407,7 @@ export function CaseStudyPage() {
                 <div className="relative aspect-[16/10] overflow-hidden bg-midnight">
                   <img
                     src={rel.image}
-                    alt={rel.title}
+                    alt={`${rel.title} concept project preview`}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-80"
                   />
                   <div className="absolute top-3 right-3">

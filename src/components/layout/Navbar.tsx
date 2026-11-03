@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
@@ -32,8 +32,12 @@ export function Navbar() {
   }, [])
 
   // Close mobile menu on route change
+  const prevPathname = useRef(location.pathname)
   useEffect(() => {
-    setIsMobileMenuOpen(false)
+    if (prevPathname.current !== location.pathname) {
+      prevPathname.current = location.pathname
+      setIsMobileMenuOpen(false)
+    }
   }, [location.pathname])
 
   // Prevent body scroll when mobile menu is active

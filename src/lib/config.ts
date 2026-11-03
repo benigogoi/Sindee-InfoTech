@@ -25,11 +25,11 @@ export const CONTACT_CONFIG = {
 } as const
 
 export const SOCIAL_CONFIG = {
-  /** Replace with your actual social media URLs */
-  instagram: 'https://instagram.com/sindeeinfotech',
-  linkedin: 'https://linkedin.com/company/sindeeinfotech',
-  twitter: 'https://twitter.com/sindeeinfotech',
-  facebook: 'https://facebook.com/sindeeinfotech',
+  /** Replace with your actual verified social media URLs before displaying */
+  instagram: '',
+  linkedin: '',
+  twitter: '',
+  facebook: '',
 } as const
 
 export const API_CONFIG = {
