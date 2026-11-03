@@ -9,6 +9,7 @@ export function PrivacyPage() {
     <PageMeta
       title="Privacy Policy — Sindee Infotech"
       description="Privacy Policy for Sindee Infotech. Learn how we handle project enquiries, visitor data, and your privacy rights."
+      canonicalUrl="https://sindeeinfotech.com/privacy"
     >
       <section className="pt-32 pb-16 md:pt-40 md:pb-24 bg-warm-ivory border-b border-border">
         <div className="container-main max-w-4xl">
@@ -38,10 +39,10 @@ export function PrivacyPage() {
             <div>
               <h2 className="text-heading-3 text-midnight mb-4">1. Introduction</h2>
               <p className="text-body text-muted-dark">
-                Sindee Infotech ("we", "our", or "us") operates the website <strong className="text-midnight">sindeeinfotech.com</strong>. This Privacy Policy explains our practices regarding the collection, use, and disclosure of personal information when you visit our website, submit a project enquiry, or communicate with us.
+                Sindee Infotech ("we", "our", or "us") operates the website <strong className="text-midnight">sindeeinfotech.com</strong>. This Privacy Policy outlines our transparent approach regarding the collection, use, and handling of information when you browse our website, submit a project enquiry, or communicate with us.
               </p>
               <p className="text-body text-muted-dark mt-3">
-                We respect your personal privacy and are committed to maintaining the confidentiality of any information you share with us.
+                We respect your personal privacy and are committed to handling all project communications with straightforward confidentiality.
               </p>
             </div>
 
@@ -49,12 +50,12 @@ export function PrivacyPage() {
             <div>
               <h2 className="text-heading-3 text-midnight mb-4">2. Information We Collect</h2>
               <p className="text-body text-muted-dark">
-                We only collect information that you knowingly and voluntarily provide to us. This typically occurs when you fill out our project enquiry form, reach out via WhatsApp, or send us an email:
+                We only collect information that you knowingly and voluntarily provide to us when you fill out our project enquiry form or send us an email:
               </p>
               <ul className="list-disc pl-6 space-y-2 mt-3 text-body text-muted-dark">
-                <li><strong>Contact details:</strong> Full name, email address, phone number, and business or company name.</li>
-                <li><strong>Project details:</strong> Website type requirements, approximate budget range, and project descriptions.</li>
-                <li><strong>Technical data:</strong> Non-personally identifiable diagnostic data such as browser type, device information, and pages visited (via privacy-compliant web analytics).</li>
+                <li><strong>Contact details:</strong> Full name, email address, phone or WhatsApp number (if voluntarily provided), and business or company name.</li>
+                <li><strong>Project details:</strong> Type of website or service required, estimated budget range, and project descriptions or objectives.</li>
+                <li><strong>Server diagnostic data:</strong> Standard web server access logs (including browser user-agent, operating system, referring URL, and IP address) generated automatically by our hosting platform to deliver web pages and ensure network stability. We do not use third-party behavioral profiling cookies or advertising trackers.</li>
               </ul>
             </div>
 
@@ -62,15 +63,15 @@ export function PrivacyPage() {
             <div>
               <h2 className="text-heading-3 text-midnight mb-4">3. How We Use Your Information</h2>
               <p className="text-body text-muted-dark">
-                The information you provide is utilized exclusively for legitimate business purposes:
+                The information you provide is used exclusively for legitimate business communication:
               </p>
               <ul className="list-disc pl-6 space-y-2 mt-3 text-body text-muted-dark">
-                <li>To evaluate your project requirements and prepare customized proposals or estimates.</li>
-                <li>To communicate with you directly regarding project consultations, milestones, or technical inquiries.</li>
-                <li>To maintain and improve the performance, usability, and security of our website.</li>
+                <li>To review your requirements and prepare itemized project proposals or technical advice.</li>
+                <li>To correspond directly with you regarding project scope, milestones, or consultations.</li>
+                <li>To maintain the reliability, uptime, and security of our website.</li>
               </ul>
               <p className="text-body text-midnight font-medium mt-3">
-                We do not sell, rent, trade, or monetize your personal information to third parties or marketing brokers under any circumstances.
+                We do not sell, rent, trade, or share your personal information with data brokers or marketing intermediaries under any circumstances.
               </p>
             </div>
 
@@ -78,20 +79,20 @@ export function PrivacyPage() {
             <div>
               <h2 className="text-heading-3 text-midnight mb-4">4. Data Storage and Security</h2>
               <p className="text-body text-muted-dark">
-                We implement appropriate administrative, technical, and physical safeguards designed to protect the information you submit against unauthorized access, loss, alteration, or misuse. All communications through this website are transmitted over secure TLS/HTTPS encryption protocols.
+                We maintain reasonable administrative and technical measures to protect the information you submit against unauthorized access, loss, or alteration. All data transmitted between your browser and our website is encrypted in transit over standard TLS/HTTPS protocols.
               </p>
             </div>
 
             {/* Section 5 */}
             <div>
-              <h2 className="text-heading-3 text-midnight mb-4">5. Third-Party Services</h2>
+              <h2 className="text-heading-3 text-midnight mb-4">5. Third-Party Infrastructure</h2>
               <p className="text-body text-muted-dark">
-                Our website may utilize standard third-party infrastructure providers to support our operations:
+                Our website utilizes selected technical infrastructure providers:
               </p>
               <ul className="list-disc pl-6 space-y-2 mt-3 text-body text-muted-dark">
-                <li><strong>Hosting infrastructure:</strong> Fast, globally distributed web hosting services.</li>
-                <li><strong>Analytics:</strong> Aggregated anonymous web performance analytics to understand traffic trends without tracking individual identities.</li>
-                <li><strong>Communication channels:</strong> WhatsApp (Meta) when you click direct messaging links.</li>
+                <li><strong>Hosting infrastructure:</strong> Deployed on Vercel to serve static assets and code reliably across global edge points.</li>
+                <li><strong>Email communications:</strong> Direct emails or enquiries transmitted through our email client fallback are processed through standard email network protocols and your chosen email provider.</li>
+                <li><strong>No third-party tracking cookies:</strong> We do not load third-party advertising pixels, cross-site trackers, or commercial surveillance scripts on this website.</li>
               </ul>
             </div>
 
@@ -99,7 +100,7 @@ export function PrivacyPage() {
             <div>
               <h2 className="text-heading-3 text-midnight mb-4">6. Your Data Rights</h2>
               <p className="text-body text-muted-dark">
-                You have the right to request access to the information we hold about you, request corrections, or ask for the deletion of your enquiry records at any time. To make such a request, simply contact us via the email address listed below.
+                You have the right to request access to the information you have shared with us, ask for updates or corrections, or request the deletion of your correspondence records at any time. To make a request, contact us directly at our verified email address.
               </p>
             </div>
 
@@ -107,7 +108,7 @@ export function PrivacyPage() {
             <div className="p-8 bg-warm-ivory rounded-2xl border border-border">
               <h2 className="text-heading-3 text-midnight mb-3">7. Privacy Inquiries & Contact</h2>
               <p className="text-body text-muted-dark">
-                If you have questions, concerns, or requests regarding this Privacy Policy, please reach out to us directly:
+                If you have questions, feedback, or requests regarding our privacy practices, please contact us directly:
               </p>
               <div className="mt-4 flex items-center gap-2">
                 <Mail className="w-4 h-4 text-midnight" />

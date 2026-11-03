@@ -138,6 +138,7 @@ export function CaseStudyPage() {
     <PageMeta
       title={`${project.title} — Concept Project Case Study | Sindee Infotech`}
       description={`Case study for ${project.title} (${project.category}). Hypothetical challenge, design direction, architecture rationale, and demonstrated features.`}
+      canonicalUrl={`https://sindeeinfotech.com/portfolio/${project.slug}`}
     >
       {/* SECTION 1: Project Introduction & Hero */}
       <section className="pt-32 pb-16 md:pt-40 md:pb-20 bg-warm-ivory border-b border-border">

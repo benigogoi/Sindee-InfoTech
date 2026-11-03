@@ -231,6 +231,7 @@ export function WorkPage() {
     <PageMeta
       title="Portfolio — Selected Website Design Concepts | Sindee Infotech"
       description="Explore our original concept projects in hospitality, dining, automotive, and healthcare. Designed to demonstrate architectural craft and responsive execution."
+      canonicalUrl="https://sindeeinfotech.com/portfolio"
     >
       {/* SECTION 1: Hero */}
       <section className="pt-32 pb-16 md:pt-40 md:pb-24 bg-warm-ivory border-b border-border">

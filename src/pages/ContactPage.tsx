@@ -172,6 +172,7 @@ ${formData.description || 'N/A'}`,
     <PageMeta
       title="Contact — Start a Website Project | Sindee Infotech"
       description="Tell us about your website design, e-commerce, or redesign project. We build professional web experiences for ambitious businesses across India."
+      canonicalUrl="https://sindeeinfotech.com/contact"
     >
       {/* SECTION 1: Hero */}
       <section className="pt-32 pb-16 md:pt-40 md:pb-24 bg-warm-ivory border-b border-border">

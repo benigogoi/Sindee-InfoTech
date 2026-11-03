@@ -178,6 +178,7 @@ export function ServicesPage() {
     <PageMeta
       title="Services — Specialist Web Design & Development | Sindee Infotech"
       description="We design and develop high-performance business websites, e-commerce stores, website redesigns, and custom web solutions for ambitious businesses."
+      canonicalUrl="https://sindeeinfotech.com/services"
     >
       {/* SECTION 1: Hero */}
       <section className="pt-32 pb-16 md:pt-40 md:pb-24 bg-warm-ivory border-b border-border">

@@ -1012,7 +1012,7 @@ function FinalCTA() {
             Tell Us About Your Project
           </Button>
           <Button
-            to="/work"
+            to="/portfolio"
             variant="secondary"
             className="border-white/20 text-white hover:bg-white hover:text-midnight"
           >
@@ -1033,6 +1033,7 @@ export function HomePage() {
     <PageMeta
       title="Sindee Infotech — Specialist Web Design & Development Agency"
       description="We design and develop high-quality websites that help businesses build trust, attract customers and grow online."
+      canonicalUrl="https://sindeeinfotech.com/"
     >
       <HeroSection />
       <PositioningStrip />

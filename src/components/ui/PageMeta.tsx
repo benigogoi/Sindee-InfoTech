@@ -4,10 +4,11 @@ import { useLocation } from 'react-router-dom'
 interface PageMetaProps {
   title: string
   description: string
+  canonicalUrl?: string
   children: ReactNode
 }
 
-export function PageMeta({ title, description, children }: PageMetaProps) {
+export function PageMeta({ title, description, canonicalUrl, children }: PageMetaProps) {
   const location = useLocation()
 
   useEffect(() => {
@@ -21,10 +22,11 @@ export function PageMeta({ title, description, children }: PageMetaProps) {
     const ogDescription = document.querySelector('meta[property="og:description"]')
     if (ogDescription) ogDescription.setAttribute('content', description)
     const canonical = document.querySelector('link[rel="canonical"]')
+    const href = canonicalUrl || `https://sindeeinfotech.com${location.pathname === '/' ? '' : location.pathname}`
     if (canonical) {
-      canonical.setAttribute('href', `https://sindeeinfotech.com${location.pathname}`)
+      canonical.setAttribute('href', href || 'https://sindeeinfotech.com')
     }
-  }, [title, description, location.pathname])
+  }, [title, description, canonicalUrl, location.pathname])
 
   return <>{children}</>
 }

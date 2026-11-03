@@ -102,6 +102,7 @@ export function AboutPage() {
     <PageMeta
       title="About Us — Specialist Web Design & Development | Sindee Infotech"
       description="Sindee Infotech brings design thinking and technical execution together to create digital experiences that help businesses present themselves with confidence."
+      canonicalUrl="https://sindeeinfotech.com/about"
     >
       {/* SECTION 1: Hero */}
       <section className="pt-32 pb-16 md:pt-40 md:pb-24 bg-warm-ivory border-b border-border">
