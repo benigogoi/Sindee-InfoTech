@@ -32,14 +32,14 @@ export function Footer() {
           <div className="lg:col-span-5 space-y-4">
             <Link
               to="/"
-              className="flex items-center gap-2.5 text-white font-bold text-lg md:text-xl tracking-tight inline-flex hover:opacity-90 transition-opacity"
+              className="inline-flex items-center hover:opacity-90 transition-opacity"
+              aria-label="Sindee Infotech - Home"
             >
               <img
-                src="/logo.png"
-                alt="Sindee Infotech logo"
-                className="w-8 h-8 md:w-9 md:h-9 object-contain rounded-md"
+                src="/logo-white.png"
+                alt="Sindee Infotech"
+                className="h-9 sm:h-10 w-auto object-contain"
               />
-              <span>SINDEE INFOTECH</span>
             </Link>
             <p className="text-muted-light text-body max-w-sm leading-relaxed">
               Digital Product &amp; Software Development Company. We turn business ideas into powerful digital experiences — from professional websites and web applications to Android apps and custom business software.

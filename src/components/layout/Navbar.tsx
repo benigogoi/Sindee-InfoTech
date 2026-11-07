@@ -96,16 +96,14 @@ export function Navbar() {
           {/* Logo */}
           <Link
             to="/"
-            className="flex items-center gap-2.5 hover:opacity-90 transition-opacity z-50 relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime rounded-lg shrink-0"
+            className="flex items-center hover:opacity-90 transition-opacity z-50 relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime rounded-lg shrink-0"
+            aria-label="Sindee Infotech - Home"
           >
             <img
               src="/logo.png"
-              alt="Sindee Infotech logo"
-              className="w-8 h-8 md:w-9 md:h-9 object-contain rounded-md"
+              alt="Sindee Infotech"
+              className="h-8 sm:h-9 md:h-10 w-auto object-contain"
             />
-            <span className="text-midnight font-bold text-lg md:text-xl tracking-tight">
-              SINDEE INFOTECH
-            </span>
           </Link>
 
           {/* Desktop Navigation */}
