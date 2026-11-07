@@ -198,7 +198,7 @@ ${formData.description || 'N/A'}`,
       canonicalUrl="https://sindeeinfotech.com/contact"
     >
       {/* SECTION 1: Hero */}
-      <section className="pt-12 pb-12 sm:pt-16 sm:pb-14 md:pt-20 md:pb-16 bg-warm-ivory border-b border-border">
+      <section className="pt-12 pb-8 sm:pt-16 sm:pb-10 md:pt-20 md:pb-12 bg-warm-ivory border-b border-border">
         <div className="container-main">
           <motion.div
             variants={staggerContainerVariants}
@@ -232,7 +232,7 @@ ${formData.description || 'N/A'}`,
       </section>
 
       {/* SECTION 2 & 3: Contact Form + Alternative Contact */}
-      <section className="section-padding bg-warm-ivory">
+      <section className="pt-8 pb-16 sm:pt-10 sm:pb-20 md:pt-12 md:pb-24 bg-warm-ivory">
         <div className="container-main">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
             {/* Form Column */}
