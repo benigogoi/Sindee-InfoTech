@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
-import { ArrowUpRight, Mail, MapPin } from 'lucide-react'
-import { CONTACT_CONFIG, EMAIL_URL } from '@/lib/config'
+import { ArrowUpRight, Mail, MapPin, Phone } from 'lucide-react'
+import { CONTACT_CONFIG, EMAIL_URL, PHONE_URL } from '@/lib/config'
 
 const footerLinks = {
   navigation: [
@@ -44,15 +44,26 @@ export function Footer() {
             <p className="text-muted-light text-body max-w-sm leading-relaxed">
               Digital Product &amp; Software Development Company. We turn business ideas into powerful digital experiences — from professional websites and web applications to Android apps and custom business software.
             </p>
-            <div className="pt-2">
-              <a
-                href={EMAIL_URL}
-                className="inline-flex items-center gap-2 text-lime hover:text-lime-light transition-colors text-[0.9375rem] font-medium"
-              >
-                <Mail className="w-4 h-4" />
-                <span>{CONTACT_CONFIG.email}</span>
-                <ArrowUpRight className="w-3.5 h-3.5" />
-              </a>
+            <div className="pt-2 space-y-2">
+              <div>
+                <a
+                  href={PHONE_URL}
+                  className="inline-flex items-center gap-2 text-white hover:text-lime transition-colors text-[0.9375rem] font-medium"
+                >
+                  <Phone className="w-4 h-4 text-lime" />
+                  <span>{CONTACT_CONFIG.phone}</span>
+                </a>
+              </div>
+              <div>
+                <a
+                  href={EMAIL_URL}
+                  className="inline-flex items-center gap-2 text-lime hover:text-lime-light transition-colors text-[0.9375rem] font-medium"
+                >
+                  <Mail className="w-4 h-4" />
+                  <span>{CONTACT_CONFIG.email}</span>
+                  <ArrowUpRight className="w-3.5 h-3.5" />
+                </a>
+              </div>
             </div>
           </div>
 

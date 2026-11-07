@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
-import { ShieldCheck, Mail } from 'lucide-react'
+import { ShieldCheck, Mail, Phone } from 'lucide-react'
 import { PageMeta } from '@/components/ui/PageMeta'
-import { CONTACT_CONFIG, EMAIL_URL } from '@/lib/config'
+import { CONTACT_CONFIG, EMAIL_URL, PHONE_URL } from '@/lib/config'
 import { fadeUpVariants, staggerContainerVariants } from '@/lib/animations'
 
 export function PrivacyPage() {
@@ -110,14 +110,25 @@ export function PrivacyPage() {
               <p className="text-body text-muted-dark">
                 If you have questions, feedback, or requests regarding our privacy practices, please contact us directly:
               </p>
-              <div className="mt-4 flex items-center gap-2">
-                <Mail className="w-4 h-4 text-midnight" />
-                <a
-                  href={EMAIL_URL}
-                  className="font-semibold text-midnight hover:text-lime-dark underline"
-                >
-                  {CONTACT_CONFIG.email}
-                </a>
+              <div className="mt-4 space-y-2">
+                <div className="flex items-center gap-2">
+                  <Phone className="w-4 h-4 text-midnight" />
+                  <a
+                    href={PHONE_URL}
+                    className="font-semibold text-midnight hover:text-lime-dark underline"
+                  >
+                    {CONTACT_CONFIG.phone}
+                  </a>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Mail className="w-4 h-4 text-midnight" />
+                  <a
+                    href={EMAIL_URL}
+                    className="font-semibold text-midnight hover:text-lime-dark underline"
+                  >
+                    {CONTACT_CONFIG.email}
+                  </a>
+                </div>
               </div>
             </div>
           </div>

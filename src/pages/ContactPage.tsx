@@ -9,6 +9,7 @@ import {
   Loader2,
   ChevronDown,
   ExternalLink,
+  Phone,
 } from 'lucide-react'
 import { PageMeta } from '@/components/ui/PageMeta'
 import { Button } from '@/components/ui/Button'
@@ -17,7 +18,7 @@ import {
   fadeInVariants,
   staggerContainerVariants,
 } from '@/lib/animations'
-import { CONTACT_CONFIG, API_CONFIG, EMAIL_URL } from '@/lib/config'
+import { CONTACT_CONFIG, API_CONFIG, EMAIL_URL, PHONE_URL } from '@/lib/config'
 
 interface FormData {
   fullName: string
@@ -523,6 +524,27 @@ ${formData.description || 'N/A'}`,
 
             {/* Sidebar Column: Verified Contact Information */}
             <div className="lg:col-span-5 space-y-6">
+              {/* Direct Phone & WhatsApp Card */}
+              <div className="bg-white rounded-3xl border border-border p-8 shadow-sm space-y-4">
+                <div className="w-10 h-10 rounded-2xl bg-midnight text-lime flex items-center justify-center">
+                  <Phone className="w-5 h-5" />
+                </div>
+                <div>
+                  <span className="text-xs font-mono uppercase tracking-widest text-muted block">
+                    Phone &amp; WhatsApp
+                  </span>
+                  <a
+                    href={PHONE_URL}
+                    className="text-lg font-bold text-midnight hover:text-muted-dark transition-colors inline-block mt-1"
+                  >
+                    {CONTACT_CONFIG.phone}
+                  </a>
+                </div>
+                <p className="text-xs text-muted-dark leading-relaxed">
+                  Call or WhatsApp us directly for project scoping, quotes, and technical consultations.
+                </p>
+              </div>
+
               {/* Direct Email Card */}
               <div className="bg-white rounded-3xl border border-border p-8 shadow-sm space-y-4">
                 <div className="w-10 h-10 rounded-2xl bg-midnight text-lime flex items-center justify-center">
@@ -706,13 +728,20 @@ ${formData.description || 'N/A'}`,
           <p className="text-body-large text-muted-light mt-4">
             We are here to help your business build credibility, attract loyal customers, and grow.
           </p>
-          <div className="mt-8 flex justify-center gap-4">
+          <div className="mt-8 flex flex-wrap justify-center gap-4">
+            <a
+              href={PHONE_URL}
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-white text-midnight text-sm font-semibold hover:bg-slate-100 transition-colors"
+            >
+              <Phone className="w-4 h-4 text-midnight" />
+              <span>Call / WhatsApp {CONTACT_CONFIG.phone}</span>
+            </a>
             <a
               href={EMAIL_URL}
               className="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-lime text-midnight text-sm font-semibold hover:bg-lime-light transition-colors"
             >
               <Mail className="w-4 h-4" />
-              <span>Email hello@sindeeinfotech.com</span>
+              <span>Email {CONTACT_CONFIG.email}</span>
             </a>
           </div>
         </div>

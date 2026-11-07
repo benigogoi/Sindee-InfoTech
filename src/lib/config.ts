@@ -54,4 +54,5 @@ export const getWhatsAppUrl = (customMessage?: string): string => {
 }
 
 export const WHATSAPP_URL = getWhatsAppUrl()
+export const PHONE_URL = `tel:${CONTACT_CONFIG.phone.replace(/[^0-9+]/g, '')}`
 export const EMAIL_URL = `mailto:${CONTACT_CONFIG.email}`
