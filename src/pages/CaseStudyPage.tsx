@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
@@ -13,6 +14,7 @@ import {
 import { PageMeta } from '@/components/ui/PageMeta'
 import { Button } from '@/components/ui/Button'
 import { projects } from '@/data/projects'
+import { DemoPreviewModal } from '@/components/portfolio/DemoPreviewModal'
 import {
   fadeUpVariants,
   staggerContainerVariants,
@@ -28,6 +30,22 @@ interface ProjectDesignProfile {
 }
 
 const designProfiles: Record<string, ProjectDesignProfile> = {
+  'mystic-digits': {
+    colorPalette: [
+      { name: 'Cosmic Indigo', hex: '#0D1326', role: 'Primary starfield canvas' },
+      { name: 'Celestial Gold', hex: '#D4AF37', role: 'Vedic accent & grid highlights' },
+      { name: 'Pure White', hex: '#FFFFFF', role: 'High-contrast typography' },
+      { name: 'Soft Stardust', hex: '#94A3B8', role: 'Algorithmic explanation text' },
+    ],
+    typography:
+      'Contemporary geometric sans-serif for numerical data and reading calculations, paired with elegant serif headings for celestial insight sections.',
+    photographyDirection:
+      'Celestial visual language with dynamic starfields, Vedic planetary charts, and authentic Lo Shu grids.',
+    uxFocus:
+      'Low-friction birth data entry, real-time algorithmic Mulank and Bhagyank calculation preview, and automated 27-page report fulfillment.',
+    designRationale:
+      'Numerology reports often feel unorganized or outdated. The platform was engineered to bridge Vedic principles with modern web application standards, delivering clarity, trust, and automated delivery.',
+  },
   'az-self-drive': {
     colorPalette: [
       { name: 'Midnight Charcoal', hex: '#101827', role: 'Dominant dark foundation' },
@@ -44,37 +62,69 @@ const designProfiles: Record<string, ProjectDesignProfile> = {
     designRationale:
       'Car rental users often encounter confusing deposit rules and ambiguous vehicle specs. This concept was designed to explore clean information hierarchy, highlighting sample daily tariffs, vehicle transmission details, and a clear enquiry pathway.',
   },
+  'crumb-and-co': {
+    colorPalette: [
+      { name: 'Warm Cocoa', hex: '#261815', role: 'Artisan bakery rich canvas' },
+      { name: 'Warm Vanilla', hex: '#FDFBF7', role: 'Soft appetite surface' },
+      { name: 'Caramel Gold', hex: '#D97706', role: 'Celebration accent highlight' },
+      { name: 'Berry Sage', hex: '#84CC16', role: 'Botanical & organic tags' },
+    ],
+    typography:
+      'Warm contemporary serif for cake names and celebration headlines, paired with clean geometric sans-serif for ingredient breakdowns and size pricing.',
+    photographyDirection:
+      'Mouth-watering, natural-light food photography highlighting chocolate drip cakes, golden sourdough crusts, and artisanal celebration packaging.',
+    uxFocus:
+      'Visual cake design catalogue with flavor and size selectors, paired with direct WhatsApp order builder routing prefilled event details.',
+    designRationale:
+      'Home bakers waste hours replying to repeated Instagram DM pricing queries. This website concept streamlines custom cake exploration, clearly showing designs, sizing options, and automated WhatsApp pre-orders.',
+  },
+  'kaziranga-homestay': {
+    colorPalette: [
+      { name: 'Tea Garden Deep', hex: '#1B2A1E', role: 'Organic Assam nature foundation' },
+      { name: 'Warm Bamboo', hex: '#F3F1EB', role: 'Natural cottage breathing space' },
+      { name: 'Golden Sun', hex: '#C7F36B', role: 'High-contrast action accents' },
+      { name: 'Misty Earth', hex: '#4B5563', role: 'Safari & travel guide details' },
+    ],
+    typography:
+      'Organic serif evoking Northeast village hospitality and tea garden heritage, supported by modern legible sans-serif for booking amenities.',
+    photographyDirection:
+      'Authentic wooden & bamboo cottage architecture nestled in green tea gardens, misty morning vistas, and Kaziranga wildlife safari imagery.',
+    uxFocus:
+      'Generous whitespace, cottage room photo tours, traditional Assamese culinary highlights, and a zero-commission direct WhatsApp reservation enquiry pathway.',
+    designRationale:
+      'Independent homestays in Assam struggle with high OTA commission rates. This website concept builds immediate guest trust through authentic local photography and effortless direct room reservation enquiries.',
+  },
   'the-table': {
     colorPalette: [
-      { name: 'Warm Terracotta', hex: '#D97706', role: 'Sensory appetite accent' },
-      { name: 'Espresso Black', hex: '#1C1917', role: 'Intimate ambiance background' },
-      { name: 'Warm Ivory', hex: '#F3F1EB', role: 'Editorial menu surface' },
-      { name: 'Sage Leaf', hex: '#84CC16', role: 'Fresh botanical highlights' },
+      { name: 'Warm Cocoa', hex: '#261815', role: 'Artisan bakery rich canvas' },
+      { name: 'Warm Vanilla', hex: '#FDFBF7', role: 'Soft appetite surface' },
+      { name: 'Caramel Gold', hex: '#D97706', role: 'Celebration accent highlight' },
+      { name: 'Berry Sage', hex: '#84CC16', role: 'Botanical & organic tags' },
     ],
     typography:
       'Contemporary editorial serif for dining headlines and dish titles, paired with humanistic sans-serif for ingredient breakdowns.',
     photographyDirection:
-      'Editorial, natural-light food photography highlighting Assamese botanicals, fresh river catch, and intimate dining spaces.',
+      'Editorial, natural-light food photography highlighting Assamese botanicals, custom bakes, and intimate dining spaces.',
     uxFocus:
-      'Mobile-first digital menu architecture organized by courses with dietary indicators, paired with a demonstration table reservation enquiry flow.',
+      'Mobile-first menu architecture organized by courses with dietary indicators, paired with a demonstration reservation enquiry flow.',
     designRationale:
-      'Restaurant guests make dining decisions on mobile devices within minutes. By replacing static PDF menus with responsive, categorized courses and a direct reservation enquiry pathway, this design demonstrates how to present offerings and table requests with minimal friction.',
+      'Restaurant and food business customers make decisions on mobile within seconds. A direct reservation enquiry pathway and clean menu presentation maximizes local conversion.',
   },
   'the-grand-retreat': {
     colorPalette: [
-      { name: 'Forest Deep', hex: '#14281D', role: 'Serene sanctuary tone' },
+      { name: 'Forest Deep', hex: '#1B2A1E', role: 'Serene sanctuary tone' },
       { name: 'Warm Ivory', hex: '#F3F1EB', role: 'Generous breathing space' },
-      { name: 'Soft Brass', hex: '#D4AF37', role: 'Restrained luxury accents' },
+      { name: 'Soft Brass', hex: '#C7F36B', role: 'Nature accents' },
       { name: 'Stone Grey', hex: '#4B5563', role: 'Subtle architectural details' },
     ],
     typography:
       'Refined editorial serif evoking boutique hospitality heritage, supported by understated modern sans-serif navigation.',
     photographyDirection:
-      'Sweeping landscape photography, villa architecture, private pools, and tea-garden vistas that evoke tranquility.',
+      'Sweeping landscape photography, eco cottage architecture, and tea-garden vistas that evoke tranquility.',
     uxFocus:
       'Generous whitespace, room category showcase cards, sample tariff inclusions, and demonstration date-inquiry intake.',
     designRationale:
-      'Boutique resorts often seek to strengthen their direct brand presence. This concept demonstrates a tranquil visual aesthetic with generous spatial breathing room, curated amenity showcases, and direct reservation enquiry pathways.',
+      'Boutique homestays often seek to strengthen their direct brand presence. This concept demonstrates a tranquil visual aesthetic with generous spatial breathing room and direct reservation enquiry pathways.',
   },
   'carepoint-clinic': {
     colorPalette: [
@@ -96,10 +146,14 @@ const designProfiles: Record<string, ProjectDesignProfile> = {
 
 export function CaseStudyPage() {
   const { slug } = useParams<{ slug: string }>()
+  const [isDemoOpen, setIsDemoOpen] = useState(false)
 
-  // Normalize slug to handle both hyphenated variants
+  // Normalize slug to handle both hyphenated variants and legacy aliases
   const normalizedSlug =
-    slug === 'a-z-self-drive' ? 'az-self-drive' : slug || ''
+    slug === 'a-z-self-drive' ? 'az-self-drive' :
+    slug === 'the-grand-retreat' ? 'kaziranga-homestay' :
+    slug === 'the-table' ? 'crumb-and-co' :
+    slug || ''
 
   const project = projects.find(
     (p) => p.slug === normalizedSlug || p.id === normalizedSlug,
@@ -141,7 +195,7 @@ export function CaseStudyPage() {
       canonicalUrl={`https://sindeeinfotech.com/portfolio/${project.slug}`}
     >
       {/* SECTION 1: Project Introduction & Hero */}
-      <section className="pt-32 pb-16 md:pt-40 md:pb-20 bg-warm-ivory border-b border-border">
+      <section className="pt-12 pb-12 sm:pt-16 sm:pb-14 md:pt-20 md:pb-16 bg-warm-ivory border-b border-border">
         <div className="container-main">
           {/* Back link */}
           <Link
@@ -162,11 +216,18 @@ export function CaseStudyPage() {
               variants={fadeUpVariants}
               className="flex flex-wrap items-center gap-3 mb-6"
             >
-              <span className="px-3 py-1 rounded-full bg-lime text-midnight text-xs font-bold uppercase tracking-wider shadow-sm">
-                Concept Project
-              </span>
+              {project.status === 'Live' ? (
+                <span className="px-3.5 py-1 rounded-full bg-emerald-500 text-white text-xs font-bold uppercase tracking-wider shadow-sm flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                  Live Digital Product
+                </span>
+              ) : (
+                <span className="px-3 py-1 rounded-full bg-lime text-midnight text-xs font-bold uppercase tracking-wider shadow-sm">
+                  Concept Project
+                </span>
+              )}
               <span className="text-xs font-mono text-muted uppercase tracking-widest">
-                Concept // {project.number} • {project.category}
+                {project.status === 'Live' ? 'Featured Project' : 'Concept'} // {project.number} • {project.category}
               </span>
             </motion.div>
 
@@ -183,6 +244,29 @@ export function CaseStudyPage() {
             >
               {project.description}
             </motion.p>
+
+            <motion.div variants={fadeUpVariants} className="mt-8 flex flex-wrap items-center gap-4">
+              <button
+                type="button"
+                onClick={() => setIsDemoOpen(true)}
+                className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-lime text-midnight text-sm font-bold hover:bg-lime-light transition-all shadow-md active:scale-95 cursor-pointer"
+              >
+                <Eye className="w-4 h-4" />
+                <span>View Interactive One-Page Demo</span>
+              </button>
+
+              {project.url && (
+                <a
+                  href={project.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-midnight text-white text-sm font-semibold hover:bg-midnight-light transition-colors shadow-md"
+                >
+                  <span>Visit Live Website</span>
+                  <ArrowUpRight className="w-4 h-4 text-lime" />
+                </a>
+              )}
+            </motion.div>
           </motion.div>
         </div>
       </section>
@@ -198,11 +282,11 @@ export function CaseStudyPage() {
                 <div className="w-3 h-3 rounded-full bg-[#FFBD2E]" />
                 <div className="w-3 h-3 rounded-full bg-[#28CA42]" />
                 <span className="ml-3 font-mono text-white/50 text-xs hidden sm:inline-block">
-                  concept.sindeeinfotech.com / {project.slug}
+                  {project.url ? project.url.replace('https://', '') : `concept.sindeeinfotech.com/${project.slug}`}
                 </span>
               </div>
               <span className="text-lime font-mono text-xs uppercase tracking-wider">
-                Art Direction Showcase
+                {project.status === 'Live' ? 'Production Showcase' : 'Art Direction Showcase'}
               </span>
             </div>
 
@@ -210,14 +294,14 @@ export function CaseStudyPage() {
             <div className="relative mt-8 rounded-2xl overflow-hidden aspect-[16/10] md:aspect-[21/9] bg-midnight border border-white/10">
               <img
                 src={project.image}
-                alt={`${project.title} concept project preview`}
+                alt={`${project.title} preview`}
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-midnight/90 via-midnight/30 to-transparent" />
               <div className="absolute bottom-6 left-6 right-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4 text-white">
                 <div>
                   <span className="text-xs font-mono uppercase tracking-widest text-lime">
-                    Design Concept
+                    {project.status === 'Live' ? 'Featured Live Product' : 'Design Concept'}
                   </span>
                   <h3 className="text-xl md:text-2xl font-bold mt-1">
                     {project.title}
@@ -227,7 +311,7 @@ export function CaseStudyPage() {
                   </p>
                 </div>
                 <div className="px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-xs font-mono">
-                  Concept Demonstration Only
+                  {project.status === 'Live' ? 'Verified Live Product' : 'Concept Demonstration Only'}
                 </div>
               </div>
             </div>
@@ -456,6 +540,13 @@ export function CaseStudyPage() {
           </div>
         </div>
       </section>
+
+      {/* Interactive Demo Popup Modal */}
+      <DemoPreviewModal
+        project={project}
+        isOpen={isDemoOpen}
+        onClose={() => setIsDemoOpen(false)}
+      />
     </PageMeta>
   )
 }

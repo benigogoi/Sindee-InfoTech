@@ -84,32 +84,35 @@ export function Navbar() {
 
   return (
     <>
-      <nav
-        aria-label="Main Navigation"
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      <header
+        role="banner"
+        className={`sticky top-0 z-50 w-full transition-all duration-200 print:static ${
           isScrolled
-            ? 'bg-warm-ivory/95 backdrop-blur-md shadow-[0_1px_0_rgba(16,24,39,0.08)] py-3 md:py-4'
-            : 'bg-transparent py-4 md:py-5'
+            ? 'bg-warm-ivory/95 backdrop-blur-md shadow-[0_1px_0_rgba(16,24,39,0.08)] py-3 md:py-3.5'
+            : 'bg-warm-ivory/80 backdrop-blur-sm border-b border-border/40 py-3.5 md:py-4.5'
         }`}
       >
         <div className="container-main flex items-center justify-between">
           {/* Logo */}
           <Link
             to="/"
-            className="text-midnight font-bold text-lg md:text-xl tracking-tight hover:opacity-85 transition-opacity z-50 relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime rounded-sm"
+            className="text-midnight font-bold text-lg md:text-xl tracking-tight hover:opacity-85 transition-opacity z-50 relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime rounded-sm shrink-0"
           >
             SINDEE INFOTECH
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-8 xl:gap-10">
+          <nav
+            aria-label="Main Navigation"
+            className="hidden lg:flex items-center gap-6 xl:gap-9"
+          >
             {navLinks.map((link) => {
               const active = isLinkActive(link.path)
               return (
                 <Link
                   key={link.path}
                   to={link.path}
-                  className={`relative text-[0.9375rem] font-medium transition-colors duration-200 py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime rounded-sm ${
+                  className={`relative text-sm xl:text-[0.9375rem] font-medium transition-colors duration-200 py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime rounded-sm ${
                     active ? 'text-midnight font-semibold' : 'text-muted-dark hover:text-midnight'
                   }`}
                 >
@@ -124,12 +127,12 @@ export function Navbar() {
                 </Link>
               )
             })}
-          </div>
+          </nav>
 
           {/* Desktop CTA */}
-          <div className="hidden lg:block">
+          <div className="hidden lg:block shrink-0">
             <Button to="/contact" variant="dark" icon={false} className="text-sm px-5 py-2.5">
-              Let's Talk
+              Start a Project
             </Button>
           </div>
 
@@ -137,7 +140,7 @@ export function Navbar() {
           <button
             type="button"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden relative z-50 w-11 h-11 flex items-center justify-center text-midnight rounded-xl hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime transition-colors"
+            className="lg:hidden relative z-50 w-11 h-11 flex items-center justify-center text-midnight rounded-xl hover:bg-black/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime transition-colors shrink-0"
             aria-label={isMobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
             aria-expanded={isMobileMenuOpen}
             aria-controls="mobile-navigation-menu"
@@ -167,7 +170,7 @@ export function Navbar() {
             </AnimatePresence>
           </button>
         </div>
-      </nav>
+      </header>
 
       {/* Mobile Menu Fullscreen Overlay */}
       <AnimatePresence>
@@ -181,13 +184,17 @@ export function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-40 bg-warm-ivory flex flex-col justify-between pt-24 pb-12 px-6 sm:px-12"
+            className="fixed inset-0 z-40 bg-warm-ivory flex flex-col justify-between pt-20 pb-8 px-6 sm:px-12 overflow-y-auto"
+            style={{
+              paddingTop: 'max(5rem, calc(5rem + env(safe-area-inset-top, 0px)))',
+              paddingBottom: 'max(2rem, calc(2rem + env(safe-area-inset-bottom, 0px)))',
+            }}
           >
-            <div className="flex flex-col justify-center flex-1 max-w-md mx-auto w-full">
-              <span className="text-[11px] font-mono uppercase tracking-widest text-muted mb-6">
+            <div className="flex flex-col justify-center flex-1 max-w-md mx-auto w-full my-auto py-4">
+              <span className="text-[11px] font-mono uppercase tracking-widest text-muted mb-4 sm:mb-6">
                 Navigation
               </span>
-              <div className="space-y-2">
+              <div className="space-y-1 sm:space-y-2">
                 {navLinks.map((link, index) => {
                   const active = isLinkActive(link.path)
                   return (
@@ -205,9 +212,9 @@ export function Navbar() {
                       <Link
                         to={link.path}
                         onClick={() => setIsMobileMenuOpen(false)}
-                        className={`block text-3xl sm:text-4xl font-bold py-3 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime rounded-md ${
+                        className={`block text-2xl sm:text-3xl font-bold py-2 sm:py-2.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime rounded-md ${
                           active
-                            ? 'text-midnight'
+                            ? 'text-midnight font-extrabold'
                             : 'text-muted-dark hover:text-midnight'
                         }`}
                       >
@@ -226,7 +233,7 @@ export function Navbar() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 10 }}
                 transition={{ duration: 0.35, delay: 0.35 }}
-                className="mt-10 pt-8 border-t border-border"
+                className="mt-8 pt-6 border-t border-border"
               >
                 <Button
                   to="/contact"
@@ -236,7 +243,7 @@ export function Navbar() {
                 >
                   Start a Project
                 </Button>
-                <p className="text-xs text-muted-dark text-center mt-4">
+                <p className="text-xs text-muted-dark text-center mt-3 font-mono">
                   hello@sindeeinfotech.com
                 </p>
               </motion.div>

@@ -27,6 +27,7 @@ interface FormData {
   projectType: string
   budget: string
   description: string
+  hp_website?: string
 }
 
 const initialFormData: FormData = {
@@ -37,22 +38,25 @@ const initialFormData: FormData = {
   projectType: '',
   budget: '',
   description: '',
+  hp_website: '',
 }
 
 const projectTypeOptions = [
-  'New Business Website',
-  'E-commerce Website',
-  'Website Redesign',
-  'Custom Web Solution',
-  'Maintenance & Support',
-  'Other / Unsure',
+  'Website Development',
+  'Web Application Development / SaaS',
+  'Android Application Development',
+  'Custom Software / ERP / CRM',
+  'Branding & Creative Design',
+  'Digital Marketing & SEO',
+  'Other / Multiple Services',
 ]
 
 const budgetOptions = [
-  'Starter (₹9,999 — Up to 5 pages)',
-  'Professional (₹17,999 — Up to 8 pages)',
-  'Advanced (₹29,999+ — Custom / E-commerce)',
-  'Custom Scope / Not Sure Yet',
+  'Focused Web Project / Landing Page',
+  'Commercial Website / Web Application MVP',
+  'Advanced Web Platform / Android Application',
+  'Custom Software / ERP / Enterprise Solution',
+  'Custom Scope / Discuss During Scoping',
 ]
 
 type FormStatus = 'idle' | 'loading' | 'success' | 'error' | 'endpoint-unconfigured'
@@ -142,14 +146,33 @@ export function ContactPage() {
         body: JSON.stringify(formData),
       })
 
-      if (!res.ok) throw new Error('Submission endpoint returned an error')
+      if (!res.ok) {
+        let errMsg = 'An issue occurred while submitting your enquiry. Please reach out to us directly at hello@sindeeinfotech.com.'
+        try {
+          const errorData = await res.json()
+          if (typeof errorData?.message === 'string' && errorData.message) {
+            errMsg = errorData.message
+          }
+        } catch {
+          if (res.status === 404) {
+            errMsg = 'Form endpoint /api/contact was not found (404). Please ensure the backend serverless function is deployed.'
+          } else if (res.status === 500 || res.status === 502) {
+            errMsg = 'Email service is temporarily unavailable. Please reach out to hello@sindeeinfotech.com directly.'
+          }
+        }
+        throw new Error(errMsg)
+      }
 
       setStatus('success')
       setStatusMessage('Thank you. Your project enquiry has been received. We will review your requirements and reach out to you shortly.')
       setFormData(initialFormData)
-    } catch {
+    } catch (err: unknown) {
       setStatus('error')
-      setStatusMessage('An issue occurred while submitting your enquiry. Please reach out to us directly at hello@sindeeinfotech.com.')
+      const msg =
+        err instanceof Error && err.message
+          ? err.message
+          : 'An issue occurred while submitting your enquiry. Please reach out to us directly at hello@sindeeinfotech.com.'
+      setStatusMessage(msg)
     }
   }
 
@@ -175,7 +198,7 @@ ${formData.description || 'N/A'}`,
       canonicalUrl="https://sindeeinfotech.com/contact"
     >
       {/* SECTION 1: Hero */}
-      <section className="pt-32 pb-16 md:pt-40 md:pb-24 bg-warm-ivory border-b border-border">
+      <section className="pt-12 pb-12 sm:pt-16 sm:pb-14 md:pt-20 md:pb-16 bg-warm-ivory border-b border-border">
         <div className="container-main">
           <motion.div
             variants={staggerContainerVariants}
@@ -296,6 +319,20 @@ ${formData.description || 'N/A'}`,
                 {/* MAIN FORM */}
                 {(status === 'idle' || status === 'loading' || status === 'error') && (
                   <form onSubmit={handleSubmit} noValidate>
+                    {/* Honeypot field for spam prevention (visually hidden) */}
+                    <div style={{ display: 'none' }} aria-hidden="true">
+                      <label htmlFor="hp_website">Leave this field blank</label>
+                      <input
+                        id="hp_website"
+                        type="text"
+                        name="hp_website"
+                        value={formData.hp_website || ''}
+                        onChange={handleChange}
+                        tabIndex={-1}
+                        autoComplete="off"
+                      />
+                    </div>
+
                     <div className="space-y-6">
                       <div className="pb-4 border-b border-border">
                         <h2 className="text-heading-3 text-midnight">

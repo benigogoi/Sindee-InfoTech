@@ -100,12 +100,12 @@ export function AboutPage() {
 
   return (
     <PageMeta
-      title="About Us — Specialist Web Design & Development | Sindee Infotech"
-      description="Sindee Infotech brings design thinking and technical execution together to create digital experiences that help businesses present themselves with confidence."
+      title="About Us — Digital Product & Software Development | Sindee InfoTech"
+      description="Sindee InfoTech is a digital product and software development company. We turn business ideas into powerful digital experiences across web, mobile and custom software."
       canonicalUrl="https://sindeeinfotech.com/about"
     >
       {/* SECTION 1: Hero */}
-      <section className="pt-32 pb-16 md:pt-40 md:pb-24 bg-warm-ivory border-b border-border">
+      <section className="pt-12 pb-12 sm:pt-16 sm:pb-14 md:pt-20 md:pb-16 bg-warm-ivory border-b border-border">
         <div className="container-main">
           <motion.div
             variants={staggerContainerVariants}
@@ -118,21 +118,21 @@ export function AboutPage() {
               className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-midnight/5 border border-midnight/10 text-midnight text-xs font-semibold tracking-wider uppercase mb-6"
             >
               <Sparkles className="w-3.5 h-3.5 text-midnight" />
-              <span>Agency Philosophy & Ethos</span>
+              <span>Company Philosophy &amp; Ethos</span>
             </motion.div>
 
             <motion.h1
               variants={fadeUpVariants}
               className="text-display text-midnight tracking-tight"
             >
-              Good websites don't happen by accident.
+              Great digital products don&apos;t happen by accident.
             </motion.h1>
 
             <motion.p
               variants={fadeUpVariants}
               className="text-body-large text-muted-dark mt-6 max-w-2xl leading-relaxed"
             >
-              We bring design thinking and technical execution together to create digital experiences that help businesses present themselves with confidence.
+              We bring design clarity, business strategy and engineering rigor together to create digital solutions that solve real business problems and scale with your ambition.
             </motion.p>
           </motion.div>
         </div>

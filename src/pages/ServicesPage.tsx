@@ -176,12 +176,12 @@ export function ServicesPage() {
 
   return (
     <PageMeta
-      title="Services — Specialist Web Design & Development | Sindee Infotech"
-      description="We design and develop high-performance business websites, e-commerce stores, website redesigns, and custom web solutions for ambitious businesses."
+      title="Services — Digital Solutions & Software Development | Sindee InfoTech"
+      description="Sindee InfoTech provides end-to-end digital solutions: website development, web applications, Android apps, custom software, branding, and SEO."
       canonicalUrl="https://sindeeinfotech.com/services"
     >
       {/* SECTION 1: Hero */}
-      <section className="pt-32 pb-16 md:pt-40 md:pb-24 bg-warm-ivory border-b border-border">
+      <section className="pt-12 pb-12 sm:pt-16 sm:pb-14 md:pt-20 md:pb-16 bg-warm-ivory border-b border-border">
         <div className="container-main">
           <motion.div
             variants={staggerContainerVariants}

@@ -11,11 +11,12 @@ const footerLinks = {
     { label: 'Contact', path: '/contact' },
   ],
   services: [
-    { label: 'Business Websites', path: '/services#business-websites' },
-    { label: 'E-commerce Websites', path: '/services#ecommerce' },
-    { label: 'Website Redesign', path: '/services#website-redesign' },
-    { label: 'Custom Solutions', path: '/services#custom-solutions' },
-    { label: 'Website Maintenance', path: '/services#website-maintenance' },
+    { label: 'Website Development', path: '/services#website-development' },
+    { label: 'Web Application Development', path: '/services#web-applications' },
+    { label: 'Android App Development', path: '/services#android-apps' },
+    { label: 'Custom Software Development', path: '/services#custom-software' },
+    { label: 'Branding & Creative Design', path: '/services#branding-design' },
+    { label: 'Digital Marketing & SEO', path: '/services#digital-marketing-seo' },
   ],
 }
 
@@ -36,7 +37,7 @@ export function Footer() {
               SINDEE INFOTECH
             </Link>
             <p className="text-muted-light text-body max-w-sm leading-relaxed">
-              Specialist Web Design & Development Agency. We build professional, high-performance websites for businesses that want to build trust, attract customers and grow online.
+              Digital Product &amp; Software Development Company. We turn business ideas into powerful digital experiences — from professional websites and web applications to Android apps and custom business software.
             </p>
             <div className="pt-2">
               <a

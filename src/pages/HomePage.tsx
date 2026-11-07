@@ -1,133 +1,144 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Check, ArrowRight, ArrowUpRight, Utensils, Car, Stethoscope, Compass } from 'lucide-react'
+import {
+  ArrowRight,
+  ArrowUpRight,
+  Globe,
+  Layers,
+  Smartphone,
+  Palette,
+  Sparkles,
+  Compass,
+  Boxes,
+  ShieldCheck,
+  CheckCircle2,
+  ExternalLink,
+  MessageSquare,
+  X,
+  Eye,
+} from 'lucide-react'
 import { PageMeta } from '@/components/ui/PageMeta'
 import { Button } from '@/components/ui/Button'
-import { services } from '@/data/services'
-import { projects } from '@/data/projects'
+import { projects, type Project } from '@/data/projects'
+import { CONTACT_CONFIG, getWhatsAppUrl } from '@/lib/config'
+import { DemoPreviewModal } from '@/components/portfolio/DemoPreviewModal'
 
-/* ==========================================================================
-   HERO INTERACTIVE VIEWPORT (Manual concept switcher, zero fake functionality)
-   ========================================================================== */
-
-interface HeroPreviewTab {
-  id: string
-  label: string
-  industry: string
-  title: string
-  url: string
-  image: string
-  conceptBadge: string
-  conceptDetail: string
+/**
+ * Official WhatsApp SVG Icon (24x24)
+ */
+function WhatsAppIcon({ className = 'w-5 h-5' }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
+      <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2ZM12.05 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.15 12.04 20.15C10.56 20.15 9.11 19.76 7.85 19.01L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.3C4.24 14.99 3.8 13.47 3.8 11.91C3.81 7.37 7.5 3.67 12.05 3.67ZM8.53 7.33C8.37 7.33 8.1 7.39 7.87 7.64C7.65 7.89 7.02 8.48 7.02 9.7C7.02 10.92 7.91 12.09 8.03 12.25C8.16 12.41 9.77 14.9 12.25 15.96C12.84 16.22 13.3 16.37 13.66 16.48C14.25 16.67 14.79 16.64 15.22 16.58C15.7 16.51 16.69 15.98 16.9 15.39C17.11 14.8 17.11 14.3 17.05 14.19C16.99 14.09 16.82 14.03 16.57 13.91C16.32 13.78 15.09 13.17 14.86 13.09C14.64 13 14.47 12.96 14.31 13.21C14.14 13.45 13.66 14.03 13.52 14.19C13.37 14.35 13.23 14.37 12.98 14.25C12.73 14.12 11.92 13.86 10.96 13.01C10.22 12.35 9.71 11.53 9.57 11.28C9.42 11.04 9.55 10.9 9.68 10.78C9.79 10.67 9.93 10.49 10.05 10.35C10.18 10.2 10.22 10.1 10.3 9.94C10.39 9.77 10.34 9.63 10.28 9.51C10.22 9.38 9.73 8.18 9.52 7.68C9.32 7.19 9.12 7.26 8.97 7.25C8.83 7.24 8.68 7.24 8.53 7.24V7.33Z" />
+    </svg>
+  )
 }
 
-const heroPreviewTabs: HeroPreviewTab[] = [
-  {
-    id: 'dining',
-    label: 'Dining',
-    industry: 'Hospitality',
-    title: 'The Table — Contemporary Bistronomy',
-    url: 'thetable.in',
-    image: '/images/hero/hero-food.jpg',
-    conceptBadge: 'Concept Interface',
-    conceptDetail: 'Seasonal tasting menu layout & table reservation flow',
-  },
-  {
-    id: 'resort',
-    label: 'Resort',
-    industry: 'Boutique Travel',
-    title: 'The Grand Retreat — Forest Sanctuary',
-    url: 'grandretreat.com',
-    image: '/images/hero/hero-resort.jpg',
-    conceptBadge: 'Concept Interface',
-    conceptDetail: 'Private villa showcase & experiential reservation layout',
-  },
-  {
-    id: 'fleet',
-    label: 'Automotive',
-    industry: 'Car Rental',
-    title: 'A-Z Self Drive — Premium Fleet Portal',
-    url: 'azselfdrive.com',
-    image: '/images/hero/hero-car.jpg',
-    conceptBadge: 'Concept Interface',
-    conceptDetail: 'Automotive fleet catalog & vehicle booking architecture',
-  },
-]
+/* ==========================================================================
+   HERO COMPACT MULTI-DEVICE COMPOSITION
+   ========================================================================== */
 
-function HeroViewport() {
-  const [activeTab, setActiveTab] = useState<string>('dining')
-  const current = heroPreviewTabs.find((t) => t.id === activeTab) || heroPreviewTabs[0]
-
+function HeroMultiDeviceComposition() {
   return (
-    <div className="relative w-full rounded-2xl overflow-hidden shadow-2xl border border-midnight/15 bg-midnight text-white">
-      {/* Browser Chrome Header */}
-      <div className="flex items-center justify-between px-4 py-3 bg-midnight-light border-b border-white/10">
-        <div className="flex items-center gap-2">
-          <div className="flex gap-1.5" aria-hidden="true">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#FF5F57]/80" />
-            <span className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]/80" />
-            <span className="w-2.5 h-2.5 rounded-full bg-[#28CA42]/80" />
+    <div className="relative w-full max-w-xl mx-auto lg:max-w-none select-none">
+      {/* 1. Desktop Screen: Professional Web & Software Platform */}
+      <div className="relative rounded-2xl overflow-hidden shadow-xl border border-midnight/15 bg-midnight text-white">
+        {/* Browser Top Chrome */}
+        <div className="flex items-center justify-between px-3.5 py-2.5 bg-midnight-light border-b border-white/10">
+          <div className="flex items-center gap-2">
+            <div className="flex gap-1.5" aria-hidden="true">
+              <span className="w-2.5 h-2.5 rounded-full bg-[#FF5F57]/80" />
+              <span className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]/80" />
+              <span className="w-2.5 h-2.5 rounded-full bg-[#28CA42]/80" />
+            </div>
+            <div className="ml-2 px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-mono text-white/70 flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+              sindeeinfotech.com/showcase
+            </div>
           </div>
-          <div className="ml-3 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-[11px] font-mono text-white/70">
-            https://{current.url}
-          </div>
+          <span className="text-[9px] uppercase tracking-widest font-mono text-lime bg-lime/10 px-2 py-0.5 rounded-full font-semibold">
+            Digital Products
+          </span>
         </div>
-        <span className="text-[10px] uppercase tracking-widest font-mono text-lime bg-lime/10 px-2.5 py-0.5 rounded-full">
-          Design Concept
-        </span>
-      </div>
 
-      {/* Screen Canvas */}
-      <div className="relative aspect-[16/10] w-full overflow-hidden bg-midnight">
-        <img
-          key={current.id}
-          src={current.image}
-          alt={`${current.title} - ${current.conceptDetail}`}
-          className="w-full h-full object-cover transition-opacity duration-300"
-          loading="eager"
-        />
-        {/* Subtle Dark Vignette for text legibility */}
-        <div className="absolute inset-0 bg-gradient-to-t from-midnight via-midnight/40 to-transparent pointer-events-none" />
-
-        {/* Viewport Concept Meta Overlay */}
-        <div className="absolute bottom-4 left-4 right-4 sm:bottom-5 sm:left-5 sm:right-5 pointer-events-none">
-          <div className="bg-midnight/90 backdrop-blur-md px-4 py-3 rounded-xl border border-white/15 max-w-sm">
-            <span className="text-[10px] font-mono uppercase tracking-widest text-lime block mb-1">
-              {current.industry} • {current.conceptBadge}
+        {/* Desktop Interface Content */}
+        <div className="p-4 sm:p-5 bg-gradient-to-br from-midnight via-midnight-light to-[#0e1726] space-y-3.5">
+          {/* Header bar inside mock */}
+          <div className="flex items-center justify-between border-b border-white/10 pb-3">
+            <div className="flex items-center gap-2">
+              <div className="w-5 h-5 rounded bg-lime text-midnight font-bold flex items-center justify-center text-[10px]">
+                S
+              </div>
+              <span className="font-bold text-xs tracking-tight text-white">
+                Enterprise Cloud Platform
+              </span>
+            </div>
+            <span className="text-[9px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
+              ● Systems Live
             </span>
-            <p className="text-sm font-bold text-white leading-snug">
-              {current.title}
-            </p>
-            <p className="text-[11px] text-white/70 mt-1">
-              {current.conceptDetail}
-            </p>
+          </div>
+
+          {/* Metric Cards Row */}
+          <div className="grid grid-cols-3 gap-2 sm:gap-2.5">
+            <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
+              <span className="text-[9px] font-mono uppercase text-muted-light block">Workflows</span>
+              <span className="text-sm sm:text-base font-bold text-white mt-0.5 block">1,400+</span>
+              <span className="text-[9px] text-emerald-400 font-medium">↑ Real-time</span>
+            </div>
+            <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
+              <span className="text-[9px] font-mono uppercase text-muted-light block">Uptime</span>
+              <span className="text-sm sm:text-base font-bold text-lime mt-0.5 block">99.98%</span>
+              <span className="text-[9px] text-white/60 font-medium">Reliable</span>
+            </div>
+            <div className="p-2.5 rounded-xl bg-white/5 border border-white/10">
+              <span className="text-[9px] font-mono uppercase text-muted-light block">Latency</span>
+              <span className="text-sm sm:text-base font-bold text-white mt-0.5 block">18ms</span>
+              <span className="text-[9px] text-emerald-400 font-medium">Optimized</span>
+            </div>
+          </div>
+
+          {/* Interactive Flow Bar */}
+          <div className="p-3 rounded-xl bg-white/5 border border-white/10 space-y-2">
+            <div className="flex items-center justify-between text-[11px]">
+              <span className="font-medium text-white/90">Software Architecture Throughput</span>
+              <span className="font-mono text-[9px] text-muted-light">Scalable APIs</span>
+            </div>
+            <div className="space-y-1.5 pt-0.5">
+              <div className="flex items-center gap-2">
+                <span className="text-[9px] font-mono text-white/60 w-20 truncate">Web &amp; SaaS</span>
+                <div className="flex-1 h-1.5 rounded-full bg-white/10 overflow-hidden">
+                  <div className="h-full bg-lime rounded-full w-[95%]" />
+                </div>
+                <span className="text-[9px] font-mono text-lime font-bold">95%</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-[9px] font-mono text-white/60 w-20 truncate">Android Apps</span>
+                <div className="flex-1 h-1.5 rounded-full bg-white/10 overflow-hidden">
+                  <div className="h-full bg-emerald-400 rounded-full w-[90%]" />
+                </div>
+                <span className="text-[9px] font-mono text-emerald-400 font-bold">90%</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Concept Switcher Controls (Manual, Accessible) */}
-      <div className="px-4 py-3 bg-midnight-light border-t border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
-        <span className="text-[11px] font-mono text-muted-light">
-          Switch Design Concept:
-        </span>
-        <div className="flex items-center gap-1.5 w-full sm:w-auto" role="tablist" aria-label="Hero Concept Previews">
-          {heroPreviewTabs.map((tab) => (
-            <button
-              key={tab.id}
-              type="button"
-              role="tab"
-              aria-selected={activeTab === tab.id}
-              aria-label={`Show ${tab.label} website concept`}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex-1 sm:flex-none px-3.5 py-1.5 rounded-full text-xs font-medium transition-all duration-200 cursor-pointer ${
-                activeTab === tab.id
-                  ? 'bg-lime text-midnight font-semibold shadow-sm'
-                  : 'bg-white/5 text-white/70 hover:bg-white/10 hover:text-white'
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
+      {/* 2. Floating Smartphone Frame: Native Android Application */}
+      <div className="absolute -bottom-4 right-1 sm:-bottom-6 sm:-right-3 md:-bottom-7 md:-right-4 w-36 sm:w-44 md:w-48 rounded-2xl p-2 bg-midnight border border-white/20 shadow-2xl backdrop-blur-xl z-20">
+        <div className="w-10 sm:w-12 h-2 bg-white/10 rounded-full mx-auto mb-1.5" />
+        <div className="rounded-xl bg-midnight-light p-2.5 border border-white/10 space-y-1.5 text-white">
+          <div className="flex items-center justify-between text-[8px] font-mono text-muted-light pb-1 border-b border-white/10">
+            <span>Android App</span>
+            <span className="text-lime font-bold">5G ● Active</span>
+          </div>
+          <div className="p-1.5 rounded-lg bg-white/5 border border-white/10 space-y-0.5">
+            <span className="text-[8px] font-mono uppercase text-lime block font-semibold">Mobile Solutions</span>
+            <p className="text-[10px] font-bold text-white leading-tight">Instant Sync &amp; Push</p>
+          </div>
+          <div className="flex items-center justify-between pt-0.5">
+            <span className="text-[8px] font-bold text-white">Cloud Synced</span>
+            <span className="px-1.5 py-0.2 rounded-full bg-lime text-midnight text-[8px] font-bold">Verified</span>
+          </div>
         </div>
       </div>
     </div>
@@ -135,67 +146,68 @@ function HeroViewport() {
 }
 
 /* ==========================================================================
-   SECTION 1: HERO
+   SECTION 1: HERO (Compact Viewport Fitting & Balanced Typography)
    ========================================================================== */
 
 function HeroSection() {
   return (
-    <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 bg-warm-ivory border-b border-border/70 overflow-hidden">
+    <section className="relative pt-8 pb-12 sm:pt-10 sm:pb-14 lg:pt-12 lg:pb-16 bg-warm-ivory border-b border-border/70 overflow-hidden">
       <div className="container-main">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-12 items-center">
           {/* Left Column: Headline and Positioning */}
-          <div className="lg:col-span-6 space-y-6 md:space-y-7">
-            {/* Agency Status Kicker */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-midnight/5 border border-midnight/10 text-midnight text-xs font-semibold tracking-wider uppercase">
-              <span className="w-2 h-2 rounded-full bg-lime animate-pulse" aria-hidden="true" />
-              Specialist Web Design & Development Agency
+          <div className="lg:col-span-7 xl:col-span-7 space-y-5">
+            {/* Status Kicker */}
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-midnight/5 border border-midnight/10 text-midnight text-[11px] sm:text-xs font-semibold tracking-wider uppercase">
+              <span className="w-2 h-2 rounded-full bg-lime animate-pulse shrink-0" aria-hidden="true" />
+              <span>Digital Product &amp; Software Development</span>
             </div>
 
-            {/* Approved Headline */}
-            <h1 className="text-display text-midnight tracking-tight max-w-2xl">
-              We make businesses impossible to{' '}
-              <span className="underline decoration-lime decoration-4 underline-offset-8">overlook</span>.
+            {/* Headline */}
+            <h1 className="text-[2rem] sm:text-[2.4rem] md:text-[2.75rem] lg:text-[2.5rem] xl:text-[2.85rem] font-extrabold text-midnight tracking-tight leading-[1.14] max-w-2xl">
+              We Build Digital Products{' '}
+              <br className="hidden sm:inline" />
+              That Move Businesses Forward.
             </h1>
 
-            {/* Approved Supporting Copy */}
-            <p className="text-body-large text-muted-dark max-w-xl leading-relaxed">
-              We design and develop high-quality websites that help businesses build trust, attract customers and grow online.
+            {/* Supporting Copy */}
+            <p className="text-sm sm:text-base md:text-lg text-muted-dark max-w-xl leading-relaxed">
+              From professional websites and custom software to Android applications, we turn business ideas into powerful digital experiences.
             </p>
 
             {/* Call to Actions */}
-            <div className="flex flex-wrap items-center gap-4 pt-2">
+            <div className="flex flex-wrap items-center gap-3.5 pt-1">
               <Button to="/contact" variant="primary">
                 Start a Project
               </Button>
               <a
-                href="#selected-work"
-                className="inline-flex items-center gap-2 px-6 py-3.5 text-[0.9375rem] font-semibold text-midnight hover:text-lime-dark transition-colors"
+                href="#our-work"
+                className="inline-flex items-center gap-2 px-4 py-3 text-sm font-semibold text-midnight hover:text-lime-dark transition-colors"
               >
                 <span>Explore Our Work</span>
                 <ArrowRight className="w-4 h-4" />
               </a>
             </div>
 
-            {/* Hallmarks */}
-            <div className="pt-4 border-t border-border/80 flex flex-wrap items-center gap-y-2 gap-x-6 text-xs text-muted-dark font-medium">
+            {/* Capabilities Summary Strip */}
+            <div className="pt-4 border-t border-border/70 flex flex-wrap items-center gap-y-2 gap-x-5 text-xs text-muted-dark font-medium">
               <div className="flex items-center gap-1.5">
-                <Check className="w-3.5 h-3.5 text-midnight shrink-0" />
-                <span>Bespoke Design</span>
+                <CheckCircle2 className="w-3.5 h-3.5 text-midnight shrink-0" />
+                <span>Websites &amp; E-commerce</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <Check className="w-3.5 h-3.5 text-midnight shrink-0" />
-                <span>Mobile-First Engineering</span>
+                <CheckCircle2 className="w-3.5 h-3.5 text-midnight shrink-0" />
+                <span>Web &amp; Custom Software</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <Check className="w-3.5 h-3.5 text-midnight shrink-0" />
-                <span>Transparent Scope</span>
+                <CheckCircle2 className="w-3.5 h-3.5 text-midnight shrink-0" />
+                <span>Android Applications</span>
               </div>
             </div>
           </div>
 
-          {/* Right Column: Hero Concept Viewport */}
-          <div className="lg:col-span-6">
-            <HeroViewport />
+          {/* Right Column: Hero Compact Multi-Device Composition */}
+          <div className="lg:col-span-5 xl:col-span-5">
+            <HeroMultiDeviceComposition />
           </div>
         </div>
       </div>
@@ -204,526 +216,103 @@ function HeroSection() {
 }
 
 /* ==========================================================================
-   SECTION 2: POSITIONING STRIP (Single Manifesto + Seamless Marquee)
-   ========================================================================== */
-
-function PositioningStrip() {
-  return (
-    <section className="bg-white border-b border-border overflow-hidden">
-      {/* Manifesto Statement */}
-      <div className="container-main py-6">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <p className="text-sm md:text-base font-semibold text-midnight tracking-tight">
-            Digital experiences built around real business goals.
-          </p>
-          <div className="flex flex-wrap items-center gap-3 sm:gap-6 text-label text-muted">
-            <span className="font-semibold text-midnight">Strategy</span>
-            <span className="w-1 h-1 rounded-full bg-border" aria-hidden="true" />
-            <span className="font-semibold text-midnight">Design</span>
-            <span className="w-1 h-1 rounded-full bg-border" aria-hidden="true" />
-            <span className="font-semibold text-midnight">Development</span>
-            <span className="w-1 h-1 rounded-full bg-border" aria-hidden="true" />
-            <span className="font-semibold text-midnight">Optimisation</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Seamless Marquee Ribbon */}
-      <div className="bg-midnight text-white py-3 border-t border-border/20 overflow-hidden select-none">
-        <div className="flex w-max animate-marquee">
-          {/* First Marquee Stream */}
-          <div className="flex items-center gap-8 text-xs font-mono tracking-widest uppercase text-muted-light pr-8 shrink-0">
-            <span>SINDEE INFOTECH</span>
-            <span className="text-lime" aria-hidden="true">✦</span>
-            <span>SPECIALIST WEB DESIGN & DEVELOPMENT</span>
-            <span className="text-lime" aria-hidden="true">✦</span>
-            <span>CRAFTED WITH PURPOSE</span>
-            <span className="text-lime" aria-hidden="true">✦</span>
-            <span>BUILT FOR REAL BUSINESSES</span>
-            <span className="text-lime" aria-hidden="true">✦</span>
-            <span>MODERN CODING STANDARDS</span>
-            <span className="text-lime" aria-hidden="true">✦</span>
-          </div>
-          {/* Second Duplicate Stream for Seamless Infinite Loop */}
-          <div className="flex items-center gap-8 text-xs font-mono tracking-widest uppercase text-muted-light pr-8 shrink-0" aria-hidden="true">
-            <span>SINDEE INFOTECH</span>
-            <span className="text-lime">✦</span>
-            <span>SPECIALIST WEB DESIGN & DEVELOPMENT</span>
-            <span className="text-lime">✦</span>
-            <span>CRAFTED WITH PURPOSE</span>
-            <span className="text-lime">✦</span>
-            <span>BUILT FOR REAL BUSINESSES</span>
-            <span className="text-lime">✦</span>
-            <span>MODERN CODING STANDARDS</span>
-            <span className="text-lime">✦</span>
-          </div>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-/* ==========================================================================
-   SECTION 3: SERVICES (Editorial Catalogue Layout)
+   SECTION 2: OUR SERVICES (4 Compact Core Service Cards)
    ========================================================================== */
 
 function ServicesSection() {
-  const topServices = services.slice(0, 4)
-
-  const serviceIndustryFits: Record<string, string[]> = {
-    'business-websites': ['Restaurants & Cafes', 'Healthcare & Clinics', 'Boutique Hotels', 'Local Services'],
-    ecommerce: ['Retail Businesses', 'Artisan Brands', 'Apparel & Goods', 'Specialty Products'],
-    'website-redesign': ['Outdated Web Presences', 'Low-Conversion Sites', 'Rebranding Companies'],
-    'custom-solutions': ['Booking Workflows', 'Client Portals', 'API Integrations', 'Custom Dashboards'],
-  }
-
-  return (
-    <section className="bg-warm-ivory section-padding border-b border-border">
-      <div className="container-main">
-        {/* Section Header */}
-        <div className="max-w-3xl mb-14 md:mb-18">
-          <p className="text-label text-muted mb-3">Our Core Services</p>
-          <h2 className="text-heading-1 text-midnight">
-            Good design gets attention. Good websites create opportunities.
-          </h2>
-          <p className="text-body-large text-muted-dark mt-4">
-            We focus on purpose-driven web design and clean engineering that make your business look credible, accessible, and ready to convert visitors.
-          </p>
-        </div>
-
-        {/* Editorial Service Catalogue Rows */}
-        <div className="divide-y divide-border border-y border-border">
-          {topServices.map((service) => (
-            <div
-              key={service.id}
-              className="py-10 md:py-14 transition-colors duration-200 hover:bg-white/60 -mx-4 px-4 sm:-mx-6 sm:px-6 rounded-2xl group"
-            >
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-                {/* Service Information */}
-                <div className="lg:col-span-7 space-y-4">
-                  <div className="flex items-center gap-3">
-                    <span className="font-mono text-xs font-bold text-lime-dark bg-midnight px-2.5 py-1 rounded">
-                      {service.number}
-                    </span>
-                    <span className="text-xs uppercase tracking-wider font-semibold text-muted">
-                      Specialist Service
-                    </span>
-                  </div>
-
-                  <h3 className="text-heading-2 text-midnight group-hover:text-midnight transition-colors">
-                    {service.title}
-                  </h3>
-
-                  <p className="text-body text-muted-dark leading-relaxed max-w-2xl">
-                    {service.description}
-                  </p>
-
-                  {/* Suitable Profile Tags */}
-                  <div className="pt-2 flex flex-wrap gap-2">
-                    {serviceIndustryFits[service.id]?.map((tag) => (
-                      <span
-                        key={tag}
-                        className="px-2.5 py-1 rounded-md bg-warm-ivory text-midnight/80 text-xs font-medium border border-border/80"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Direct Link */}
-                  <div className="pt-2">
-                    <Link
-                      to={`/services#${service.slug}`}
-                      className="inline-flex items-center gap-2 text-sm font-semibold text-midnight group-hover:text-lime-dark transition-colors"
-                    >
-                      <span>Explore Deliverables & Scope</span>
-                      <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                    </Link>
-                  </div>
-                </div>
-
-                {/* Service Preview Image */}
-                <div className="lg:col-span-5 flex justify-start lg:justify-end">
-                  <div className="relative w-full max-w-md h-48 sm:h-56 rounded-2xl overflow-hidden border border-border bg-midnight shadow-md">
-                    <img
-                      src={service.image}
-                      alt={`${service.title} preview showcase`}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-midnight/80 via-transparent to-transparent flex items-end p-4">
-                      <span className="text-xs font-mono text-white/90">
-                        Capability // {service.title}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* View All Services Button */}
-        <div className="mt-12 text-center">
-          <Button to="/services" variant="secondary">
-            View All Services & Deliverables
-          </Button>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-/* ==========================================================================
-   SECTION 4: SELECTED WORK (Visual Centrepiece — Explicit Slug-Based Lookups)
-   ========================================================================== */
-
-function WorkSection() {
-  // Explicit slug-based lookups to guarantee correct mapping
-  const grandRetreat = projects.find((p) => p.slug === 'the-grand-retreat')
-  const theTable = projects.find((p) => p.slug === 'the-table')
-  const azSelfDrive = projects.find((p) => p.slug === 'az-self-drive')
-  const carePoint = projects.find((p) => p.slug === 'carepoint-clinic')
-
-  return (
-    <section id="selected-work" className="bg-midnight text-white section-padding">
-      <div className="container-main">
-        {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-          <div className="max-w-2xl">
-            <p className="text-label text-lime mb-3">Portfolio Highlights</p>
-            <h2 className="text-heading-1 text-white">Work that speaks for itself.</h2>
-            <p className="text-body-large text-muted-light mt-4">
-              Original design concepts developed to showcase industry-specific aesthetics, user journeys, and technical craftsmanship.
-            </p>
-          </div>
-          <div className="self-start md:self-end">
-            <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/20 text-xs font-mono uppercase tracking-wider text-muted-light">
-              <span className="w-1.5 h-1.5 rounded-full bg-lime" aria-hidden="true" />
-              All Projects Labelled Concept Project
-            </span>
-          </div>
-        </div>
-
-        {/* Distinct Editorial Showcases */}
-        <div className="space-y-12">
-          {/* Project 01: The Grand Retreat (Quiet Luxury, Hospitality) */}
-          {grandRetreat && (
-            <article className="group bg-midnight-light rounded-3xl overflow-hidden border border-white/10 hover:border-lime/40 transition-all duration-500">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch">
-                <div className="lg:col-span-7 relative min-h-[300px] sm:min-h-[440px] overflow-hidden bg-black">
-                  <img
-                    src={grandRetreat.image}
-                    alt={`${grandRetreat.title} luxury resort concept showcase`}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-midnight-light via-transparent to-black/30" />
-                  <div className="absolute top-5 left-5 z-10">
-                    <span className="px-3.5 py-1.5 bg-lime text-midnight text-xs font-bold rounded-full uppercase tracking-wider shadow">
-                      Concept Project
-                    </span>
-                  </div>
-                </div>
-
-                <div className="lg:col-span-5 p-8 sm:p-10 md:p-12 flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center justify-between text-xs font-mono text-muted-light uppercase tracking-wider mb-4">
-                      <span>01</span>
-                      <span>{grandRetreat.industry}</span>
-                    </div>
-
-                    <h3 className="text-heading-1 text-white group-hover:text-lime transition-colors">
-                      {grandRetreat.title}
-                    </h3>
-                    <p className="text-sm font-medium text-lime/90 mt-1">
-                      {grandRetreat.category}
-                    </p>
-
-                    <p className="text-body text-muted-light mt-4 leading-relaxed">
-                      {grandRetreat.description}
-                    </p>
-
-                    <div className="pt-6 mt-6 border-t border-white/10 flex flex-wrap gap-2 text-xs text-white/80">
-                      <span className="px-2.5 py-1 rounded bg-white/5 border border-white/10">Resort Villa Showcase</span>
-                      <span className="px-2.5 py-1 rounded bg-white/5 border border-white/10">Serene Information Architecture</span>
-                      <span className="px-2.5 py-1 rounded bg-white/5 border border-white/10">Reservation Enquiries</span>
-                    </div>
-                  </div>
-
-                  <div className="pt-8 mt-8 border-t border-white/10">
-                    <Link
-                      to={`/portfolio/${grandRetreat.slug}`}
-                      className="inline-flex items-center gap-2 text-sm font-bold text-lime hover:underline"
-                    >
-                      <span>View Concept</span>
-                      <ArrowUpRight className="w-4 h-4" />
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </article>
-          )}
-
-          {/* Asymmetric Pair: The Table (Food-Led) & A-Z Self Drive (Automotive) */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
-            {/* Project 02: The Table */}
-            {theTable && (
-              <article className="lg:col-span-6 group bg-midnight-light rounded-3xl overflow-hidden border border-white/10 hover:border-lime/40 transition-all duration-500 flex flex-col justify-between">
-                <div>
-                  <div className="relative h-64 sm:h-72 overflow-hidden bg-black">
-                    <img
-                      src={theTable.image}
-                      alt={`${theTable.title} restaurant dining concept`}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-midnight-light via-transparent to-black/30" />
-                    <div className="absolute top-4 left-4 z-10">
-                      <span className="px-3.5 py-1.5 bg-lime text-midnight text-xs font-bold rounded-full uppercase tracking-wider shadow">
-                        Concept Project
-                      </span>
-                    </div>
-                    <div className="absolute bottom-4 left-4 z-10 flex items-center gap-2 bg-midnight/80 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 text-xs">
-                      <Utensils className="w-3.5 h-3.5 text-[#e27d60]" />
-                      <span className="font-serif italic text-white/90">Contemporary Dining UI</span>
-                    </div>
-                  </div>
-
-                  <div className="p-8">
-                    <div className="flex items-center justify-between text-xs font-mono text-muted-light uppercase tracking-wider mb-3">
-                      <span>02</span>
-                      <span>{theTable.industry}</span>
-                    </div>
-
-                    <h3 className="text-heading-2 text-white group-hover:text-lime transition-colors">
-                      {theTable.title}
-                    </h3>
-                    <p className="text-xs font-medium text-amber-400/90 mt-1">
-                      {theTable.category}
-                    </p>
-                    <p className="text-body text-muted-light mt-3 leading-relaxed">
-                      {theTable.description}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="p-8 pt-0">
-                  <div className="pt-6 border-t border-white/10 flex items-center justify-between">
-                    <span className="text-xs text-white/60">Digital Menu & Table Enquiries</span>
-                    <Link
-                      to={`/portfolio/${theTable.slug}`}
-                      className="inline-flex items-center gap-1.5 text-sm font-bold text-lime hover:underline"
-                    >
-                      <span>View Concept</span>
-                      <ArrowUpRight className="w-4 h-4" />
-                    </Link>
-                  </div>
-                </div>
-              </article>
-            )}
-
-            {/* Project 03: A-Z Self Drive */}
-            {azSelfDrive && (
-              <article className="lg:col-span-6 group bg-midnight-light rounded-3xl overflow-hidden border border-white/10 hover:border-lime/40 transition-all duration-500 flex flex-col justify-between">
-                <div>
-                  <div className="relative h-64 sm:h-72 overflow-hidden bg-black">
-                    <img
-                      src={azSelfDrive.image}
-                      alt={`${azSelfDrive.title} car rental vehicle fleet`}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-midnight-light via-transparent to-black/30" />
-                    <div className="absolute top-4 left-4 z-10">
-                      <span className="px-3.5 py-1.5 bg-lime text-midnight text-xs font-bold rounded-full uppercase tracking-wider shadow">
-                        Concept Project
-                      </span>
-                    </div>
-                    <div className="absolute bottom-4 left-4 z-10 flex items-center gap-2 bg-midnight/80 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 text-xs">
-                      <Car className="w-3.5 h-3.5 text-lime" />
-                      <span className="font-mono text-white/90">Automotive Fleet UI</span>
-                    </div>
-                  </div>
-
-                  <div className="p-8">
-                    <div className="flex items-center justify-between text-xs font-mono text-muted-light uppercase tracking-wider mb-3">
-                      <span>03</span>
-                      <span>{azSelfDrive.industry}</span>
-                    </div>
-
-                    <h3 className="text-heading-2 text-white group-hover:text-lime transition-colors">
-                      {azSelfDrive.title}
-                    </h3>
-                    <p className="text-xs font-medium text-indigo-400/90 mt-1">
-                      {azSelfDrive.category}
-                    </p>
-                    <p className="text-body text-muted-light mt-3 leading-relaxed">
-                      {azSelfDrive.description}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="p-8 pt-0">
-                  <div className="pt-6 border-t border-white/10 flex items-center justify-between">
-                    <span className="text-xs text-white/60">Fleet Showcase & Booking</span>
-                    <Link
-                      to={`/portfolio/${azSelfDrive.slug}`}
-                      className="inline-flex items-center gap-1.5 text-sm font-bold text-lime hover:underline"
-                    >
-                      <span>View Concept</span>
-                      <ArrowUpRight className="w-4 h-4" />
-                    </Link>
-                  </div>
-                </div>
-              </article>
-            )}
-          </div>
-
-          {/* Project 04: CarePoint Clinic (Reassuring Healthcare) */}
-          {carePoint && (
-            <article className="group bg-midnight-light rounded-3xl overflow-hidden border border-white/10 hover:border-lime/40 transition-all duration-500">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 items-center">
-                <div className="lg:col-span-6 p-8 sm:p-10 md:p-12 flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center justify-between text-xs font-mono text-muted-light uppercase tracking-wider mb-4">
-                      <span>04</span>
-                      <span>{carePoint.industry}</span>
-                    </div>
-
-                    <h3 className="text-heading-2 text-white group-hover:text-lime transition-colors">
-                      {carePoint.title}
-                    </h3>
-                    <p className="text-sm font-medium text-cyan-400 mt-1">
-                      {carePoint.category}
-                    </p>
-
-                    <p className="text-body text-muted-light mt-4 leading-relaxed">
-                      {carePoint.description}
-                    </p>
-
-                    <div className="pt-6 mt-6 border-t border-white/10 flex flex-wrap gap-2 text-xs text-white/80">
-                      <span className="px-2.5 py-1 rounded bg-white/5 border border-white/10">Doctor Profiles</span>
-                      <span className="px-2.5 py-1 rounded bg-white/5 border border-white/10">Appointment Enquiries</span>
-                      <span className="px-2.5 py-1 rounded bg-white/5 border border-white/10">Clinical Information Architecture</span>
-                    </div>
-                  </div>
-
-                  <div className="pt-8 mt-8 border-t border-white/10">
-                    <Link
-                      to={`/portfolio/${carePoint.slug}`}
-                      className="inline-flex items-center gap-2 text-sm font-bold text-lime hover:underline"
-                    >
-                      <span>View Concept</span>
-                      <ArrowUpRight className="w-4 h-4" />
-                    </Link>
-                  </div>
-                </div>
-
-                <div className="lg:col-span-6 relative min-h-[260px] sm:min-h-[360px] overflow-hidden bg-black">
-                  <img
-                    src={carePoint.image}
-                    alt={`${carePoint.title} clinic healthcare concept`}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-r from-midnight-light via-transparent to-transparent hidden lg:block" />
-                  <div className="absolute top-5 right-5 z-10">
-                    <span className="px-3.5 py-1.5 bg-lime text-midnight text-xs font-bold rounded-full uppercase tracking-wider shadow">
-                      Concept Project
-                    </span>
-                  </div>
-                  <div className="absolute bottom-4 left-4 z-10 flex items-center gap-2 bg-midnight/80 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 text-xs">
-                    <Stethoscope className="w-3.5 h-3.5 text-cyan-300" />
-                    <span className="font-sans text-white/90">Healthcare Architecture</span>
-                  </div>
-                </div>
-              </div>
-            </article>
-          )}
-        </div>
-
-        {/* Transparency Standard Notice */}
-        <div className="mt-14 p-6 sm:p-8 rounded-2xl bg-white/5 border border-white/10 text-center max-w-2xl mx-auto">
-          <p className="text-xs font-mono uppercase tracking-widest text-lime mb-2">Transparency Standard</p>
-          <p className="text-sm text-muted-light leading-relaxed">
-            All projects shown above are original design concepts created to demonstrate our technical approach, visual standards, and industry architectures. We do not publish fictional reviews, client claims, or fabricated commercial statistics.
-          </p>
-        </div>
-
-        {/* View All Work Action */}
-        <div className="mt-10 text-center">
-          <Button to="/portfolio" variant="primary">
-            Explore All Concept Projects
-          </Button>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-/* ==========================================================================
-   SECTION 5: WHY SINDEE INFOTECH (Architectural 4-Cell Matrix)
-   ========================================================================== */
-
-function WhyUsSection() {
-  const differentiators = [
+  const coreServices = [
     {
-      num: '01',
-      title: 'Designed with purpose',
-      desc: 'Every layout, typography decision and user journey starts with understanding your commercial goals and customer mindset. We design websites to solve problems, not just fill space.',
+      id: 'website-development',
+      number: '01',
+      title: 'Website Development',
+      description:
+        'Professional, responsive corporate websites, business landing pages, and e-commerce platforms engineered for growth.',
+      icon: Globe,
+      slug: 'website-development',
     },
     {
-      num: '02',
-      title: 'Built for real people',
-      desc: 'Easy navigation, responsive layouts and clear information hierarchy. Your visitors should find what they need quickly on any device and enjoy the experience.',
+      id: 'custom-software',
+      number: '02',
+      title: 'Web & Custom Software Development',
+      description:
+        'Tailored web applications, SaaS platforms, internal business portals, and intelligent workflow automation systems.',
+      icon: Layers,
+      slug: 'web-applications',
     },
     {
-      num: '03',
-      title: 'Engineered for performance',
-      desc: 'Clean, modern code and optimized assets for fast loading. We avoid bloated builders and unnecessary plugins that slow your site down and hurt search rankings.',
+      id: 'android-apps',
+      number: '03',
+      title: 'Android App Development',
+      description:
+        'Native and cross-platform Android mobile applications designed for seamless user experience and business operations.',
+      icon: Smartphone,
+      slug: 'android-apps',
     },
     {
-      num: '04',
-      title: 'Partnership beyond launch',
-      desc: 'Direct collaboration and reliable technical assistance as your digital presence evolves. We guide you through setup and remain accessible after your site goes live.',
+      id: 'branding-marketing',
+      number: '04',
+      title: 'Branding & Digital Marketing',
+      description:
+        'Strategic visual identity, UI/UX systems, search engine optimization (SEO), and conversion-driven digital marketing.',
+      icon: Palette,
+      slug: 'branding-design',
     },
   ]
 
   return (
-    <section className="bg-warm-ivory section-padding border-b border-border">
+    <section className="bg-warm-ivory py-12 md:py-16 border-b border-border">
       <div className="container-main">
-        {/* Header */}
-        <div className="max-w-3xl mb-14 md:mb-18">
-          <p className="text-label text-muted mb-3">Our Standards</p>
+        {/* Section Header */}
+        <div className="max-w-2xl mb-8 md:mb-10">
+          <p className="text-label text-muted mb-2">Our Capabilities</p>
           <h2 className="text-heading-1 text-midnight">
-            Not just another website. A better way to present your business.
+            Our Services
           </h2>
-          <p className="text-body-large text-muted-dark mt-4">
-            Most businesses end up with generic templates that fail to engage customers. We combine design clarity and solid code to build websites that command respect.
+          <p className="text-body text-muted-dark mt-2">
+            Comprehensive digital solutions designed to help your business establish, innovate and scale online.
           </p>
         </div>
 
-        {/* Architectural 4-Cell Blueprint Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-          {differentiators.map((diff) => (
-            <div
-              key={diff.num}
-              className="bg-white rounded-2xl p-8 md:p-10 border border-border hover:border-midnight/30 transition-all duration-200 flex flex-col justify-between"
-            >
-              <div>
-                <span className="font-mono text-xs font-bold text-lime-dark bg-warm-ivory px-3 py-1.5 rounded-md inline-block mb-6">
-                  STANDARD // {diff.num}
-                </span>
-                <h3 className="text-heading-3 text-midnight mb-3">
-                  {diff.title}
-                </h3>
-                <p className="text-body text-muted-dark leading-relaxed">
-                  {diff.desc}
-                </p>
+        {/* 4 Compact Service Cards Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6 items-stretch">
+          {coreServices.map((service) => {
+            const Icon = service.icon
+            return (
+              <div
+                key={service.id}
+                className="group bg-white rounded-2xl p-5 sm:p-6 border border-border hover:border-midnight/40 transition-all duration-200 flex flex-col justify-between hover:shadow-md hover:-translate-y-0.5 h-full"
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-3.5">
+                    <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-midnight text-lime flex items-center justify-center group-hover:bg-lime group-hover:text-midnight transition-colors duration-200 shrink-0">
+                      <Icon className="w-5 h-5" />
+                    </div>
+                    <span className="font-mono text-xs font-bold text-muted-dark bg-warm-ivory px-2 py-0.5 rounded">
+                      {service.number}
+                    </span>
+                  </div>
+
+                  <h3 className="text-base sm:text-lg font-bold text-midnight leading-snug min-h-[2.75rem] flex items-center">
+                    {service.title}
+                  </h3>
+
+                  <p className="text-sm text-muted-dark mt-2.5 leading-relaxed">
+                    {service.description}
+                  </p>
+                </div>
+
+                <div className="pt-4 mt-5 border-t border-border/70">
+                  <Link
+                    to={`/services#${service.slug}`}
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-midnight group-hover:text-lime-dark transition-colors"
+                  >
+                    <span>Learn More</span>
+                    <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  </Link>
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
       </div>
     </section>
@@ -731,296 +320,533 @@ function WhyUsSection() {
 }
 
 /* ==========================================================================
-   SECTION 6: OUR PROCESS (Guaranteed Visible Milestone Timeline)
-   Content renders immediately without depending on viewport animation triggers.
+   SECTION 3: OUR WORK (Featured Project: MysticDigits)
+   ========================================================================== */
+
+function OurWorkSection() {
+  const [selectedDemo, setSelectedDemo] = useState<Project | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const mysticDigits = projects.find((p) => p.id === 'mystic-digits') || projects[0]
+
+  const handleOpenDemo = (p: Project) => {
+    setSelectedDemo(p)
+    setIsModalOpen(true)
+  }
+
+  return (
+    <section id="our-work" className="bg-midnight text-white py-12 md:py-18 border-b border-white/10">
+      <div className="container-main">
+        {/* Section Header */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 md:mb-10 gap-4">
+          <div className="max-w-xl">
+            <p className="text-label text-lime mb-2">Featured Project</p>
+            <h2 className="text-heading-1 text-white">Our Work</h2>
+            <p className="text-body text-muted-light mt-2">
+              Explore some of the digital experiences we&apos;ve created.
+            </p>
+          </div>
+          <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/20 text-xs font-mono text-muted-light self-start sm:self-end">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" aria-hidden="true" />
+            Live Production Website
+          </span>
+        </div>
+
+        {/* Featured Live Project Card: MysticDigits */}
+        <article className="rounded-2xl md:rounded-3xl overflow-hidden border border-white/15 bg-midnight-light shadow-2xl">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 items-stretch">
+            {/* Visual Column: Browser Mockup of MysticDigits */}
+            <div className="lg:col-span-7 bg-[#0b1020] p-4 sm:p-7 md:p-8 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-white/10">
+              {/* Browser Window Chrome */}
+              <div className="rounded-xl overflow-hidden border border-white/15 bg-black/60 shadow-xl">
+                <div className="flex items-center justify-between px-3.5 py-2.5 bg-white/5 border-b border-white/10 text-xs">
+                  <div className="flex items-center gap-2">
+                    <div className="flex gap-1.5" aria-hidden="true">
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#FF5F57]" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#28CA42]" />
+                    </div>
+                    <span className="ml-2 font-mono text-white/70 text-[11px] truncate">
+                      https://mysticdigits.in
+                    </span>
+                  </div>
+                  <span className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-mono text-[9px] uppercase font-bold tracking-wider">
+                    ● Live Site
+                  </span>
+                </div>
+
+                {/* Genuine Screenshot / Mockup */}
+                <div className="relative aspect-[16/10] overflow-hidden bg-[#0d1326] group">
+                  <img
+                    src={mysticDigits.image}
+                    alt="MysticDigits personalised Vedic numerology report platform"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0d1326] via-transparent to-transparent opacity-75" />
+                  
+                  <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between">
+                    <div className="bg-black/80 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/15 text-xs text-white">
+                      <span className="font-mono text-[9px] text-amber-300 uppercase tracking-wider block">
+                        Live Web App
+                      </span>
+                      <span className="font-bold text-xs">27-Page Personalised Vedic Report</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Technologies */}
+              <div className="mt-4 flex flex-wrap items-center gap-1.5 text-xs text-muted-light font-mono">
+                <span className="text-white/50 text-[11px] mr-1">Stack:</span>
+                <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-[11px]">Next.js</span>
+                <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-[11px]">React</span>
+                <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-[11px]">Tailwind CSS</span>
+                <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-[11px]">Automated PDF</span>
+              </div>
+            </div>
+
+            {/* Information Column */}
+            <div className="lg:col-span-5 p-5 sm:p-7 md:p-9 flex flex-col justify-between space-y-5">
+              <div>
+                <div className="flex items-center justify-between text-xs font-mono uppercase tracking-wider mb-3">
+                  <span className="px-2.5 py-0.5 rounded-full bg-emerald-500 text-white font-bold text-[10px] tracking-wider flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                    Featured Project
+                  </span>
+                  <span className="text-muted-light text-[11px]">{mysticDigits.industry}</span>
+                </div>
+
+                <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+                  {mysticDigits.title}
+                </h3>
+                <p className="text-xs sm:text-sm font-medium text-lime mt-1">
+                  {mysticDigits.category}
+                </p>
+
+                <p className="text-white/85 text-sm sm:text-base mt-3.5 leading-relaxed">
+                  {mysticDigits.description}
+                </p>
+
+                {/* Highlights */}
+                <div className="mt-5 pt-4 border-t border-white/10 space-y-2.5">
+                  <span className="text-[11px] font-mono uppercase tracking-wider text-lime font-bold block">
+                    Key Features
+                  </span>
+                  <ul className="space-y-2 text-xs sm:text-sm text-white/90">
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-lime shrink-0 mt-1.5" />
+                      <span>27-page custom Vedic numerology report generator.</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-lime shrink-0 mt-1.5" />
+                      <span>Mulank &amp; Bhagyank algorithmic calculation engine.</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-lime shrink-0 mt-1.5" />
+                      <span>Automated digital intake and email report fulfillment.</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="pt-5 border-t border-white/10 flex flex-wrap items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => handleOpenDemo(mysticDigits)}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-lime text-midnight text-xs sm:text-sm font-bold hover:bg-lime-light transition-all duration-200 shadow-md cursor-pointer active:scale-95"
+                >
+                  <Eye className="w-4 h-4" />
+                  <span>View Demo</span>
+                </button>
+
+                <a
+                  href={mysticDigits.url || 'https://mysticdigits.in/'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 text-white text-xs sm:text-sm font-semibold hover:bg-white/20 transition-all duration-200 cursor-pointer"
+                >
+                  <span>Visit Website</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        {/* Regional SME Demonstrated Work Cards */}
+        <div className="mt-12 md:mt-16 pt-10 md:pt-14 border-t border-white/10">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 md:mb-10 gap-4">
+            <div>
+              <p className="text-label text-lime mb-2">Regional Business Solutions</p>
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+                Solutions Built for Assam &amp; Northeast SMEs
+              </h3>
+              <p className="text-sm text-muted-light mt-1.5 max-w-xl leading-relaxed">
+                Practical, mobile-friendly websites designed for car rentals, home bakers, nature homestays, and regional clinics.
+              </p>
+            </div>
+            <Link
+              to="/portfolio"
+              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-white/20 text-xs sm:text-sm font-semibold text-white hover:bg-white/10 transition-colors self-start sm:self-end shrink-0"
+            >
+              <span>Explore All Projects</span>
+              <ArrowRight className="w-4 h-4 text-lime" />
+            </Link>
+          </div>
+
+          {/* 4 SME Cards Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {projects
+              .filter((p) => p.id !== 'mystic-digits')
+              .map((project) => (
+                <div
+                  key={project.id}
+                  className="group rounded-2xl border border-white/10 bg-midnight-light/80 overflow-hidden hover:border-lime/40 transition-all duration-200 flex flex-col justify-between hover:-translate-y-1 hover:shadow-xl"
+                >
+                  <div>
+                    {/* Thumbnail Image - Clicking opens demo */}
+                    <div
+                      onClick={() => handleOpenDemo(project)}
+                      className="relative aspect-[16/10] overflow-hidden bg-[#0d1326] cursor-pointer"
+                    >
+                      <img
+                        src={project.image}
+                        alt={project.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90"
+                        loading="lazy"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-midnight-light via-transparent to-transparent opacity-80" />
+                      
+                      {/* Hover Quick-Preview Overlay */}
+                      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+                        <span className="px-3 py-1.5 rounded-xl bg-lime text-midnight text-xs font-bold shadow-lg flex items-center gap-1.5 transform translate-y-2 group-hover:translate-y-0 transition-transform">
+                          <Eye className="w-3.5 h-3.5" />
+                          <span>Launch Demo</span>
+                        </span>
+                      </div>
+
+                      {project.location && (
+                        <span className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full bg-black/75 backdrop-blur-sm text-[10px] font-mono text-white/90 border border-white/10">
+                          {project.location}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Card Content */}
+                    <div className="p-4 sm:p-5">
+                      <span className="text-[10px] font-mono uppercase tracking-wider text-lime font-bold block mb-1">
+                        {project.category}
+                      </span>
+                      <h4 className="text-base font-bold text-white group-hover:text-lime transition-colors leading-snug">
+                        {project.title}
+                      </h4>
+                      <p className="text-xs text-muted-light mt-2 leading-relaxed line-clamp-3">
+                        {project.description}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="p-4 sm:p-5 pt-0">
+                    <div className="pt-3 border-t border-white/10">
+                      <button
+                        type="button"
+                        onClick={() => handleOpenDemo(project)}
+                        className="w-full inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-lime text-midnight text-xs font-bold hover:bg-lime-light transition-all shadow-sm active:scale-95 cursor-pointer"
+                      >
+                        <Eye className="w-3.5 h-3.5" />
+                        <span>View Demo</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Interactive Demo Popup Modal */}
+      <DemoPreviewModal
+        project={selectedDemo}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
+    </section>
+  )
+}
+
+/* ==========================================================================
+   SECTION 4: WHY CHOOSE US (Compact 4-Point Grid)
+   ========================================================================== */
+
+function WhyChooseUsSection() {
+  const points = [
+    {
+      num: '01',
+      title: 'Business-Focused Solutions',
+      desc: 'We align engineering with your commercial goals, ensuring every digital product delivers measurable business value.',
+      icon: Compass,
+    },
+    {
+      num: '02',
+      title: 'Creative & Modern Design',
+      desc: 'Clean typography, thoughtful layouts and refined aesthetics create an engaging experience that earns customer trust.',
+      icon: Sparkles,
+    },
+    {
+      num: '03',
+      title: 'Reliable Technical Execution',
+      desc: 'Built on modern frameworks with clean architecture for high-speed performance, rock-solid security and reliable scale.',
+      icon: ShieldCheck,
+    },
+    {
+      num: '04',
+      title: 'End-to-End Capabilities',
+      desc: 'From initial concept and UI/UX to development and launch, we manage your complete product lifecycle under one roof.',
+      icon: Boxes,
+    },
+  ]
+
+  return (
+    <section className="bg-warm-ivory py-12 md:py-16 border-b border-border">
+      <div className="container-main">
+        {/* Header */}
+        <div className="max-w-2xl mb-8 md:mb-10">
+          <p className="text-label text-muted mb-2">Our Advantage</p>
+          <h2 className="text-heading-1 text-midnight">
+            Why Choose Sindee InfoTech?
+          </h2>
+          <p className="text-body text-muted-dark mt-2">
+            We combine business understanding, design excellence and technical execution to build solutions that serve real business objectives.
+          </p>
+        </div>
+
+        {/* 4 Differentiators Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6 items-stretch">
+          {points.map((pt) => {
+            const Icon = pt.icon
+            return (
+              <div
+                key={pt.num}
+                className="bg-white rounded-2xl p-5 sm:p-6 border border-border hover:border-midnight/30 transition-all duration-200 flex flex-col justify-between hover:shadow-sm h-full"
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-3.5">
+                    <span className="font-mono text-xs font-bold text-lime-dark bg-warm-ivory px-2.5 py-1 rounded-md inline-block">
+                      {pt.num}
+                    </span>
+                    <Icon className="w-5 h-5 text-midnight shrink-0" />
+                  </div>
+
+                  <h3 className="text-base sm:text-lg font-bold text-midnight mb-2 min-h-[2.5rem] flex items-center">
+                    {pt.title}
+                  </h3>
+                  <p className="text-sm text-muted-dark leading-relaxed">
+                    {pt.desc}
+                  </p>
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+/* ==========================================================================
+   SECTION 5: OUR PROCESS (How We Work — 4 Steps)
    ========================================================================== */
 
 function ProcessSection() {
   const steps = [
     {
-      phase: '01',
+      step: '01',
       title: 'Discover',
-      desc: 'We learn about your business, target audience, competitive strengths and objectives. This conversation shapes the foundation of the project.',
-      deliverable: 'Scope alignment & project plan',
+      desc: 'Understand your business, objectives and requirements.',
     },
     {
-      phase: '02',
-      title: 'Plan',
-      desc: 'We map out the sitemap, information architecture, wireframes and visual design direction. A clear plan ensures no unexpected delays.',
-      deliverable: 'Approved content architecture & wireframes',
+      step: '02',
+      title: 'Design',
+      desc: 'Plan the solution and create the right user experience.',
     },
     {
-      phase: '03',
-      title: 'Design & Build',
-      desc: 'We develop your website using modern React and Tailwind standards, bringing the design to life with responsive typography and interactions.',
-      deliverable: 'Functional staging preview',
+      step: '03',
+      title: 'Develop',
+      desc: 'Build, test and refine the solution.',
     },
     {
-      phase: '04',
-      title: 'Refine',
-      desc: 'We review iterations together, test cross-browser responsiveness across phones, tablets and desktops, and apply agreed refinements.',
-      deliverable: 'Approved production candidate',
-    },
-    {
-      phase: '05',
+      step: '04',
       title: 'Launch',
-      desc: 'We handle the deployment, configure search engine metadata, connect your domain records, and provide complete handover guidance.',
-      deliverable: 'Live website & technical handover',
+      desc: 'Deploy the finished product and provide support where agreed.',
     },
   ]
 
   return (
-    <section className="bg-white section-padding border-b border-border">
-      <div className="container-main">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          {/* Left Column: Context */}
-          <div className="lg:col-span-5 lg:sticky lg:top-28 space-y-5">
-            <p className="text-label text-muted">Execution Flow</p>
-            <h2 className="text-heading-1 text-midnight">
-              From first conversation to launch.
-            </h2>
-            <p className="text-body-large text-muted-dark leading-relaxed">
-              A structured, collaborative approach that keeps your project transparent, organized and aligned with your expectations at every phase.
-            </p>
-            <div className="pt-2">
-              <Button to="/contact" variant="dark">
-                Discuss Your Requirements
-              </Button>
-            </div>
-          </div>
-
-          {/* Right Column: Connected Vertical Milestone Timeline */}
-          {/* Plain semantic HTML with zero reliance on hidden animation states */}
-          <div className="lg:col-span-7 space-y-6">
-            {steps.map((step, index) => (
-              <div
-                key={step.phase}
-                className="bg-warm-ivory rounded-2xl p-6 sm:p-8 border border-border transition-all duration-200"
-              >
-                <div className="flex items-start justify-between gap-4 mb-3">
-                  <span className="text-xs font-mono font-bold text-lime-dark bg-midnight px-2.5 py-1 rounded">
-                    PHASE {step.phase}
-                  </span>
-                  <span className="text-xs font-mono text-muted">
-                    Step {index + 1} of 5
-                  </span>
-                </div>
-
-                <h3 className="text-xl font-bold text-midnight mb-2">
-                  {step.title}
-                </h3>
-
-                <p className="text-body text-muted-dark leading-relaxed">
-                  {step.desc}
-                </p>
-
-                <div className="mt-4 pt-3 border-t border-border/70 flex items-center gap-2 text-xs font-medium text-midnight/80">
-                  <span className="w-1.5 h-1.5 rounded-full bg-lime-dark shrink-0" aria-hidden="true" />
-                  <span className="text-muted">Key Milestone:</span>
-                  <span>{step.deliverable}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  )
-}
-
-/* ==========================================================================
-   SECTION 7: PRICING (Editorial Investment Comparison & Commercial Disclaimers)
-   ========================================================================== */
-
-function PricingSection() {
-  const tiers = [
-    {
-      name: 'STARTER',
-      price: '₹9,999',
-      intendedFor: 'Local businesses & independent brands establishing a verified online footprint.',
-      includedScope: [
-        'Up to 5 custom-designed pages',
-        'Mobile-first responsive design',
-        'Direct contact enquiry form',
-        'WhatsApp click-to-chat integration',
-        'Interactive Google Maps setup',
-        'Baseline on-page SEO setup',
-        'Hosting & deployment assistance',
-      ],
-      deliverables: 'Complete 5-page responsive website, search meta tags, deployment assistance',
-    },
-    {
-      name: 'PROFESSIONAL',
-      price: '₹17,999',
-      intendedFor: 'Growing commercial businesses requiring a richer portfolio or catalogue showcase.',
-      includedScope: [
-        'Up to 8 custom-designed pages',
-        'Everything in Starter included',
-        'Photo gallery or portfolio showcase',
-        'Service or product catalogue layout',
-        'Custom enquiry capture forms',
-        'Enhanced design customisation',
-        'Speed optimisation & analytics setup',
-        'Post-launch handover support',
-      ],
-      deliverables: 'Comprehensive multi-page website, catalogue layouts, speed audit, handover session',
-    },
-    {
-      name: 'ADVANCED',
-      price: '₹29,999',
-      intendedFor: 'Established businesses requiring purpose-built workflows or integrations.',
-      includedScope: [
-        'Custom multi-page architecture',
-        'Online booking or order enquiry features',
-        'Payment gateway integration assistance',
-        'Custom third-party integrations',
-        'Advanced functionality and forms',
-        'Dedicated technical support',
-      ],
-      deliverables: 'Bespoke web solution, custom workflows, integration testing, technical documentation',
-    },
-  ]
-
-  return (
-    <section className="bg-warm-ivory section-padding border-b border-border">
+    <section className="bg-white py-12 md:py-16 border-b border-border">
       <div className="container-main">
         {/* Header */}
-        <div className="max-w-3xl mx-auto text-center mb-14 md:mb-18">
-          <p className="text-label text-muted mb-3">Investment Framework</p>
+        <div className="max-w-2xl mb-8 md:mb-10">
+          <p className="text-label text-muted mb-2">Execution</p>
           <h2 className="text-heading-1 text-midnight">
-            An investment in your business's digital future.
+            How We Work
           </h2>
-          <p className="text-body-large text-muted-dark mt-4">
-            Transparent baseline tiers for businesses in India. Every project is scoped individually to match your specific requirements.
+          <p className="text-body text-muted-dark mt-2">
+            A transparent four-step process turning business ideas into finished digital products.
           </p>
         </div>
 
-        {/* Structured Editorial Comparison Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto items-stretch">
-          {tiers.map((tier) => (
+        {/* 4 Steps: 1 col on mobile, 2 cols on tablet, 4 cols on desktop */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6 items-stretch">
+          {steps.map((item, index) => (
             <div
-              key={tier.name}
-              className="bg-white rounded-3xl p-8 sm:p-10 border border-border flex flex-col justify-between transition-shadow duration-200 hover:shadow-lg"
+              key={item.step}
+              className="bg-warm-ivory/60 rounded-2xl p-5 sm:p-6 border border-border flex flex-col justify-between transition-all duration-200 hover:bg-warm-ivory h-full"
             >
               <div>
-                <div className="flex items-center justify-between mb-4">
-                  <span className="font-mono text-xs font-bold tracking-widest text-midnight">
-                    {tier.name}
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs font-mono font-bold text-lime-dark bg-midnight px-2.5 py-1 rounded">
+                    {item.step}
                   </span>
-                  <span className="text-xs font-mono text-muted uppercase">
-                    Baseline Package
+                  <span className="text-[11px] font-mono text-muted">
+                    Step {index + 1} of 4
                   </span>
                 </div>
 
-                <div className="flex items-baseline gap-1 mt-2">
-                  <span className="text-xs uppercase tracking-wider text-muted-dark">starting at</span>
-                  <span className="text-4xl font-extrabold tracking-tight text-midnight">{tier.price}</span>
-                </div>
+                <h3 className="text-base sm:text-lg font-bold text-midnight mb-2">
+                  {item.title}
+                </h3>
 
-                <div className="mt-4 p-3 bg-warm-ivory rounded-xl border border-border/60">
-                  <span className="text-[10px] font-mono uppercase tracking-wider text-muted-dark block mb-1">
-                    Intended For:
-                  </span>
-                  <p className="text-xs text-midnight/90 leading-relaxed font-medium">
-                    {tier.intendedFor}
-                  </p>
-                </div>
-
-                <div className="my-6 border-t border-border" />
-
-                <div>
-                  <span className="text-xs font-mono uppercase tracking-wider text-muted-dark block mb-3">
-                    Included Scope:
-                  </span>
-                  <ul className="space-y-3 text-sm">
-                    {tier.includedScope.map((item) => (
-                      <li key={item} className="flex items-start gap-3">
-                        <Check className="w-4 h-4 shrink-0 mt-0.5 text-lime-dark" />
-                        <span className="text-muted-dark text-sm">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="mt-6 pt-4 border-t border-border/60">
-                  <span className="text-[11px] font-mono uppercase tracking-wider text-muted block mb-1">
-                    Key Deliverable:
-                  </span>
-                  <p className="text-xs text-midnight/80 font-medium">
-                    {tier.deliverables}
-                  </p>
-                </div>
-              </div>
-
-              <div className="mt-8 pt-4 border-t border-border">
-                <Button
-                  to="/contact"
-                  variant="dark"
-                  className="w-full justify-center"
-                >
-                  Request a Quote
-                </Button>
+                <p className="text-sm text-muted-dark leading-relaxed">
+                  {item.desc}
+                </p>
               </div>
             </div>
           ))}
         </div>
-
-        {/* Unambiguous Commercial Scope & Exclusions Notice */}
-        <div className="mt-14 p-6 sm:p-8 rounded-2xl bg-white border border-border max-w-4xl mx-auto space-y-3 text-left">
-          <div className="flex items-center gap-2">
-            <Compass className="w-4 h-4 text-midnight" />
-            <h4 className="text-xs font-mono uppercase tracking-widest text-midnight font-bold">
-              Commercial Scope & Exclusions Policy
-            </h4>
-          </div>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-xs text-muted-dark leading-relaxed list-disc list-inside">
-            <li>Payment gateway assistance covers configuration guidance; gateway merchant verification and transaction fees are separate.</li>
-            <li>Third-party domain registration and web hosting fees are paid directly to providers unless specified in a written agreement.</li>
-            <li>Custom third-party integrations and complex booking logic require individual scoping and specification.</li>
-            <li>Extensive copywriting, brand photography, and large volume data entry may require additional scoping.</li>
-            <li>Final pricing depends on the agreed project brief and deliverable milestones.</li>
-            <li>No hidden agency markups on software licenses or recurring host bills.</li>
-          </ul>
-        </div>
       </div>
     </section>
   )
 }
 
 /* ==========================================================================
-   SECTION 8: FINAL CTA (Linked to Verified Contact Page)
+   SECTION 6: CONTACT / FINAL CTA (WhatsApp Enquiry + Contact Us)
    ========================================================================== */
 
-function FinalCTA() {
+function ContactSection() {
+  const [showWhatsAppNotice, setShowWhatsAppNotice] = useState(false)
+  const whatsappUrl = getWhatsAppUrl()
+  const isConfigured = Boolean(CONTACT_CONFIG.whatsapp && whatsappUrl)
+
+  const handleWhatsAppClick = (e: React.MouseEvent) => {
+    if (!isConfigured) {
+      e.preventDefault()
+      setShowWhatsAppNotice(true)
+    }
+  }
+
   return (
-    <section className="py-24 md:py-32 bg-midnight text-white relative overflow-hidden">
-      <div className="container-main relative z-10 text-center max-w-3xl mx-auto">
-        <span className="text-label text-lime tracking-widest uppercase">
-          Start Today
-        </span>
+    <>
+      <section className="py-14 md:py-20 bg-midnight text-white relative overflow-hidden">
+        <div className="container-main relative z-10 text-center max-w-2xl mx-auto">
+          <span className="text-label text-lime tracking-widest uppercase">
+            Start a Conversation
+          </span>
 
-        <h2 className="text-display text-white mt-4 tracking-tight">
-          Ready to build something better?
-        </h2>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mt-3 tracking-tight">
+            Have a Project in Mind?
+          </h2>
 
-        <p className="text-body-large text-muted-light mt-6 leading-relaxed max-w-xl mx-auto">
-          Let&apos;s create a digital presence that reflects the quality of your business. Tell us about your project and we&apos;ll discuss the right approach.
-        </p>
+          <p className="text-body text-muted-light mt-4 leading-relaxed max-w-lg mx-auto text-sm sm:text-base">
+            Let&apos;s discuss your requirements and explore how Sindee InfoTech can help bring your ideas to life.
+          </p>
 
-        <div className="mt-10 flex flex-wrap justify-center gap-4">
-          <Button to="/contact" variant="primary">
-            Tell Us About Your Project
-          </Button>
-          <Button
-            to="/portfolio"
-            variant="secondary"
-            className="border-white/20 text-white hover:bg-white hover:text-midnight"
-          >
-            Explore All Work
-          </Button>
+          {/* Two Clear Actions */}
+          <div className="mt-8 flex flex-wrap justify-center items-center gap-3.5">
+            {isConfigured ? (
+              <a
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-[#25D366] text-white text-sm font-bold hover:bg-[#20ba59] hover:scale-105 active:scale-95 transition-all duration-200 shadow-lg shadow-[#25D366]/20 cursor-pointer"
+              >
+                <WhatsAppIcon className="w-5 h-5" />
+                <span>WhatsApp Enquiry</span>
+              </a>
+            ) : (
+              <button
+                type="button"
+                onClick={handleWhatsAppClick}
+                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-[#25D366] text-white text-sm font-bold hover:bg-[#20ba59] hover:scale-105 active:scale-95 transition-all duration-200 shadow-lg shadow-[#25D366]/20 cursor-pointer"
+              >
+                <WhatsAppIcon className="w-5 h-5" />
+                <span>WhatsApp Enquiry</span>
+              </button>
+            )}
+
+            <Button to="/contact" variant="primary">
+              Contact Us
+            </Button>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      {/* Fallback Dialog for WhatsApp number awaiting config */}
+      {showWhatsAppNotice && !isConfigured && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-midnight/70 backdrop-blur-sm"
+          onClick={() => setShowWhatsAppNotice(false)}
+        >
+          <div
+            className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-border relative text-left"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={() => setShowWhatsAppNotice(false)}
+              className="absolute top-4 right-4 p-1.5 rounded-lg text-muted hover:text-midnight hover:bg-black/5 transition-colors"
+              aria-label="Close dialog"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-full bg-[#25D366] text-white flex items-center justify-center">
+                <WhatsAppIcon className="w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="text-base font-bold text-midnight">WhatsApp Enquiry</h3>
+                <p className="text-xs text-muted-dark">Sindee InfoTech Support</p>
+              </div>
+            </div>
+
+            <p className="text-xs sm:text-sm text-muted-dark leading-relaxed mb-5">
+              Our direct WhatsApp business line is being updated. In the meantime, you can reach us immediately via our contact page or email.
+            </p>
+
+            <div className="flex gap-2.5">
+              <Link
+                to="/contact"
+                onClick={() => setShowWhatsAppNotice(false)}
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-midnight text-white text-xs font-semibold hover:bg-midnight-light transition-colors"
+              >
+                <MessageSquare className="w-3.5 h-3.5" />
+                Go to Contact Form
+              </Link>
+              <button
+                type="button"
+                onClick={() => setShowWhatsAppNotice(false)}
+                className="px-3.5 py-2 rounded-xl border border-border text-xs font-medium text-muted-dark hover:text-midnight transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   )
 }
 
@@ -1031,18 +857,16 @@ function FinalCTA() {
 export function HomePage() {
   return (
     <PageMeta
-      title="Sindee Infotech — Specialist Web Design & Development Agency"
-      description="We design and develop high-quality websites that help businesses build trust, attract customers and grow online."
+      title="Sindee InfoTech | Website, Software & Android App Development"
+      description="Sindee InfoTech builds professional websites, web applications, Android apps and custom software to help businesses grow and succeed digitally."
       canonicalUrl="https://sindeeinfotech.com/"
     >
       <HeroSection />
-      <PositioningStrip />
       <ServicesSection />
-      <WorkSection />
-      <WhyUsSection />
+      <OurWorkSection />
+      <WhyChooseUsSection />
       <ProcessSection />
-      <PricingSection />
-      <FinalCTA />
+      <ContactSection />
     </PageMeta>
   )
 }

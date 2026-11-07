@@ -11,7 +11,7 @@ export function PrivacyPage() {
       description="Privacy Policy for Sindee Infotech. Learn how we handle project enquiries, visitor data, and your privacy rights."
       canonicalUrl="https://sindeeinfotech.com/privacy"
     >
-      <section className="pt-32 pb-16 md:pt-40 md:pb-24 bg-warm-ivory border-b border-border">
+      <section className="pt-12 pb-12 sm:pt-16 sm:pb-14 md:pt-20 md:pb-16 bg-warm-ivory border-b border-border">
         <div className="container-main max-w-4xl">
           <motion.div
             variants={staggerContainerVariants}
