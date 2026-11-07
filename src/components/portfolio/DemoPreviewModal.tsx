@@ -279,9 +279,9 @@ export function DemoPreviewModal({ project, isOpen, onClose }: DemoPreviewModalP
             <Info className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-lime shrink-0 hidden sm:inline-block" />
             <p className="leading-snug max-w-4xl text-[11px] sm:text-xs">
               <span className="font-bold text-lime uppercase tracking-wider text-[10px] sm:text-[11px] mr-1.5 px-1.5 py-0.5 rounded bg-lime/10 border border-lime/30 inline-block font-mono">
-                Demo Notice
+                Architecture Preview
               </span>
-              Of course, your real website will feature your full product catalogue, authentic business photography, real-time booking integrations, and complete custom features. This interactive demo gives a quick glance of what your business presence could become.
+              This interactive preview showcases interface design and user workflow architecture. Production deployments are engineered with bespoke business workflows, live database integrations, secure payment systems, and custom brand assets.
             </p>
           </div>
 
