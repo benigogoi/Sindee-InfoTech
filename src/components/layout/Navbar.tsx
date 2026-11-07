@@ -102,7 +102,7 @@ export function Navbar() {
             <img
               src="/logo.png"
               alt="Sindee Infotech"
-              className="h-8 sm:h-9 md:h-10 w-auto object-contain"
+              className="h-9 sm:h-10 md:h-11 lg:h-12 w-auto object-contain"
             />
           </Link>
 

@@ -38,7 +38,7 @@ export function Footer() {
               <img
                 src="/logo-white.png"
                 alt="Sindee Infotech"
-                className="h-9 sm:h-10 w-auto object-contain"
+                className="h-10 sm:h-11 md:h-12 w-auto object-contain"
               />
             </Link>
             <p className="text-muted-light text-body max-w-sm leading-relaxed">
