@@ -7,10 +7,16 @@ import { AboutPage } from '@/pages/AboutPage'
 import { ContactPage } from '@/pages/ContactPage'
 import { PrivacyPage } from '@/pages/PrivacyPage'
 import { NotFoundPage } from '@/pages/NotFoundPage'
+import { BakeryApp } from '@/components/bakery-demo/BakeryApp'
 
 export default function App() {
   return (
     <Routes>
+      {/* Standalone Full-Screen Demo Route for Home Baker E-commerce with Real Sub-Routing */}
+      <Route path="/demo/home-baker/*" element={<BakeryApp />} />
+      <Route path="/demo/bakery/*" element={<Navigate to="/demo/home-baker" replace />} />
+
+      {/* Main Agency Portfolio Site */}
       <Route element={<Layout />}>
         <Route path="/" element={<HomePage />} />
         <Route path="/services" element={<ServicesPage />} />
