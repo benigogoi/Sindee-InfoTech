@@ -10,7 +10,7 @@ import {
   ChevronDown 
 } from 'lucide-react'
 import { useBakery } from './BakeryContext'
-import { BAKERY_CATEGORIES, BAKERY_PRODUCTS } from './data'
+import { BAKERY_CATEGORIES_INFO, BAKERY_PRODUCTS } from './data'
 import type { BakeryProduct } from './types'
 
 export function BakeryShop() {
@@ -134,22 +134,30 @@ export function BakeryShop() {
         </div>
       </div>
 
-      {/* 2. Category Filter Pills (Horizontal Touch-friendly Carousel) */}
+      {/* 2. Category Filter Pills with Food Photos */}
       <div className="space-y-4">
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
-          {BAKERY_CATEGORIES.map((cat) => {
-            const isActive = selectedCategory === cat
+        <div className="flex items-center gap-2.5 overflow-x-auto pb-2 scrollbar-none">
+          {BAKERY_CATEGORIES_INFO.map((cat) => {
+            const isActive = selectedCategory === cat.label
             return (
               <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                className={`px-4 py-2.5 rounded-full text-xs sm:text-sm font-semibold shrink-0 transition-all ${
+                key={cat.label}
+                onClick={() => setSelectedCategory(cat.label)}
+                className={`px-3.5 py-2 rounded-full text-xs sm:text-sm font-semibold shrink-0 transition-all flex items-center gap-2 cursor-pointer ${
                   isActive
                     ? 'bg-[#b84c26] text-white shadow-md shadow-[#b84c26]/20 scale-[1.02]'
                     : 'bg-white hover:bg-[#f8f4ee] text-[#4a3b32] border border-[#eadecd]'
                 }`}
               >
-                {cat}
+                <img
+                  src={cat.image}
+                  alt={cat.label}
+                  onError={(e) => {
+                    e.currentTarget.src = 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=120&q=80'
+                  }}
+                  className="w-5 h-5 rounded-full object-cover border border-white/60 shrink-0 shadow-2xs"
+                />
+                <span>{cat.label}</span>
               </button>
             )
           })}
@@ -293,6 +301,9 @@ export function BakeryShop() {
                   <img
                     src={product.image}
                     alt={product.name}
+                    onError={(e) => {
+                      e.currentTarget.src = 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=800&q=80'
+                    }}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
 

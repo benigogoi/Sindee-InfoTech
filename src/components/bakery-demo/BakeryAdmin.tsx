@@ -37,6 +37,7 @@ interface OrderItem {
   customerPhone?: string
   isPhoneOrder?: boolean
   items: string
+  image?: string
   weight: string
   isEggless: boolean
   cakeMessage?: string
@@ -104,7 +105,7 @@ export function BakeryAdmin() {
 
   const [showProfileMenu, setShowProfileMenu] = useState(false)
   
-  // Orders Pipeline & Historical Delivered Records (Realistic Bakery Data)
+  // Orders Pipeline & Historical Delivered Records (Realistic Bakery Data with Food Photos)
   const [orders, setOrders] = useState<OrderItem[]>([
     {
       id: 'ord-1',
@@ -112,6 +113,7 @@ export function BakeryAdmin() {
       customerName: 'Aarav Sharma',
       customerPhone: '94350 11223',
       items: 'Classic Dutch Chocolate Truffle',
+      image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=240&q=80',
       weight: '500g',
       isEggless: true,
       cakeMessage: 'Happy Birthday Aarav! 🎂',
@@ -131,6 +133,7 @@ export function BakeryAdmin() {
       customerName: 'Pooja Bordoloi',
       customerPhone: '98765 22334',
       items: 'Royal Rasmalai Cake',
+      image: 'https://images.unsplash.com/photo-1571115177098-24ec42ed204d?auto=format&fit=crop&w=240&q=80',
       weight: '1 kg',
       isEggless: true,
       cakeMessage: 'Happy 25th Anniversary Mom & Dad! 💕',
@@ -153,6 +156,7 @@ export function BakeryAdmin() {
       customerPhone: '94350 44210',
       isPhoneOrder: true,
       items: 'Walnut Brownies (Box of 6) + Milk Bread',
+      image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=240&q=80',
       weight: 'Box of 6 + Loaf',
       isEggless: true,
       timing: 'Today 4:30 PM',
@@ -171,6 +175,7 @@ export function BakeryAdmin() {
       customerName: 'Meenakshi Saikia',
       customerPhone: '98640 55667',
       items: 'Butterscotch Crunch Celebration Cake',
+      image: 'https://images.unsplash.com/photo-1562440499-64c9a111f713?auto=format&fit=crop&w=240&q=80',
       weight: '1.5 lb',
       isEggless: true,
       cakeMessage: 'Best Wishes for New Home! 🏡',
@@ -191,6 +196,7 @@ export function BakeryAdmin() {
       customerName: 'Bikash Bordoloi',
       customerPhone: '98765 11223',
       items: 'Royal Rasmalai Tres Leches Cake',
+      image: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=240&q=80',
       weight: '2 Pound',
       isEggless: true,
       cakeMessage: 'Happy 25th Anniversary Maa & Papa! 💕',
@@ -210,6 +216,7 @@ export function BakeryAdmin() {
       customerName: 'Ankita Dutta',
       customerPhone: '94350 77889',
       items: 'Pineapple Fresh Cream Gateau',
+      image: 'https://images.unsplash.com/photo-1562440499-64c9a111f713?auto=format&fit=crop&w=240&q=80',
       weight: '1.5 Pound',
       isEggless: true,
       cakeMessage: 'Congratulations on your Graduation! 🎓',
@@ -230,6 +237,7 @@ export function BakeryAdmin() {
       customerPhone: '91234 56789',
       isPhoneOrder: true,
       items: 'Fudgy Walnut Brownies (Pack of 12)',
+      image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=240&q=80',
       weight: 'Box of 12',
       isEggless: true,
       timing: 'Tomorrow 2:30 PM',
@@ -248,6 +256,7 @@ export function BakeryAdmin() {
       customerName: 'Bikash Kalita',
       customerPhone: '91234 88990',
       items: 'Red Velvet Cream Cheese Heart Cake',
+      image: 'https://images.unsplash.com/photo-1616541823729-00fe0aacd32c?auto=format&fit=crop&w=240&q=80',
       weight: '1 kg',
       isEggless: false,
       cakeMessage: 'Happy 1st Anniversary Dear! ❤️',
@@ -268,6 +277,7 @@ export function BakeryAdmin() {
       customerName: 'Shalini Gogoi',
       customerPhone: '98765 99887',
       items: 'Custom 2-Tier Pastel Floral Theme Cake',
+      image: 'https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?auto=format&fit=crop&w=240&q=80',
       weight: '2 kg',
       isEggless: true,
       cakeMessage: 'Little Princess Aarohi is 5! 🦄',
@@ -290,6 +300,7 @@ export function BakeryAdmin() {
       customerName: 'Pranab Baruah',
       customerPhone: '98640 12345',
       items: 'Belgian Dark Chocolate Mousse Cake',
+      image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=240&q=80',
       weight: '1 kg',
       isEggless: true,
       timing: 'Nov 3, 2024',
@@ -309,6 +320,7 @@ export function BakeryAdmin() {
       customerName: 'Debojit Nath',
       customerPhone: '94351 98765',
       items: 'Black Forest Kirsch Cake',
+      image: 'https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?auto=format&fit=crop&w=240&q=80',
       weight: '1.5 kg',
       isEggless: false,
       timing: 'Oct 28, 2024',
@@ -516,6 +528,7 @@ export function BakeryAdmin() {
       customerPhone: posData.customerPhone,
       isPhoneOrder: posData.orderSource === 'phone',
       items: posData.items,
+      image: posData.image || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=400&q=80',
       weight: posData.weight,
       isEggless: posData.isEggless,
       cakeMessage: posData.cakeMessage,
@@ -1274,18 +1287,28 @@ export function BakeryAdmin() {
 
                         {/* 3. Item & Weight */}
                         <td className="py-3.5 px-4 align-top">
-                          <div className="font-bold text-[#2c1f1b] text-xs">
-                            {ord.items}
-                          </div>
-                          <div className="flex items-center gap-1.5 mt-1 flex-wrap">
-                            <span className="px-2 py-0.5 rounded bg-[#f3ece1] text-[10px] font-bold text-[#5e4d42]">
-                              {ord.weight}
-                            </span>
-                            {ord.isEggless && (
-                              <span className="text-[10px] text-emerald-700 font-bold">
-                                🟢 Eggless
-                              </span>
-                            )}
+                          <div className="flex items-center gap-3">
+                            <img
+                              src={ord.image || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=240&q=80'}
+                              alt={ord.items}
+                              className="w-11 h-11 rounded-xl object-cover shrink-0 border border-[#e8dfd5] shadow-2xs"
+                              loading="lazy"
+                            />
+                            <div className="min-w-0">
+                              <div className="font-bold text-[#2c1f1b] text-xs">
+                                {ord.items}
+                              </div>
+                              <div className="flex items-center gap-1.5 mt-1 flex-wrap">
+                                <span className="px-2 py-0.5 rounded bg-[#f3ece1] text-[10px] font-bold text-[#5e4d42]">
+                                  {ord.weight}
+                                </span>
+                                {ord.isEggless && (
+                                  <span className="text-[10px] text-emerald-700 font-bold">
+                                    🟢 Eggless
+                                  </span>
+                                )}
+                              </div>
+                            </div>
                           </div>
                         </td>
 
@@ -1848,7 +1871,7 @@ export function BakeryAdmin() {
                 {orders.filter(o => o.status !== 'delivered').map((ord) => (
                   <div
                     key={ord.id}
-                    className="bg-white rounded-2xl p-4 border border-[#e8dfd5] shadow-xs space-y-2 hover:border-[#c85a32]/40 transition-colors"
+                    className="bg-white rounded-2xl p-4 border border-[#e8dfd5] shadow-xs space-y-3 hover:border-[#c85a32]/40 transition-colors"
                   >
                     <div className="flex items-center justify-between">
                       <span className="font-bold text-xs text-[#2c1f1b]">
@@ -1865,10 +1888,24 @@ export function BakeryAdmin() {
                         </span>
                       )}
                     </div>
-                    <p className="font-bold text-xs text-[#2c1f1b] truncate">{ord.items}</p>
-                    <p className="text-[11px] text-[#7c6a5d] truncate">
-                      {ord.customerName} • {ord.timing}
-                    </p>
+                    <div className="flex items-center gap-3">
+                      <img
+                        src={ord.image || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=240&q=80'}
+                        alt={ord.items}
+                        className="w-12 h-12 rounded-xl object-cover shrink-0 border border-[#e8dfd5] shadow-2xs"
+                        loading="lazy"
+                      />
+                      <div className="min-w-0 flex-1">
+                        <p className="font-bold text-xs text-[#2c1f1b] truncate">{ord.items}</p>
+                        <p className="text-[11px] text-[#7c6a5d] truncate">
+                          {ord.customerName} • {ord.timing}
+                        </p>
+                        <div className="flex items-center gap-1.5 mt-0.5">
+                          <span className="px-1.5 py-0.5 rounded bg-[#f3ece1] text-[9px] font-bold text-[#5e4d42]">{ord.weight}</span>
+                          {ord.isEggless && <span className="text-[9px] text-emerald-700 font-bold">🟢 Eggless</span>}
+                        </div>
+                      </div>
+                    </div>
                     <div className="pt-2 border-t border-[#f3ece1] flex items-center justify-between text-xs">
                       <span className="font-serif font-black text-[#2c1f1b]">₹{ord.amount}</span>
                       <button
@@ -1876,7 +1913,7 @@ export function BakeryAdmin() {
                         onClick={() => navigateToNav('orders')}
                         className="text-[11px] font-bold text-[#c85a32] hover:underline"
                       >
-                        Manage →
+                        Manage & Update →
                       </button>
                     </div>
                   </div>

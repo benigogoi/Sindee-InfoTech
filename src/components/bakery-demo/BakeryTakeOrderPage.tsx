@@ -54,6 +54,7 @@ export interface PosOrderData {
   customerPhone: string
   orderSource: 'phone' | 'whatsapp' | 'walkin' | 'instagram'
   items: string
+  image?: string
   weight: string
   isEggless: boolean
   cakeMessage?: string
@@ -388,6 +389,7 @@ export function BakeryTakeOrderPage({
       customerPhone: customerPhone.trim() || '9876543210',
       orderSource,
       items: itemName.trim(),
+      image: BAKERY_PRODUCTS.find(p => p.id === selectedProductId)?.image || 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=400&q=80',
       weight: portionWeight.trim(),
       isEggless,
       cakeMessage: cakeMessage.trim() ? cakeMessage : undefined,

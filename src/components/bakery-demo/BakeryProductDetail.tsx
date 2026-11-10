@@ -9,7 +9,8 @@ import {
   MessageCircle, 
   ShoppingBag,
   ChevronRight,
-  ChevronDown
+  ChevronDown,
+  Zap
 } from 'lucide-react'
 import { useBakery } from './BakeryContext'
 import { BAKERY_PRODUCTS } from './data'
@@ -58,6 +59,7 @@ export function BakeryProductDetail() {
     selectedProduct, 
     setCurrentPage, 
     addToCart, 
+    toggleCart,
     townLocation,
     setDeliveryDetails 
   } = useBakery()
@@ -120,6 +122,29 @@ export function BakeryProductDetail() {
     }))
   }
 
+  const handleBuyNow = () => {
+    addToCart({
+      productId: product.id,
+      name: product.name,
+      price: totalPrice,
+      quantity: 1,
+      weight: selectedWeightObj.label,
+      isEggless,
+      cakeMessage: cakeMessage.trim() ? cakeMessage.trim() : undefined,
+      image: gallery[0],
+      leadTime: product.leadTime,
+      addedSparklingCandle: selectedAddonIds.includes('sparkling-candle'),
+      addedGreetingCard: selectedAddonIds.includes('greeting-card'),
+    })
+    setDeliveryDetails(prev => ({
+      ...prev,
+      deliveryDate: selectedDate,
+      deliverySlot: selectedTimeSlot
+    }))
+    toggleCart(false)
+    setCurrentPage('checkout')
+  }
+
   const addonSummary = selectedAddonIds
     .map(id => CELEBRATION_ADDONS.find(a => a.id === id)?.name)
     .filter(Boolean)
@@ -179,6 +204,9 @@ export function BakeryProductDetail() {
             <img
               src={gallery[activeImageIndex]}
               alt={product.name}
+              onError={(e) => {
+                e.currentTarget.src = 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=800&q=80'
+              }}
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
             />
 
@@ -216,7 +244,14 @@ export function BakeryProductDetail() {
                     : 'border-[#eadecd] opacity-70 hover:opacity-100'
                 }`}
               >
-                <img src={img} alt="Thumbnail" className="w-full h-full object-cover" />
+                <img 
+                  src={img} 
+                  alt="Thumbnail" 
+                  onError={(e) => {
+                    e.currentTarget.src = 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=400&q=80'
+                  }}
+                  className="w-full h-full object-cover" 
+                />
                 <span className="absolute bottom-1 right-1 text-[9px] font-bold bg-black/60 text-white px-1.5 py-0.5 rounded">
                   {idx === 0 ? 'Whole' : idx === 1 ? 'Slice' : 'Box'}
                 </span>
@@ -486,23 +521,39 @@ export function BakeryProductDetail() {
             </div>
           </div>
 
-          {/* 6. Dual CTAs: Add to Bag & Order via WhatsApp */}
+          {/* 6. CTAs: Add to Bag & Buy Now side-by-side on one line, with WhatsApp */}
           <div className="space-y-3 pt-3">
-            <button
-              onClick={handleAddToCart}
-              className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-[#d96b43] to-[#b84c26] hover:from-[#c85a32] hover:to-[#a33e1c] text-white font-bold text-sm sm:text-base shadow-lg shadow-[#b84c26]/25 flex items-center justify-center gap-2 transition-all hover:scale-[1.01]"
-            >
-              <ShoppingBag className="w-5 h-5" />
-              <span>Add to Bag • ₹{totalPrice}</span>
-            </button>
+            {/* Top row: Add to Bag and Buy Now on one line */}
+            <div className="grid grid-cols-2 gap-2.5 sm:gap-3.5">
+              <button
+                type="button"
+                onClick={handleAddToCart}
+                className="w-full py-3.5 px-3 sm:px-4 rounded-2xl bg-[#f8f4ee] hover:bg-[#f3ece1] border-2 border-[#b84c26] text-[#b84c26] font-bold text-xs sm:text-sm lg:text-base flex items-center justify-center gap-1.5 sm:gap-2 transition-all hover:scale-[1.01] active:scale-95 shadow-xs cursor-pointer"
+              >
+                <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
+                <span className="truncate">Add to Bag</span>
+                <span className="hidden sm:inline font-black">• ₹{totalPrice}</span>
+              </button>
 
+              <button
+                type="button"
+                onClick={handleBuyNow}
+                className="w-full py-3.5 px-3 sm:px-4 rounded-2xl bg-gradient-to-r from-[#d96b43] to-[#b84c26] hover:from-[#c85a32] hover:to-[#a33e1c] text-white font-bold text-xs sm:text-sm lg:text-base shadow-md shadow-[#b84c26]/20 flex items-center justify-center gap-1.5 sm:gap-2 transition-all hover:scale-[1.01] active:scale-95 cursor-pointer"
+              >
+                <Zap className="w-4 h-4 sm:w-5 sm:h-5 fill-amber-300 text-amber-300 shrink-0" />
+                <span className="truncate">Buy Now</span>
+                <span className="hidden md:inline font-black">• ₹{totalPrice}</span>
+              </button>
+            </div>
+
+            {/* Bottom row: WhatsApp direct order */}
             <a
               href={whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full py-3.5 px-6 rounded-2xl bg-[#25D366] hover:bg-[#20ba59] text-white font-bold text-xs sm:text-sm shadow-md flex items-center justify-center gap-2 transition-all hover:scale-[1.01]"
+              className="w-full py-3.5 px-5 rounded-2xl bg-[#25D366] hover:bg-[#20ba59] text-white font-bold text-xs sm:text-sm shadow-md flex items-center justify-center gap-2 transition-all hover:scale-[1.01] cursor-pointer"
             >
-              <MessageCircle className="w-4 h-4 fill-white" />
+              <MessageCircle className="w-4 h-4 fill-white shrink-0" />
               <span>Order Directly on WhatsApp</span>
             </a>
 

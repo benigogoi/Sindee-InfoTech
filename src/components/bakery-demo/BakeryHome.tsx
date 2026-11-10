@@ -10,7 +10,7 @@ import {
   Award
 } from 'lucide-react'
 import { useBakery } from './BakeryContext'
-import { BAKERY_PRODUCTS, BAKERY_REVIEWS } from './data'
+import { BAKERY_PRODUCTS, BAKERY_REVIEWS, BAKERY_CATEGORIES_INFO } from './data'
 import type { BakeryCategory, BakeryProduct } from './types'
 
 export function BakeryHome() {
@@ -21,46 +21,8 @@ export function BakeryHome() {
     townLocation 
   } = useBakery()
 
-  const categories: { label: BakeryCategory; icon: string; image: string; count: string }[] = [
-    {
-      label: 'Birthday & Party Cakes',
-      icon: '🎂',
-      image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=300&q=80',
-      count: '12 Flavors',
-    },
-    {
-      label: 'Brownies & Tea Cakes',
-      icon: '🍫',
-      image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=300&q=80',
-      count: '8 Varieties',
-    },
-    {
-      label: 'Fresh Breads & Buns',
-      icon: '🍞',
-      image: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=300&q=80',
-      count: 'Daily Fresh',
-    },
-    {
-      label: 'Homemade Cookies',
-      icon: '🍪',
-      image: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=300&q=80',
-      count: 'Butter & Ghee',
-    },
-    {
-      label: 'Custom Theme Cakes',
-      icon: '✨',
-      image: 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&w=300&q=80',
-      count: 'Photo & Fondant',
-    },
-    {
-      label: 'Evening Snacks & Puffs',
-      icon: '🥐',
-      image: 'https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=300&q=80',
-      count: 'Hot from Oven',
-    },
-  ]
-
-  const bestsellers = BAKERY_PRODUCTS.slice(0, 6)
+  const categories = BAKERY_CATEGORIES_INFO.filter(c => c.label !== 'All Treats')
+  const bestsellers = BAKERY_PRODUCTS.slice(0, 8)
 
   const handleCategoryClick = (cat: BakeryCategory) => {
     if (cat === 'Custom Theme Cakes') {
@@ -232,6 +194,9 @@ export function BakeryHome() {
                 <img
                   src={cat.image}
                   alt={cat.label}
+                  onError={(e) => {
+                    e.currentTarget.src = 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=300&q=80'
+                  }}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors" />
@@ -309,6 +274,9 @@ export function BakeryHome() {
                   <img
                     src={product.image}
                     alt={product.name}
+                    onError={(e) => {
+                      e.currentTarget.src = 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=800&q=80'
+                    }}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
 
@@ -539,12 +507,19 @@ export function BakeryHome() {
                 </p>
               </div>
 
-              <div className="pt-3 border-t border-[#f3ece1]">
-                <h4 className="font-bold text-xs text-[#2c1f1b]">{rev.name}</h4>
-                <p className="text-[11px] text-[#7c6a5d]">{rev.area}</p>
-                <span className="inline-block mt-1 text-[10px] text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded">
-                  {rev.tag}
-                </span>
+              <div className="pt-3 border-t border-[#f3ece1] flex items-center gap-3">
+                <img
+                  src={rev.avatar}
+                  alt={rev.name}
+                  className="w-10 h-10 rounded-full object-cover border border-[#eadecd] shrink-0"
+                />
+                <div className="min-w-0">
+                  <h4 className="font-bold text-xs text-[#2c1f1b] truncate">{rev.name}</h4>
+                  <p className="text-[11px] text-[#7c6a5d] truncate">{rev.area}</p>
+                  <span className="inline-block mt-0.5 text-[10px] text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded truncate">
+                    {rev.tag}
+                  </span>
+                </div>
               </div>
             </div>
           ))}

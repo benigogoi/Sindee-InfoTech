@@ -38,8 +38,8 @@ export function BakeryNavbar() {
 
   const navLinks: { label: string; page: BakeryPage }[] = [
     { label: 'Home', page: 'home' },
-    { label: 'Shop Treats', page: 'shop' },
-    { label: 'Custom Theme Cakes', page: 'custom-cake' },
+    { label: 'Shop Menu', page: 'shop' },
+    { label: 'Custom Cakes', page: 'custom-cake' },
   ]
 
   const handleNavClick = (page: BakeryPage) => {
@@ -67,42 +67,36 @@ export function BakeryNavbar() {
 
       {/* 2. Main Sticky Navigation Bar */}
       <header className="sticky top-0 z-40 bg-[#fdfbf7]/95 backdrop-blur-md border-b border-[#eadecd] shadow-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20 gap-4">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-16 sm:h-18 lg:h-20 gap-2 sm:gap-4">
             
-            {/* Brand Logo & Tagline */}
+            {/* Brand Logo & Name */}
             <div 
               onClick={() => handleNavClick('home')}
-              className="flex items-center gap-3 cursor-pointer group shrink-0"
+              className="flex items-center gap-2.5 sm:gap-3 cursor-pointer group shrink-0"
             >
-              <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-[#d96b43] to-[#b84c26] text-white flex items-center justify-center shadow-md shadow-[#d96b43]/20 group-hover:scale-105 transition-transform">
-                <span className="font-serif font-black text-xl">🧁</span>
+              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-br from-[#d96b43] to-[#b84c26] text-white flex items-center justify-center shadow-md shadow-[#d96b43]/20 group-hover:scale-105 transition-transform shrink-0">
+                <span className="font-serif font-black text-lg sm:text-xl">🧁</span>
               </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <span className="font-serif font-bold text-xl sm:text-2xl text-[#2c1f1b] tracking-tight">
-                    The Home Oven
-                  </span>
-                  <span className="hidden md:inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#f3ece1] text-[#8c4224] border border-[#e2d5c3]">
-                    Freshly Baked
-                  </span>
-                </div>
-                <p className="text-[11px] text-[#7c6a5d] font-sans">
-                  Neighborhood Artisanal Bakes & Cakes
+              <div className="min-w-0">
+                <span className="font-serif font-bold text-lg sm:text-xl lg:text-2xl text-[#2c1f1b] tracking-tight block whitespace-nowrap">
+                  The Home Oven
+                </span>
+                <p className="hidden xl:block text-[10px] text-[#7c6a5d] font-sans truncate -mt-0.5">
+                  Artisanal Neighborhood Bakes
                 </p>
               </div>
             </div>
 
             {/* City Selector Pill */}
-            <div className="relative hidden sm:block">
+            <div className="relative hidden md:block shrink-0">
               <button
                 onClick={() => setShowLocationDropdown(!showLocationDropdown)}
-                className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#f3ece1]/90 hover:bg-[#f3ece1] border border-[#e2d5c3] text-xs text-[#2c1f1b] transition-all hover:scale-[1.02] shadow-2xs"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#f3ece1]/80 hover:bg-[#f3ece1] border border-[#e2d5c3] text-xs text-[#2c1f1b] transition-all hover:scale-[1.02] shadow-2xs whitespace-nowrap cursor-pointer"
               >
-                <MapPin className="w-3.5 h-3.5 text-[#b84c26]" />
-                <span className="text-[#7c6a5d] font-normal">City:</span>
+                <MapPin className="w-3.5 h-3.5 text-[#b84c26] shrink-0" />
                 <span className="font-bold text-[#2c1f1b]">{townLocation}</span>
-                <ChevronDown className="w-3 h-3 text-[#7c6a5d]" />
+                <ChevronDown className="w-3 h-3 text-[#7c6a5d] shrink-0" />
               </button>
 
               {showLocationDropdown && (
@@ -134,14 +128,14 @@ export function BakeryNavbar() {
             </div>
 
             {/* Desktop Navigation Links */}
-            <nav className="hidden md:flex items-center gap-1 lg:gap-2">
+            <nav className="hidden lg:flex items-center gap-1 xl:gap-2 shrink-0">
               {navLinks.map((link) => {
                 const isActive = currentPage === link.page
                 return (
                   <button
                     key={link.page}
                     onClick={() => handleNavClick(link.page)}
-                    className={`px-3.5 py-2 rounded-xl text-sm font-semibold transition-all ${
+                    className={`px-3 py-1.5 rounded-xl text-xs xl:text-sm font-semibold whitespace-nowrap transition-all cursor-pointer ${
                       isActive
                         ? 'bg-[#b84c26] text-white shadow-xs'
                         : 'text-[#4a3b32] hover:text-[#b84c26] hover:bg-[#f8f4ee]'
@@ -153,15 +147,15 @@ export function BakeryNavbar() {
               })}
             </nav>
 
-            {/* Right Action Icons: Search & Cart Button */}
-            <div className="flex items-center gap-2 sm:gap-3">
+            {/* Right Action Icons & Controls */}
+            <div className="flex items-center gap-1.5 sm:gap-2 lg:gap-2.5 shrink-0">
               
-              {/* Search Toggle / Input */}
-              <div className="relative hidden sm:block w-44 lg:w-56">
-                <Search className="w-4 h-4 text-[#7c6a5d] absolute left-3 top-1/2 -translate-y-1/2" />
+              {/* Search Bar */}
+              <div className="relative hidden xl:block w-36 2xl:w-48 shrink-0">
+                <Search className="w-3.5 h-3.5 text-[#7c6a5d] absolute left-3 top-1/2 -translate-y-1/2" />
                 <input
                   type="text"
-                  placeholder="Search truffle, bread..."
+                  placeholder="Search treats..."
                   value={searchQuery}
                   onChange={(e) => {
                     setSearchQuery(e.target.value)
@@ -169,29 +163,29 @@ export function BakeryNavbar() {
                       setCurrentPage('shop')
                     }
                   }}
-                  className="w-full bg-[#f8f4ee] border border-[#eadecd] rounded-full pl-9 pr-3 py-1.5 text-xs text-[#2c1f1b] placeholder:text-[#9c897b] focus:outline-none focus:border-[#b84c26] focus:bg-white transition-all"
+                  className="w-full bg-[#f8f4ee] border border-[#eadecd] rounded-full pl-8 pr-3 py-1.5 text-xs text-[#2c1f1b] placeholder:text-[#9c897b] focus:outline-none focus:border-[#b84c26] focus:bg-white transition-all"
                 />
               </div>
 
               {/* Customer Account / Sign In */}
-              <div className="relative hidden md:block">
+              <div className="relative hidden sm:block shrink-0">
                 {!isCustomerAuthenticated ? (
                   <button
                     onClick={() => setShowCustomerLogin(true)}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#f8f4ee] hover:bg-[#f3ece1] border border-[#eadecd] text-[#2c1f1b] text-xs font-semibold transition-all shadow-2xs hover:border-[#b84c26]"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#f8f4ee] hover:bg-[#f3ece1] border border-[#eadecd] text-[#2c1f1b] text-xs font-semibold whitespace-nowrap transition-all shadow-2xs hover:border-[#b84c26] cursor-pointer"
                   >
-                    <User className="w-3.5 h-3.5 text-[#b84c26]" />
+                    <User className="w-3.5 h-3.5 text-[#b84c26] shrink-0" />
                     <span>Sign In</span>
                   </button>
                 ) : (
                   <div>
                     <button
                       onClick={() => setShowCustomerDropdown(!showCustomerDropdown)}
-                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#fdf2ec] border border-[#f5ded5] text-[#b84c26] text-xs font-bold transition-all shadow-2xs"
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#fdf2ec] border border-[#f5ded5] text-[#b84c26] text-xs font-bold whitespace-nowrap transition-all shadow-2xs cursor-pointer"
                     >
-                      <User className="w-3.5 h-3.5 text-[#b84c26]" />
-                      <span className="truncate max-w-[90px]">{customerUser?.name.split(' ')[0]}</span>
-                      <ChevronDown className="w-3 h-3 text-[#b84c26]" />
+                      <User className="w-3.5 h-3.5 text-[#b84c26] shrink-0" />
+                      <span className="truncate max-w-[80px]">{customerUser?.name.split(' ')[0]}</span>
+                      <ChevronDown className="w-3 h-3 text-[#b84c26] shrink-0" />
                     </button>
 
                     {showCustomerDropdown && (
@@ -208,7 +202,7 @@ export function BakeryNavbar() {
                               setShowCustomerDropdown(false)
                               setCurrentPage('order-success')
                             }}
-                            className="w-full flex items-center gap-2 px-2 py-1.5 rounded-lg text-[#2c1f1b] hover:bg-[#fdfbf7] font-medium"
+                            className="w-full flex items-center gap-2 px-2 py-1.5 rounded-lg text-[#2c1f1b] hover:bg-[#fdfbf7] font-medium cursor-pointer"
                           >
                             <Package className="w-3.5 h-3.5 text-[#b84c26]" />
                             <span>Track Order (#HBO-829104)</span>
@@ -219,7 +213,7 @@ export function BakeryNavbar() {
                               setShowCustomerDropdown(false)
                               logoutCustomer()
                             }}
-                            className="w-full flex items-center gap-2 px-2 py-1.5 rounded-lg text-rose-600 hover:bg-rose-50 font-medium"
+                            className="w-full flex items-center gap-2 px-2 py-1.5 rounded-lg text-rose-600 hover:bg-rose-50 font-medium cursor-pointer"
                           >
                             <LogOut className="w-3.5 h-3.5 text-rose-500" />
                             <span>Log Out</span>
@@ -234,7 +228,7 @@ export function BakeryNavbar() {
               {/* Baker Admin Switcher with Security Indicator */}
               <button
                 onClick={() => setCurrentPage('admin')}
-                className={`hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-bold transition-all shadow-2xs hover:scale-105 ${
+                className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full border text-xs font-bold whitespace-nowrap transition-all shadow-2xs shrink-0 cursor-pointer ${
                   isBakerAuthenticated
                     ? 'bg-[#fdf2ec] border-emerald-300 text-[#b84c26]'
                     : 'bg-[#f8f4ee] border-[#eadecd] text-[#7c6a5d] hover:text-[#b84c26]'
@@ -242,8 +236,7 @@ export function BakeryNavbar() {
                 title={isBakerAuthenticated ? "Baker Studio (Unlocked)" : "Open Baker Studio (Security PIN Protected)"}
               >
                 <span>👩‍🍳</span>
-                <span className="hidden lg:inline">Baker</span>
-                <span>Admin</span>
+                <span className="hidden sm:inline">Admin</span>
                 {isBakerAuthenticated ? (
                   <span className="w-2 h-2 rounded-full bg-emerald-500 ring-2 ring-emerald-200" title="Session Active" />
                 ) : (
@@ -254,7 +247,7 @@ export function BakeryNavbar() {
               {/* Cart Drawer Button */}
               <button
                 onClick={() => toggleCart(true)}
-                className="relative flex items-center gap-2 px-3.5 py-2 rounded-full bg-[#f8f4ee] hover:bg-[#f3ece1] border border-[#eadecd] text-[#2c1f1b] font-medium text-xs sm:text-sm transition-all"
+                className="relative flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#f8f4ee] hover:bg-[#f3ece1] border border-[#eadecd] text-[#2c1f1b] font-bold text-xs sm:text-sm whitespace-nowrap transition-all shrink-0 cursor-pointer"
               >
                 <div className="relative">
                   <ShoppingBag className="w-4 h-4 text-[#b84c26]" />
@@ -264,13 +257,13 @@ export function BakeryNavbar() {
                     </span>
                   )}
                 </div>
-                <span className="hidden sm:inline font-bold">Bag</span>
+                <span className="hidden sm:inline">Bag</span>
               </button>
 
               {/* Mobile Hamburger Toggle */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="md:hidden p-2 rounded-xl bg-[#f8f4ee] border border-[#eadecd] text-[#4a3b32]"
+                className="lg:hidden p-2 rounded-xl bg-[#f8f4ee] border border-[#eadecd] text-[#4a3b32] shrink-0 cursor-pointer"
               >
                 {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
@@ -280,7 +273,7 @@ export function BakeryNavbar() {
 
         {/* Mobile Dropdown Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-t border-[#eadecd] bg-[#fdfbf7] px-4 pt-3 pb-5 space-y-3 shadow-lg">
+          <div className="lg:hidden border-t border-[#eadecd] bg-[#fdfbf7] px-4 pt-3 pb-5 space-y-3 shadow-lg">
             {/* Mobile Search */}
             <div className="relative">
               <Search className="w-4 h-4 text-[#7c6a5d] absolute left-3 top-1/2 -translate-y-1/2" />

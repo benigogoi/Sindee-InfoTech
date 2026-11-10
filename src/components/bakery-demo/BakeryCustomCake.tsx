@@ -23,7 +23,7 @@ const SAMPLE_THEMES: SampleTheme[] = [
   {
     id: 'theme-unicorn',
     name: 'Pastel Unicorn & Rainbow',
-    image: 'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&w=400&q=80',
+    image: 'https://images.unsplash.com/photo-1579372786545-d24232daf58c?auto=format&fit=crop&w=400&q=80',
     suggestedWeight: '1.5 kg',
   },
   {
@@ -44,6 +44,12 @@ const SAMPLE_THEMES: SampleTheme[] = [
     image: 'https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?auto=format&fit=crop&w=400&q=80',
     suggestedWeight: '2 kg (2 Tiers)',
   },
+  {
+    id: 'theme-redvelvet',
+    name: 'Romantic Red Velvet & Gold Leaf',
+    image: 'https://images.unsplash.com/photo-1616541823729-00fe0aacd32c?auto=format&fit=crop&w=400&q=80',
+    suggestedWeight: '1.5 kg',
+  },
 ]
 
 export function BakeryCustomCake() {
@@ -58,7 +64,7 @@ export function BakeryCustomCake() {
 
   // Local state for interactive customizer
   const [photoPreview, setPhotoPreview] = useState<string | null>(
-    'https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&w=600&q=80'
+    'https://images.unsplash.com/photo-1579372786545-d24232daf58c?auto=format&fit=crop&w=600&q=80'
   )
   const [flavor, setFlavor] = useState(customInquiry.flavor || 'Dutch Chocolate Truffle')
   const [isEggless, setIsEggless] = useState(customInquiry.isEggless)

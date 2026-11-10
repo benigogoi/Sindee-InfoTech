@@ -9,6 +9,14 @@ export type BakeryCategory =
   | 'Custom Theme Cakes'
   | 'Evening Snacks & Puffs'
 
+export interface BakeryCategoryInfo {
+  label: BakeryCategory
+  icon: string
+  image: string
+  count: string
+  description: string
+}
+
 export interface BakeryProduct {
   id: string
   name: string
