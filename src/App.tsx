@@ -8,10 +8,16 @@ import { ContactPage } from '@/pages/ContactPage'
 import { PrivacyPage } from '@/pages/PrivacyPage'
 import { NotFoundPage } from '@/pages/NotFoundPage'
 import { BakeryApp } from '@/components/bakery-demo/BakeryApp'
+import { TravelApp } from '@/components/travel-demo/TravelApp'
 
 export default function App() {
   return (
     <Routes>
+      {/* Standalone Full-Screen Demo Route for NH Travel / Charaideo Car Rental */}
+      <Route path="/demo/nh-travel/*" element={<TravelApp />} />
+      <Route path="/demo/travel/*" element={<Navigate to="/demo/nh-travel" replace />} />
+      <Route path="/demo/charaideo-travel/*" element={<Navigate to="/demo/nh-travel" replace />} />
+
       {/* Standalone Full-Screen Demo Route for Home Baker E-commerce with Real Sub-Routing */}
       <Route path="/demo/home-baker/*" element={<BakeryApp />} />
       <Route path="/demo/bakery/*" element={<Navigate to="/demo/home-baker" replace />} />

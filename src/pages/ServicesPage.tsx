@@ -246,42 +246,16 @@ export function ServicesPage() {
           </div>
 
           <div className="space-y-16 lg:space-y-24">
-            {services.map((service, index) => {
-              const isEven = index % 2 === 0
+            {services.map((service) => {
               return (
                 <article
                   key={service.id}
                   id={service.id}
                   className="rounded-3xl border border-border bg-warm-ivory/40 p-8 md:p-12 lg:p-14 transition-all duration-300 hover:border-midnight/30"
                 >
-                  <div
-                    className={`grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center ${
-                      !isEven ? 'lg:[direction:rtl]' : ''
-                    }`}
-                  >
-                    {/* Visual Media Column */}
-                    <div className={`lg:col-span-5 ${!isEven ? 'lg:[direction:ltr]' : ''}`}>
-                      <div className="relative rounded-2xl overflow-hidden aspect-[4/3] bg-midnight shadow-xl border border-border">
-                        <img
-                          src={service.image}
-                          alt={service.title}
-                          className="w-full h-full object-cover opacity-90 hover:scale-105 transition-transform duration-700"
-                          loading="lazy"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-midnight/80 via-midnight/20 to-transparent" />
-                        <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white text-xs">
-                          <span className="px-3 py-1 rounded-full bg-midnight/80 backdrop-blur-md border border-white/10 font-mono">
-                            Service // {service.number}
-                          </span>
-                          <span className="px-2.5 py-0.5 rounded-full bg-lime text-midnight font-bold font-mono text-[11px]">
-                            Engineered Bespoke
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Content Column */}
-                    <div className={`lg:col-span-7 ${!isEven ? 'lg:[direction:ltr]' : ''}`}>
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+                    {/* Content Column (Always on Left) */}
+                    <div className="lg:col-span-7">
                       <div className="flex items-center gap-3 text-xs font-mono text-muted mb-3">
                         <span className="px-2.5 py-1 rounded-md bg-midnight text-lime font-bold">
                           {service.number}
@@ -330,6 +304,27 @@ export function ServicesPage() {
                         <Button to="/contact" variant="dark">
                           Discuss {service.title}
                         </Button>
+                      </div>
+                    </div>
+
+                    {/* Visual Media Column (Always on Right) */}
+                    <div className="lg:col-span-5">
+                      <div className="relative rounded-2xl overflow-hidden aspect-[4/3] bg-midnight shadow-xl border border-border">
+                        <img
+                          src={service.image}
+                          alt={service.title}
+                          className="w-full h-full object-cover opacity-90 hover:scale-105 transition-transform duration-700"
+                          loading="lazy"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-midnight/80 via-midnight/20 to-transparent" />
+                        <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white text-xs">
+                          <span className="px-3 py-1 rounded-full bg-midnight/80 backdrop-blur-md border border-white/10 font-mono">
+                            Service // {service.number}
+                          </span>
+                          <span className="px-2.5 py-0.5 rounded-full bg-lime text-midnight font-bold font-mono text-[11px]">
+                            Engineered Bespoke
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>

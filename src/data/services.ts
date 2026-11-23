@@ -112,7 +112,7 @@ export const services: Service[] = [
       'Deployment assistance & maintenance',
     ],
     slug: 'android-apps',
-    image: '/images/portfolio/az-self-drive.jpg',
+    image: '/images/services/android-app-development.jpg',
   },
   {
     id: 'custom-software',
@@ -180,7 +180,7 @@ export const services: Service[] = [
       'Marketing collateral & presentation assets',
     ],
     slug: 'branding-design',
-    image: '/images/about/studio.jpg',
+    image: '/images/services/branding-creative-design.jpg',
   },
   {
     id: 'digital-marketing-seo',

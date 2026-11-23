@@ -43,21 +43,22 @@ const initialFormData: FormData = {
 }
 
 const projectTypeOptions = [
-  'Website Development',
-  'Web Application Development / SaaS',
-  'Android Application Development',
-  'Custom Software / ERP / CRM',
-  'Branding & Creative Design',
-  'Digital Marketing & SEO',
-  'Other / Multiple Services',
+  'Business Website (Company, Shop, Clinic, Resort)',
+  'E-commerce / Online Store',
+  'Android Mobile App',
+  'Custom Software or Web Application',
+  'Logo, Branding & Creative Design',
+  'SEO & Google Search Growth',
+  'Website Redesign or Maintenance',
+  'Other / Not Sure Yet (Need Advice)',
 ]
 
 const budgetOptions = [
-  'Focused Web Project / Landing Page',
-  'Commercial Website / Web Application MVP',
-  'Advanced Web Platform / Android Application',
-  'Custom Software / ERP / Enterprise Solution',
-  'Custom Scope / Discuss During Scoping',
+  'Under ₹15,000 (Starter Website / Landing Page)',
+  '₹15,000 – ₹30,000 (Complete Business Website or Store)',
+  '₹30,000 – ₹60,000 (Mobile App or Advanced Platform)',
+  'Above ₹60,000 (Custom Software / Large System)',
+  'Flexible / Need a Quote First',
 ]
 
 type FormStatus = 'idle' | 'loading' | 'success' | 'error' | 'endpoint-unconfigured'
@@ -432,11 +433,11 @@ ${formData.description || 'N/A'}`,
                         </div>
                       </div>
 
-                      {/* Row 3: Project Type & Estimated Budget */}
+                      {/* Row 3: Service Required & Estimated Budget */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                         <div className="space-y-1.5">
                           <label className="block text-xs font-semibold text-midnight">
-                            Type of Project
+                            What do you need help with?
                           </label>
                           <div className="relative">
                             <select
@@ -445,7 +446,7 @@ ${formData.description || 'N/A'}`,
                               onChange={handleChange}
                               className="w-full bg-warm-ivory/50 border border-border rounded-xl px-4 py-3 text-sm text-midnight outline-none transition-colors focus:bg-white focus:border-midnight appearance-none cursor-pointer"
                             >
-                              <option value="">Select project type</option>
+                              <option value="">Select a service / project type</option>
                               {projectTypeOptions.map((opt) => (
                                 <option key={opt} value={opt}>
                                   {opt}
@@ -458,7 +459,7 @@ ${formData.description || 'N/A'}`,
 
                         <div className="space-y-1.5">
                           <label className="block text-xs font-semibold text-midnight">
-                            Estimated Budget
+                            Approximate Budget
                           </label>
                           <div className="relative">
                             <select
@@ -467,7 +468,7 @@ ${formData.description || 'N/A'}`,
                               onChange={handleChange}
                               className="w-full bg-warm-ivory/50 border border-border rounded-xl px-4 py-3 text-sm text-midnight outline-none transition-colors focus:bg-white focus:border-midnight appearance-none cursor-pointer"
                             >
-                              <option value="">Select budget range</option>
+                              <option value="">Select your budget range</option>
                               {budgetOptions.map((b) => (
                                 <option key={b} value={b}>
                                   {b}

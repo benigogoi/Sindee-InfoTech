@@ -105,7 +105,7 @@ export function AboutPage() {
       canonicalUrl="https://sindeeinfotech.com/about"
     >
       {/* SECTION 1: Hero */}
-      <section className="pt-12 pb-12 sm:pt-16 sm:pb-14 md:pt-20 md:pb-16 bg-warm-ivory border-b border-border">
+      <section className="pt-10 pb-10 sm:pt-12 sm:pb-12 md:pt-16 md:pb-12 bg-warm-ivory border-b border-border">
         <div className="container-main">
           <motion.div
             variants={staggerContainerVariants}
@@ -115,7 +115,7 @@ export function AboutPage() {
           >
             <motion.div
               variants={fadeUpVariants}
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-midnight/5 border border-midnight/10 text-midnight text-xs font-semibold tracking-wider uppercase mb-6"
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-midnight/5 border border-midnight/10 text-midnight text-xs font-semibold tracking-wider uppercase mb-5"
             >
               <Sparkles className="w-3.5 h-3.5 text-midnight" />
               <span>Company Philosophy &amp; Ethos</span>
@@ -130,7 +130,7 @@ export function AboutPage() {
 
             <motion.p
               variants={fadeUpVariants}
-              className="text-body-large text-muted-dark mt-6 max-w-2xl leading-relaxed"
+              className="text-body-large text-muted-dark mt-5 max-w-2xl leading-relaxed"
             >
               We bring design clarity, business strategy and engineering rigor together to create digital solutions that solve real business problems and scale with your ambition.
             </motion.p>
@@ -139,11 +139,11 @@ export function AboutPage() {
       </section>
 
       {/* SECTION 2: Our Philosophy */}
-      <section className="section-padding bg-white border-b border-border">
+      <section className="py-12 md:py-16 lg:py-20 bg-white border-b border-border">
         <div className="container-main">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             {/* Left Column: Manifesto */}
-            <div className="lg:col-span-5 space-y-6">
+            <div className="lg:col-span-5 space-y-5">
               <span className="text-xs font-mono uppercase tracking-widest text-muted">
                 Our Point of View
               </span>
@@ -208,16 +208,16 @@ export function AboutPage() {
       </section>
 
       {/* SECTION 3: What We Believe In */}
-      <section className="section-padding bg-warm-ivory">
+      <section className="py-12 md:py-16 lg:py-20 bg-warm-ivory">
         <div className="container-main">
-          <div className="max-w-3xl mb-16">
+          <div className="max-w-3xl mb-10 lg:mb-12">
             <span className="text-xs font-mono uppercase tracking-widest text-muted">
               Guiding Principles
             </span>
             <h2 className="text-heading-1 text-midnight mt-3">
               What We Believe In
             </h2>
-            <p className="text-body-large text-muted-dark mt-4">
+            <p className="text-body-large text-muted-dark mt-3">
               These four principles guide every design review, code commit, and client interaction.
             </p>
           </div>
@@ -246,16 +246,16 @@ export function AboutPage() {
       </section>
 
       {/* SECTION 4: How We Work */}
-      <section className="section-padding bg-midnight text-white">
+      <section className="py-12 md:py-16 lg:py-20 bg-midnight text-white">
         <div className="container-main">
-          <div className="max-w-3xl mb-16">
+          <div className="max-w-3xl mb-10 lg:mb-12">
             <span className="text-xs font-mono uppercase tracking-widest text-lime">
               Structured Execution
             </span>
             <h2 className="text-heading-1 text-white mt-3">
               How We Work
             </h2>
-            <p className="text-body-large text-muted-light mt-4">
+            <p className="text-body-large text-muted-light mt-3">
               A transparent, calm workflow designed to deliver high-quality outcomes on schedule.
             </p>
           </div>
@@ -284,16 +284,16 @@ export function AboutPage() {
       </section>
 
       {/* SECTION 5: Why Sindee Infotech */}
-      <section className="section-padding bg-white border-t border-border">
+      <section className="py-12 md:py-16 lg:py-20 bg-white border-t border-border">
         <div className="container-main">
-          <div className="max-w-3xl mb-16">
+          <div className="max-w-3xl mb-10 lg:mb-12">
             <span className="text-xs font-mono uppercase tracking-widest text-muted">
               The Specialist Advantage
             </span>
             <h2 className="text-heading-1 text-midnight mt-3">
               Why Sindee Infotech
             </h2>
-            <p className="text-body-large text-muted-dark mt-4">
+            <p className="text-body-large text-muted-dark mt-3">
               We are a specialist web design and development studio. We focus on doing one thing exceptionally well: building high-performance websites for businesses.
             </p>
           </div>
@@ -320,7 +320,7 @@ export function AboutPage() {
           </div>
 
           {/* Direct Ownership Commitment */}
-          <div className="mt-16 p-8 md:p-12 rounded-3xl bg-warm-ivory border border-border">
+          <div className="mt-10 lg:mt-12 p-8 md:p-12 rounded-3xl bg-warm-ivory border border-border">
             <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
               <div className="space-y-2 max-w-2xl">
                 <div className="inline-flex items-center gap-2 text-xs font-mono text-muted uppercase tracking-wider">
@@ -343,7 +343,7 @@ export function AboutPage() {
       </section>
 
       {/* SECTION 6: Final CTA */}
-      <section className="bg-midnight text-white section-padding">
+      <section className="bg-midnight text-white py-12 md:py-16 lg:py-20">
         <div className="container-main text-center max-w-2xl mx-auto">
           <span className="text-xs font-mono uppercase tracking-widest text-lime mb-3 block">
             Let's Collaborate
